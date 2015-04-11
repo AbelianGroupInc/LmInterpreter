@@ -47,6 +47,11 @@ MemoryItem* LmCommands::division(const MemoryItem* variable_1, const MemoryItem*
 	return new Variable(value);
 }
 
+MemoryItem* LmCommands::module(const MemoryItem* variable_1, const MemoryItem* variable_2){
+	int value = variable_1->get_value() % variable_2->get_value();
+	return new Variable(value);
+}
+
 MemoryItem* LmCommands::unsigned_add(const MemoryItem* variable_1, const MemoryItem* variable_2){
 	int value = variable_1->get_value() + variable_2->get_value();
 	return new Variable(abs(value));
@@ -64,6 +69,11 @@ MemoryItem* LmCommands::unsigned_multiplication(const MemoryItem* variable_1, co
 
 MemoryItem* LmCommands::unsigned_division(const MemoryItem* variable_1, const MemoryItem* variable_2){
 	int value = variable_1->get_value() / variable_2->get_value();
+	return new Variable(abs(value));
+}
+
+MemoryItem* LmCommands::unsigned_module(const MemoryItem* variable_1, const MemoryItem* variable_2){
+	int value = variable_1->get_value() % variable_2->get_value();
 	return new Variable(abs(value));
 }
 

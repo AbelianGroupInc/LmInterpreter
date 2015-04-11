@@ -22,6 +22,8 @@ private:
 	void perform_input_operation(void(*func)(MemoryItem*&, const std::string));
 	void perform_output_operation(void(*func)(const MemoryItem*, const std::string));
 	void perform_assignment_operation();
+	void perform_division_operation(MemoryItem* (*division_func)(const MemoryItem*, const MemoryItem*),
+		MemoryItem* (*module_func)(const MemoryItem*, const MemoryItem*));
 
 	int get_value_operand(int position_in_memory, int number_of_operands);
 	int get_address_operand(int position_in_memory, int number_of_operands);

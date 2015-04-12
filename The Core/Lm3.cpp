@@ -68,7 +68,7 @@ void Lm3::execute_the_program(){
 			perform_assignment_operation();
 			break;
 		case CMD_GOTO:
-			this->perform_comparison_operation(LmCommands::go_to);
+			this->perform_go_to_operation();
 			break;
 		case CMD_LESS:
 			this->perform_comparison_operation(LmCommands::less);
@@ -142,6 +142,10 @@ void Lm3::perform_comparison_operation(bool(*func)(const MemoryItem*, const Memo
 	MemoryItem* var_2 = new Variable(this->get_value_operand(this->current_address, 2));
 
 	this->current_address = func(var_1, var_2) ? this->get_address_operand(this->current_address, 3) : this->current_address + 1;
+}
+
+void Lm3::perform_go_to_operation(){
+	this->current_address = this->get_address_operand(this->current_address, 3);
 }
 
 void Lm3::perform_input_operation(void(*func)(MemoryItem*&, const std::string)){

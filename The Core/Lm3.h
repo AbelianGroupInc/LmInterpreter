@@ -22,6 +22,7 @@ private:
 	void perform_input_operation(void(*func)(MemoryItem*&, const std::string));
 	void perform_output_operation(void(*func)(const MemoryItem*, const std::string));
 	void perform_assignment_operation();
+	void perform_go_to_operation();
 	void perform_division_operation(MemoryItem* (*division_func)(const MemoryItem*, const MemoryItem*),
 		MemoryItem* (*module_func)(const MemoryItem*, const MemoryItem*));
 

@@ -49,7 +49,9 @@ void LmInterpreter::parsing_string(std::istream* input){
 			}
 		}
 
-		this->program.push_back(temp_arr);
+		if (!temp_arr.empty())
+			this->program.push_back(temp_arr);
+
 		temp_arr.clear();
 	}
 }
@@ -60,7 +62,12 @@ void LmInterpreter::run_program(){
 }
 
 void LmInterpreter::save_programm(const char* file_name)const{
-	std::ofstream output_file(file_name);
+	std::string temp(file_name);
+
+	if (temp.find(".txt") == -1)
+		temp += ".txt";
+
+	std::ofstream output_file(temp.c_str());
 
 	for (size_t i = 0; i < this->program.size(); i++){
 		for (size_t k = 0; k < this->program[i].size(); k++){

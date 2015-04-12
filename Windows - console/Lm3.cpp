@@ -56,19 +56,19 @@ void Lm3::execute_the_program(){
 			this->perform_arithmetic_operation(LmCommands::multiplication);
 			break;
 		case CMD_DIVISION:
-			this->perform_arithmetic_operation(LmCommands::division);
+			this->perform_division_operation(LmCommands::division, LmCommands::module);
 			break;
 		case CMD_UNSIGNED_MULTIPLICATION:
 			this->perform_arithmetic_operation(LmCommands::unsigned_multiplication);
 			break;
 		case CMD_UNSIGNED_DIVISION:
-			this->perform_arithmetic_operation(LmCommands::unsigned_division);
+			this->perform_division_operation(LmCommands::unsigned_division, LmCommands::unsigned_module);
 			break;
 		case CMD_ASSIGMENT:
 			perform_assignment_operation();
 			break;
 		case CMD_GOTO:
-			this->perform_comparison_operation(LmCommands::go_to);
+			this->perform_go_to_operation();
 			break;
 		case CMD_LESS:
 			this->perform_comparison_operation(LmCommands::less);
@@ -144,6 +144,10 @@ void Lm3::perform_comparison_operation(bool(*func)(const MemoryItem*, const Memo
 	this->current_address = func(var_1, var_2) ? this->get_address_operand(this->current_address, 3) : this->current_address + 1;
 }
 
+void Lm3::perform_go_to_operation(){
+	this->current_address = this->get_address_operand(this->current_address, 3);
+}
+
 void Lm3::perform_input_operation(void(*func)(MemoryItem*&, const std::string)){
 	MemoryItem* var = new Variable();
 
@@ -166,6 +170,16 @@ void Lm3::perform_assignment_operation(){
 	int from_position = this->memory.get(this->current_address)->get().at(1);
 
 	this->memory.set(in_position, this->memory.get(from_position));
+	this->current_address++;
+}
+
+void Lm3::perform_division_operation(MemoryItem* (*division_func)(const MemoryItem*, const MemoryItem*),
+	MemoryItem* (*module_func)(const MemoryItem*, const MemoryItem*)){
+	MemoryItem* var_1 = new Variable(this->get_value_operand(this->current_address, 1));
+	MemoryItem* var_2 = new Variable(this->get_value_operand(this->current_address, 2));
+
+	this->memory.set(this->get_address_operand(this->current_address, 3), division_func(var_1, var_2));
+	this->memory.set(this->get_address_operand(this->current_address, 3) + 1, module_func(var_1, var_2));
 	this->current_address++;
 }
 

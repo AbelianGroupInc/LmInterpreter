@@ -6,6 +6,7 @@
 
 const int MAX_MEMORY_SIZE = 65535;
 const int
+	CMD_COMPARE                   = 5,
 	CMD_INPUT                     = 6,
 	CMD_OUTPUT                    = 7,
 	CMD_UNSIGNED_INPUT            = 22,
@@ -34,6 +35,9 @@ const int
 void Lm2::execute_the_program(){
 	while (true){
 		switch (this->memory.get(this->current_address)->get_value()){
+		case CMD_COMPARE:
+			this->perfom_flag_determination();
+			break;
 		case CMD_INPUT:
 			this->perform_input_operation(LmCommands::input);
 			break;
@@ -68,37 +72,37 @@ void Lm2::execute_the_program(){
 			perform_assignment_operation();
 			break;
 		case CMD_GOTO:
-			this->perform_comparison_operation(LmCommands::go_to);
+			this->perform_goto();
 			break;
 		case CMD_LESS:
-			this->perform_comparison_operation(LmCommands::less);
+			this->perform_comparison_operation(flags::LESS);
 			break;
 		case CMD_GREATER:
-			this->perform_comparison_operation(LmCommands::greater);
+			this->perform_comparison_operation(flags::GREATER);
 			break;
 		case CMD_LESS_OR_EQUAL:
-			this->perform_comparison_operation(LmCommands::less_or_equal);
+			this->perform_comparison_operation(flags::LESS_OR_EQUAL);
 			break;
 		case CMD_GREATER_OR_EQUAL:
-			this->perform_comparison_operation(LmCommands::greater_or_equal);
+			this->perform_comparison_operation(flags::GREATER_OR_EQUAL);
 			break;
 		case CMD_EQUAL:
-			this->perform_comparison_operation(LmCommands::equal);
+			this->perform_comparison_operation(flags::EQUAL);
 			break;
 		case CMD_NOT_EQUAL:
-			this->perform_comparison_operation(LmCommands::not_equal);
+			this->perform_comparison_operation(flags::N_EQUAL);
 			break;
 		case CMD_UNSIGNED_LESS:
-			this->perform_comparison_operation(LmCommands::unsigned_less);
+			this->perform_comparison_operation(flags::INS_GREATER);
 			break;
 		case CMD_UNSIGNED_GREATER:
-			this->perform_comparison_operation(LmCommands::unsigned_greater);
+			this->perform_comparison_operation(flags::INS_GREATER);
 			break;
 		case CMD_UNSIGNED_LESS_OR_EQUAL:
-			this->perform_comparison_operation(LmCommands::unsigned_less_or_equal);
+			this->perform_comparison_operation(flags::INS_LESS_OR_EQUAL);
 			break;
 		case CMD_UNSIGNED_GREATER_OR_EQUAL:
-			this->perform_comparison_operation(LmCommands::unsigned_greater_or_equal);
+			this->perform_comparison_operation(flags::INS_GREATER_OR_EQUAL);
 			break;
 		case CMD_STOP:
 			return;
@@ -122,6 +126,7 @@ void Lm2::set_program(const std::vector<std::vector<int> > &program){
 			this->memory.set(program[i].front(), new Lm2Command(program[i][1], program[i][2], program[i][3]));
 		else
 			throw std::exception();
+
 	}
 }
 
@@ -136,12 +141,29 @@ void Lm2::perform_arithmetic_operation(MemoryItem* (*func)(const MemoryItem*, co
 	this->memory.set(this->get_address_operand(this->current_address,1), func(var_1, var_2));
 	this->current_address++;
 }
+void Lm2::perform_goto(){
 
-void Lm2::perform_comparison_operation(bool(*func)(const MemoryItem*, const MemoryItem*)){
+	this->current_address = this->get_address_operand(this->current_address, 1);
+}
+void Lm2::perfom_flag_determination(){
 	MemoryItem* var_1 = new Variable(this->get_value_operand(this->current_address, 1));
 	MemoryItem* var_2 = new Variable(this->get_value_operand(this->current_address, 2));
 
-	this->current_address = func(var_1, var_2) ? this->get_address_operand(this->current_address, 1) : this->current_address + 1;
+	cmp_op[flags::EQUAL] = LmCommands::equal(var_1, var_2);
+	cmp_op[flags::N_EQUAL] = LmCommands::not_equal(var_1, var_2);
+	cmp_op[flags::LESS] = LmCommands::less(var_1, var_2);
+	cmp_op[flags::GREATER] = LmCommands::greater(var_1, var_2);
+	cmp_op[flags::LESS_OR_EQUAL] = LmCommands::less_or_equal(var_1, var_2);
+	cmp_op[flags::GREATER_OR_EQUAL] = LmCommands::greater_or_equal(var_1, var_2);
+	cmp_op[flags::INS_LESS] = LmCommands::unsigned_less(var_1, var_2);
+	cmp_op[flags::INS_GREATER] = LmCommands::unsigned_greater(var_1, var_2);
+	cmp_op[flags::INS_LESS_OR_EQUAL] = LmCommands::unsigned_less_or_equal(var_1, var_2);
+	cmp_op[flags::INS_GREATER_OR_EQUAL] = LmCommands::unsigned_greater_or_equal(var_1, var_2);
+
+	this->current_address++;
+}
+void Lm2::perform_comparison_operation(flags flag){
+	this->current_address = cmp_op[flag] ? this->get_address_operand(this->current_address, 1) : this->current_address + 1;
 }
 
 void Lm2::perform_input_operation(void(*func)(MemoryItem*&, const std::string)){

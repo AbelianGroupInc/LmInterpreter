@@ -15,11 +15,13 @@ namespace LmCommands{
 	MemoryItem* subsract(const MemoryItem* variable_1, const MemoryItem* variable_2);
 	MemoryItem* multiplication(const MemoryItem* variable_1, const MemoryItem* variable_2);
 	MemoryItem* division(const MemoryItem* variable_1, const MemoryItem* variable_2);
-
+	MemoryItem* module(const MemoryItem* variable_1, const MemoryItem* variable_2);
+	
 	MemoryItem* unsigned_add(const MemoryItem* variable_1, const MemoryItem* variable_2);
 	MemoryItem* unsigned_subsract(const MemoryItem* variable_1, const MemoryItem* variable_2);
 	MemoryItem* unsigned_multiplication(const MemoryItem* variable_1, const MemoryItem* variable_2);
 	MemoryItem* unsigned_division(const MemoryItem* variable_1, const MemoryItem* variable_2);
+	MemoryItem* unsigned_module(const MemoryItem* variable_1, const MemoryItem* variable_2);
 
 	bool less(const MemoryItem* variable_1, const MemoryItem* variable_2);
 	bool greater(const MemoryItem* variable_1, const MemoryItem* variable_2);

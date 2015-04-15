@@ -7,19 +7,13 @@ Memory::Memory(){
 		this->memory[i] = nullptr;
 }
 
-Memory::~Memory(){
-	/*for (std::unordered_map<int, MemoryItem*>::iterator itr = this->memory.begin();
-		itr != this->memory.end(); itr++)
-		delete itr->second;*/
-}
-
 MemoryItem* Memory::get(int position){
 	if (this->memory.find(position) == this->memory.end())
 		throw std::exception();
 
-	return this->memory[position];
+	return this->memory[position].get();
 }
 
 void Memory::set(int position, MemoryItem* item){
-	this->memory[position] = item;
+	this->memory[position] = std::shared_ptr<MemoryItem>(item);
 }

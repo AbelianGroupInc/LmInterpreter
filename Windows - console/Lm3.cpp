@@ -118,10 +118,12 @@ void Lm3::set_program(const std::vector<std::vector<int> > &program){
 		this->current_address=program.front().front();
 
 	for (size_t i = 0; i < program.size(); i++){
-		if (program[i].front() >= 0 && program[i].front() >= 0)
+		if (program[i].front() >= 0 && program[i].front() >= 0){
 			this->memory.set(program[i].front(), new Lm3Command(program[i][1], program[i][2], program[i][3], program[i][4]));
-		else
+		}
+		else{
 			throw std::exception();
+		}
 	}
 }
 
@@ -135,6 +137,9 @@ void Lm3::perform_arithmetic_operation(MemoryItem* (*func)(const MemoryItem*, co
 
 	this->memory.set(this->get_address_operand(this->current_address,3), func(var_1, var_2));
 	this->current_address++;
+
+	delete var_1;
+	delete var_2;
 }
 
 void Lm3::perform_comparison_operation(bool(*func)(const MemoryItem*, const MemoryItem*)){
@@ -142,6 +147,9 @@ void Lm3::perform_comparison_operation(bool(*func)(const MemoryItem*, const Memo
 	MemoryItem* var_2 = new Variable(this->get_value_operand(this->current_address, 2));
 
 	this->current_address = func(var_1, var_2) ? this->get_address_operand(this->current_address, 3) : this->current_address + 1;
+
+	delete var_1;
+	delete var_2;
 }
 
 void Lm3::perform_go_to_operation(){
@@ -155,6 +163,8 @@ void Lm3::perform_input_operation(void(*func)(MemoryItem*&, const std::string)){
 	this->memory.set(this->get_address_operand(this->current_address, 1), var);
 
 	this->current_address++;
+
+	delete var;
 }
 
 void Lm3::perform_output_operation(void(*func)(const MemoryItem*, const std::string)){
@@ -163,6 +173,8 @@ void Lm3::perform_output_operation(void(*func)(const MemoryItem*, const std::str
 	func(var, Converter::to_hex(this->get_address_operand(this->current_address, 1), 4));
 
 	this->current_address++;
+
+	delete var;
 }
 
 void Lm3::perform_assignment_operation(){
@@ -181,6 +193,9 @@ void Lm3::perform_division_operation(MemoryItem* (*division_func)(const MemoryIt
 	this->memory.set(this->get_address_operand(this->current_address, 3), division_func(var_1, var_2));
 	this->memory.set(this->get_address_operand(this->current_address, 3) + 1, module_func(var_1, var_2));
 	this->current_address++;
+
+	delete var_1;
+	delete var_2;
 }
 
 int Lm3::get_value_operand(int position_in_memory, int number_of_operands){

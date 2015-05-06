@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <conio.h>
-#include <memory>
 
 #include "LmInterpreter.h"
 #include "Lm3.h"
@@ -11,7 +10,7 @@
 #include "Menu.h"
 
 int main(){
-	std::shared_ptr<LmInterpreter> umc(nullptr);
+	LmInterpreter* umc = nullptr;
 
 	Menu main_menu("Main menu", "Back");
 	Menu lm("Choose learning machine:", "Exit");
@@ -49,31 +48,23 @@ int main(){
 	
 	lm.push_back("LM - 3", [&](){
 		std::cout << "Please wait...";
-		std::shared_ptr<Lm> temp(new Lm3());
-		umc = std::shared_ptr<LmInterpreter>(new LmInterpreter(temp.get()));
+		umc = new LmInterpreter(new Lm3());
 		main_menu.show_menu();
 	}, false);
 
 	lm.push_back("LM - 2", [&](){
 		std::cout << "Please wait...";
-		std::shared_ptr<Lm> temp(new Lm2());
-		umc = std::shared_ptr<LmInterpreter>(new LmInterpreter(temp.get()));
+		umc = new LmInterpreter(new Lm2());
 		main_menu.show_menu();
 	}, false);
 
 	lm.push_back("LM - RM", [&](){
 		std::cout << "Please wait...";
-		std::shared_ptr<Lm> temp(new Lm1());
-		umc = std::shared_ptr<LmInterpreter>(new LmInterpreter(temp.get()));
+		umc = new LmInterpreter(new Lm1());
 		main_menu.show_menu();
 	}, false);
 
-	try{
-		lm.show_menu();
-	}
-	catch (std::exception err){
-		std::cout << err.what() << std::endl;
-	}
+	lm.show_menu();
 
 	return 0;
 }

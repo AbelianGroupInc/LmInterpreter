@@ -20,7 +20,7 @@ void LmInterpreter::read_program(const char* file_name){
 	std::ifstream input_file(file_name);
 	
 	if (!input_file.good())
-		throw std::exception("Error: Can not open file. File does not exist.");
+		throw std::exception();
 
 	this->parsing_string(&input_file);
 

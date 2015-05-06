@@ -3,7 +3,6 @@
 #define LM_INTERPRETER_LM_INTERPRETER_H
 
 #include <vector>
-#include <memory>
 
 #include "Lm.h"
 
@@ -18,7 +17,7 @@ public:
 
 	void save_programm(const char* file_name)const;
 private:
-	std::shared_ptr<Lm> machine;
+	Lm* machine;
 	std::vector<std::vector<int> > program;
 
 	void parsing_string(std::istream* input);

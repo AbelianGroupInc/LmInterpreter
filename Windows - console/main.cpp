@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <memory>
 #include <conio.h>
 
 #include "LmInterpreter.h"
@@ -10,7 +11,7 @@
 #include "Menu.h"
 
 int main(){
-	LmInterpreter* umc = nullptr;
+	std::shared_ptr<LmInterpreter> umc(nullptr);
 
 	Menu main_menu("Main menu", "Back");
 	Menu lm("Choose learning machine:", "Exit");
@@ -48,19 +49,22 @@ int main(){
 	
 	lm.push_back("LM - 3", [&](){
 		std::cout << "Please wait...";
-		umc = new LmInterpreter(new Lm3());
+		std::shared_ptr<Lm> temp(new Lm3());
+		umc = std::shared_ptr<LmInterpreter>(new LmInterpreter(temp.get()));
 		main_menu.show_menu();
 	}, false);
 
 	lm.push_back("LM - 2", [&](){
 		std::cout << "Please wait...";
-		umc = new LmInterpreter(new Lm2());
+		std::shared_ptr<Lm> temp(new Lm2());
+		umc = std::shared_ptr<LmInterpreter>(new LmInterpreter(temp.get()));
 		main_menu.show_menu();
 	}, false);
 
 	lm.push_back("LM - RM", [&](){
 		std::cout << "Please wait...";
-		umc = new LmInterpreter(new Lm1());
+		std::shared_ptr<Lm> temp(new Lm1());
+		umc = std::shared_ptr<LmInterpreter>(new LmInterpreter(temp.get()));
 		main_menu.show_menu();
 	}, false);
 

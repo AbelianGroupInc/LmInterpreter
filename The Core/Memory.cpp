@@ -1,4 +1,5 @@
 #include "Memory.h"
+#include "Converter.h"
 
 const int SIZE_OF_MEMORY(65535);
 
@@ -7,19 +8,34 @@ Memory::Memory(){
 		this->memory[i] = nullptr;
 }
 
-Memory::~Memory(){
-	/*for (std::unordered_map<int, MemoryItem*>::iterator itr = this->memory.begin();
-		itr != this->memory.end(); itr++)
-		delete itr->second;*/
-}
-
 MemoryItem* Memory::get(int position){
-	if (this->memory.find(position) == this->memory.end())
-		throw std::exception();
+	this->check(position);
 
-	return this->memory[position];
+	return this->memory[position].get();
 }
 
 void Memory::set(int position, MemoryItem* item){
-	this->memory[position] = item;
+	this->check(position);
+
+	this->memory[position] = std::shared_ptr<MemoryItem>(item);
+}
+
+void Memory::set_name(int position, std::string name){
+	this->check(position);
+
+	this->names[position] = name;
+}
+
+std::string Memory::get_name(int position)const{
+	this->check(position);
+	
+	if (this->names.find(position) == this->names.end())
+		return Converter::to_hex(position, 4);
+	else
+		return this->names.find(position)->second;
+}
+
+void Memory::check(int position)const{
+	if (position < 0 || position > SIZE_OF_MEMORY)
+		throw std::exception("Error: Wrong address");
 }

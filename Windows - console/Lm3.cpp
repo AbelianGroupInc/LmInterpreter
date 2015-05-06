@@ -151,7 +151,7 @@ void Lm3::perform_go_to_operation(){
 void Lm3::perform_input_operation(void(*func)(MemoryItem*&, const std::string)){
 	MemoryItem* var = new Variable();
 
-	func(var, Converter::to_hex(this->memory.get(this->current_address)->get().at(1), 4));
+	func(var, this->memory.get_name(this->get_address_operand(this->current_address, 1)));
 	this->memory.set(this->get_address_operand(this->current_address, 1), var);
 
 	this->current_address++;
@@ -160,7 +160,7 @@ void Lm3::perform_input_operation(void(*func)(MemoryItem*&, const std::string)){
 void Lm3::perform_output_operation(void(*func)(const MemoryItem*, const std::string)){
 	MemoryItem* var = new Variable(this->get_value_operand(this->current_address, 1));
 
-	func(var, Converter::to_hex(this->get_address_operand(this->current_address, 1), 4));
+	func(var, this->memory.get_name(this->get_address_operand(this->current_address, 1)));
 
 	this->current_address++;
 }

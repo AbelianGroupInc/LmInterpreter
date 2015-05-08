@@ -72,6 +72,9 @@ void LmInterpreter::parsing_init_string(std::istream* input){
 		int index(0);
 		int address;
 
+		if (temp_str.empty())
+			continue;
+
 		if (temp_str == "#end")
 			return;
 

@@ -127,7 +127,7 @@ int Lm1::perfom_commands(){
 		return CMD_RR_STOP;
 		break;
 	default:
-		std::exception();
+		std::exception("Error: Command: incorrect command");
 		break;
 	}
 	
@@ -174,9 +174,10 @@ void Lm1::set_program(const std::vector<std::vector<int> > &program){
 		int cur_command_numb = program[i][1];
 		if (cur_command_adress >= 0){		
 			if (this->is_command_long(cur_command_numb)){
-				if ((cur_command_adress + 1) > MAX_RAM_MEMORY_SIZE ||
-					this->ram_memory.get(cur_command_adress + 1) != nullptr)
-					throw std::exception();
+				if ((cur_command_adress + 1) > MAX_RAM_MEMORY_SIZE)
+					throw std::exception("Error: Memory: out of range");
+				if (this->ram_memory.get(cur_command_adress + 1) != nullptr)
+					throw std::exception("Error: Command : incorrect command");
 
 				this->ram_memory.set(cur_command_adress, new Lm1LongCommand(program[i][1], program[i][2], program[i][3], program[i][4]));
 				this->ram_memory.set(cur_command_adress + 1, new Lm1LongCommand(program[i][1], program[i][2], program[i][3], program[i][4]));
@@ -185,7 +186,7 @@ void Lm1::set_program(const std::vector<std::vector<int> > &program){
 				this->ram_memory.set(cur_command_adress, new Lm1ShortCommand(program[i][1], program[i][2], program[i][3]));
 		}
 		else
-			throw std::exception();
+			throw std::exception("Error: Command : incorrect command");
 	}
 }
 

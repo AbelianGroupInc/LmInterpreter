@@ -91,7 +91,7 @@ void Lm1::perform_input_operation(void(*func)(MemoryItem*&, const std::string)){
 	if (this->get_second_operand_adress(COMMAND_IS_LONG) + 1 >= MAX_RAM_MEMORY_SIZE)
 		throw std::exception();
 
-	func(var, Converter::to_hex(this->get_second_operand_adress(COMMAND_IS_LONG), 4));
+	func(var, this->ram_memory.get_name(this->get_second_operand_adress(COMMAND_IS_LONG)));
 	this->ram_memory.set(this->get_second_operand_adress(COMMAND_IS_LONG), var);
 	this->ram_memory.set(this->get_second_operand_adress(COMMAND_IS_LONG) + 1, var);
 
@@ -101,7 +101,7 @@ void Lm1::perform_input_operation(void(*func)(MemoryItem*&, const std::string)){
 void Lm1::perform_output_operation(void(*func)(const MemoryItem*, const std::string)){
 	MemoryItem* var = this->get_operand(SECOND_OPERAND, COMMAND_IS_LONG);
 
-	func(var, Converter::to_hex(this->get_second_operand_adress(COMMAND_IS_LONG), 4));
+	func(var, this->ram_memory.get_name(this->get_second_operand_adress(COMMAND_IS_LONG)));
 
 	this->go_to_next_command(COMMAND_IS_LONG);
 }
@@ -123,7 +123,7 @@ void Lm1::perform_division_operation(MemoryItem* (*division_func)(const MemoryIt
 	MemoryItem* var_2 = new Variable(this->get_second_operand_value(COMMAND_IS_LONG));
 
 	if (this->get_cpu_value(this->get_first_operand_adress() + 1) != INT_MAX)
-		throw std::exception();
+		throw std::exception("Error: Memory: out of range");
 
 	this->cpu_memory[this->get_first_operand_adress()] = division_func(var_1, var_2)->get_value();
 	this->cpu_memory[this->get_first_operand_adress() + 1] = module_func(var_1, var_2)->get_value();

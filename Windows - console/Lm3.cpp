@@ -111,15 +111,16 @@ void Lm3::execute_the_program(){
 }
 
 void Lm3::init_variable(int position, std::string name){
-
+	this->memory.set_name(position, name);
 }
 
 void Lm3::init_variable(int position, int value){
-
+	this->memory.set(position, new Variable(value));
 }
 
 void Lm3::init_variable(int position, std::string name, int value){
-
+	this->init_variable(position, name);
+	this->init_variable(position, value);
 }
 
 void Lm3::set_program(const std::vector<std::vector<int> > &program){

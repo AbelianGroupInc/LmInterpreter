@@ -68,9 +68,37 @@ void LmInterpreter::parsing_code_string(std::istream* input){
 void LmInterpreter::parsing_init_string(std::istream* input){
 	std::string temp_str;
 
+	std::string address;
+	std::string name;
+	std::string value;
+
 	while (getline(*input, temp_str)){
 		if (temp_str == "#end")
 			return;
+
+		if (temp_str.size() < 4)
+			throw std::exception("Error: Wrong address");
+
+		for (int i = 0; i < 4; i++)
+			address += temp_str[i];
+
+		for (int i = 4; i < (int)temp_str.size(); i++){
+			if (temp_str[i] == '\"'){
+				while (true){
+					if (++i == temp_str.size())
+						throw std::exception("Error: Lost end of the name");
+
+					if (temp_str[i] == '\"'){
+						this->machine->init_variable(Converter::to_dec(address), name);
+						break;
+					}
+					else{
+						name += temp_str[i];
+					}
+				}
+			}
+		}
+
 	}
 }
 

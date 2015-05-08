@@ -115,16 +115,18 @@ void Lm2::execute_the_program(){
 }
 
 void Lm2::init_variable(int position, std::string name){
-
+	this->memory.set_name(position, name);
 }
 
 void Lm2::init_variable(int position, int value){
-
+	this->memory.set(position, new Variable(value));
 }
 
 void Lm2::init_variable(int position, std::string name, int value){
-
+	this->init_variable(position, name);
+	this->init_variable(position, value);
 }
+
 
 
 void Lm2::set_program(const std::vector<std::vector<int> > &program){
@@ -182,7 +184,7 @@ void Lm2::perform_comparison_operation(flags flag){
 void Lm2::perform_input_operation(void(*func)(MemoryItem*&, const std::string)){
 	MemoryItem* var = new Variable();
 
-	func(var, Converter::to_hex(this->memory.get(this->current_address)->get().at(1), 4));
+	func(var, this->memory.get_name(this->get_address_operand(this->current_address, 1)));
 	this->memory.set(this->get_address_operand(this->current_address, 1), var);
 
 	this->current_address++;
@@ -191,7 +193,7 @@ void Lm2::perform_input_operation(void(*func)(MemoryItem*&, const std::string)){
 void Lm2::perform_output_operation(void(*func)(const MemoryItem*, const std::string)){
 	MemoryItem* var = new Variable(this->get_value_operand(this->current_address, 1));
 
-	func(var, Converter::to_hex(this->get_address_operand(this->current_address, 1), 4));
+	func(var, this->memory.get_name(this->get_address_operand(this->current_address, 1)));
 
 	this->current_address++;
 }

@@ -13,6 +13,9 @@ public:
 	virtual void execute_the_program();
 	virtual void set_program(const std::vector<std::vector<int> > &program);
 	virtual std::vector<std::vector<int> > get_program()const;
+	virtual void init_variable(int position, std::string name);
+	virtual void init_variable(int position, int value);
+	virtual void init_variable(int position, std::string name, int value);
 private:
 	int current_address;
 	Memory memory;

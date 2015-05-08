@@ -17,7 +17,7 @@ int main(){
 	Menu lm("Choose learning machine:", "Exit");
 
 	main_menu.push_back("Write program", [&](){
-		std::cout << "Write here the program and ending with the word \'end\'\n" << std::endl << "#start\n";
+		std::cout << "Write here the program and ending with the word \'end\'\n" << std::endl << "#code\n";
 		umc->read_program();
 
 		main_menu.unlock_item(3);

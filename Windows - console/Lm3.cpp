@@ -110,6 +110,18 @@ void Lm3::execute_the_program(){
 	}
 }
 
+void Lm3::init_variable(int position, std::string name){
+
+}
+
+void Lm3::init_variable(int position, int value){
+
+}
+
+void Lm3::init_variable(int position, std::string name, int value){
+
+}
+
 void Lm3::set_program(const std::vector<std::vector<int> > &program){
 	if (program.size() == 0)
 		return;

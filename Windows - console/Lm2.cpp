@@ -114,6 +114,19 @@ void Lm2::execute_the_program(){
 	}
 }
 
+void Lm2::init_variable(int position, std::string name){
+
+}
+
+void Lm2::init_variable(int position, int value){
+
+}
+
+void Lm2::init_variable(int position, std::string name, int value){
+
+}
+
+
 void Lm2::set_program(const std::vector<std::vector<int> > &program){
 	if (program.size() == 0)
 		return;

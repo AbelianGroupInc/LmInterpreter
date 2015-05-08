@@ -13,21 +13,30 @@ LmInterpreter::LmInterpreter(Lm* machine) :machine(machine), program(){
 }
 
 void LmInterpreter::read_program(){
-	this->parsing_string(&std::cin);
+	this->parsing_code_string(&std::cin);
 }
 
 void LmInterpreter::read_program(const char* file_name){
 	std::ifstream input_file(file_name);
-	
+	std::string temp_str;
+
 	if (!input_file.good())
 		throw std::exception();
 
-	this->parsing_string(&input_file);
+	while (getline(input_file, temp_str)){
+		if (temp_str == "#code"){
+			this->parsing_code_string(&input_file);
+			break;
+		}
+
+		if (temp_str == "#init")
+			this->parsing_init_string(&input_file);
+	}
 
 	input_file.close();
 }
 
-void LmInterpreter::parsing_string(std::istream* input){
+void LmInterpreter::parsing_code_string(std::istream* input){
 	std::string temp_str;
 	std::vector<int> temp_arr;
 
@@ -53,6 +62,15 @@ void LmInterpreter::parsing_string(std::istream* input){
 			this->program.push_back(temp_arr);
 
 		temp_arr.clear();
+	}
+}
+
+void LmInterpreter::parsing_init_string(std::istream* input){
+	std::string temp_str;
+
+	while (getline(*input, temp_str)){
+		if (temp_str == "#end")
+			return;
 	}
 }
 

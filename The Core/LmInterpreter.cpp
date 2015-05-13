@@ -13,21 +13,30 @@ LmInterpreter::LmInterpreter(Lm* machine) :machine(machine), program(){
 }
 
 void LmInterpreter::read_program(){
-	this->parsing_string(&std::cin);
+	this->parsing_code_string(&std::cin);
 }
 
 void LmInterpreter::read_program(const char* file_name){
 	std::ifstream input_file(file_name);
-	
+	std::string temp_str;
+
 	if (!input_file.good())
 		throw std::exception();
 
-	this->parsing_string(&input_file);
+	while (getline(input_file, temp_str)){
+		if (temp_str == "#code"){
+			this->parsing_code_string(&input_file);
+			break;
+		}
+
+		if (temp_str == "#init")
+			this->parsing_init_string(&input_file);
+	}
 
 	input_file.close();
 }
 
-void LmInterpreter::parsing_string(std::istream* input){
+void LmInterpreter::parsing_code_string(std::istream* input){
 	std::string temp_str;
 	std::vector<int> temp_arr;
 
@@ -38,7 +47,7 @@ void LmInterpreter::parsing_string(std::istream* input){
 		std::string tmp;
 
 		for (int i = 0; i <= (int)temp_str.size(); i++){
-			if (i == temp_str.size() || temp_str[i] == ' '){
+			if (i == temp_str.size() || temp_str[i] == ' ' || temp_str[i] == '\t' || temp_str[i] == ';'){
 				if (tmp.size() > 0){
 					temp_arr.push_back(Converter::to_dec(tmp));
 					tmp.clear();
@@ -47,12 +56,87 @@ void LmInterpreter::parsing_string(std::istream* input){
 			else{
 				tmp += (char)temp_str[i];
 			}
+
+			if (temp_str[i] == ';')
+				break;
 		}
 
 		if (!temp_arr.empty())
 			this->program.push_back(temp_arr);
 
 		temp_arr.clear();
+	}
+}
+
+void LmInterpreter::parsing_init_string(std::istream* input){
+	std::string temp_str;
+
+	while (getline(*input, temp_str)){
+		int index(0);
+		int address;
+
+		if (temp_str.empty())
+			continue;
+
+		if (temp_str == "#end")
+			return;
+
+		address = this->init_address(temp_str, index);
+
+		for (; index < (int)temp_str.size(); index++){
+			if (temp_str[index] == '\"')
+				this->init_name(temp_str, address, index);
+			else if (temp_str[index] != ' '  && temp_str[index] != '\t')
+				this->init_value(temp_str, address, index);
+		}
+	}
+}
+
+int LmInterpreter::init_address(std::string &str, int &index){
+	std::string address;
+
+	for (; index < (int)str.size(); index++){
+		if (index == str.size() || str[index] == ' ' || str[index] == '\t'){
+			if (!address.empty())
+				return Converter::to_dec(address);
+		}
+		else{
+			address += str[index];
+		}
+	}
+
+	throw std::exception("Error: Wrong Address");
+}
+
+void LmInterpreter::init_name(std::string &str, int address, int &index){
+	std::string name;
+
+	while (true){
+		if (++index == str.size())
+			throw std::exception("Error: Lost end of the name");
+
+		if (str[index] == '\"'){
+			this->machine->init_variable(address, name);
+			return;
+		}
+
+		name += str[index];
+	}
+}
+
+void LmInterpreter::init_value(std::string &str, int address, int &index){
+	std::string value;
+
+	for (; index <= (int)str.size(); index++){
+		if (index == str.size() || str[index] == ' ' || str[index] == '\t'){
+			if (!value.empty()){
+				this->machine->init_variable(address, Converter::to_dec(value));
+				return;
+			}
+		}
+		else{
+			value += str[index];
+		}
 	}
 }
 

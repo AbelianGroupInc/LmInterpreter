@@ -110,6 +110,19 @@ void Lm3::execute_the_program(){
 	}
 }
 
+void Lm3::init_variable(int position, std::string name){
+	this->memory.set_name(position, name);
+}
+
+void Lm3::init_variable(int position, int value){
+	this->memory.set(position, new Variable(value));
+}
+
+void Lm3::init_variable(int position, std::string name, int value){
+	this->init_variable(position, name);
+	this->init_variable(position, value);
+}
+
 void Lm3::set_program(const std::vector<std::vector<int> > &program){
 	if (program.size() == 0)
 		return;
@@ -166,10 +179,12 @@ void Lm3::perform_output_operation(void(*func)(const MemoryItem*, const std::str
 }
 
 void Lm3::perform_assignment_operation(){
-	int in_position = this->memory.get(this->current_address)->get().at(3);
-	int from_position = this->memory.get(this->current_address)->get().at(1);
+	int in_position = this->get_address_operand(this->current_address, 3);
+	int value = this->get_value_operand(this->current_address, 1);
 
-	this->memory.set(in_position, this->memory.get(from_position));
+	MemoryItem* var = new Variable(value);
+
+	this->memory.set(in_position, var);
 	this->current_address++;
 }
 

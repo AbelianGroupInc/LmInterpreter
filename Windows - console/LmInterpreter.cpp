@@ -47,7 +47,7 @@ void LmInterpreter::parsing_code_string(std::istream* input){
 		std::string tmp;
 
 		for (int i = 0; i <= (int)temp_str.size(); i++){
-			if (i == temp_str.size() || temp_str[i] == ' ' || temp_str[i] == '\t'){
+			if (i == temp_str.size() || temp_str[i] == ' ' || temp_str[i] == '\t' || temp_str[i] == ';'){
 				if (tmp.size() > 0){
 					temp_arr.push_back(Converter::to_dec(tmp));
 					tmp.clear();
@@ -56,6 +56,9 @@ void LmInterpreter::parsing_code_string(std::istream* input){
 			else{
 				tmp += (char)temp_str[i];
 			}
+
+			if (temp_str[i] == ';')
+				break;
 		}
 
 		if (!temp_arr.empty())

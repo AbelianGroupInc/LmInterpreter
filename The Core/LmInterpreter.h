@@ -20,7 +20,12 @@ private:
 	Lm* machine;
 	std::vector<std::vector<int> > program;
 
-	void parsing_string(std::istream* input);
+	void parsing_code_string(std::istream* input);
+	void parsing_init_string(std::istream* input);
+
+	int init_address(std::string &str, int &index);
+	void init_name(std::string &str, int address, int &index);
+	void init_value(std::string &str, int address, int &index);
 };
 
 #endif

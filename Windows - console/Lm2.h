@@ -3,6 +3,8 @@
 #define LM_INTERPRETER_LM2_H
 
 #include <vector>
+#include <cstdlib>
+#include <stdexcept>
 
 #include "Lm.h"
 #include "Memory.h"
@@ -23,7 +25,7 @@ private:
 	int current_address;
 	Memory memory;
 	
-	void perform_arithmetic_operation(MemoryItem* (*func)(const MemoryItem*, const MemoryItem*));
+	void perform_arithmetic_operation(MemoryItem* (*func)(const MemoryItem*, const MemoryItem*),int type);
 	void perform_comparison_operation(flags flag);
 	void perform_input_operation(void(*func)(MemoryItem*&, const std::string));
 	void perform_output_operation(void(*func)(const MemoryItem*, const std::string));

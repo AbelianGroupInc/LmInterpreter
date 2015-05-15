@@ -9,7 +9,7 @@
 
 LmInterpreter::LmInterpreter(Lm* machine) :machine(machine), program(){
 	if (machine == nullptr)
-		throw std::exception();
+		throw std::invalid_argument("Miss machine");
 }
 
 void LmInterpreter::read_program(){
@@ -21,7 +21,7 @@ void LmInterpreter::read_program(const char* file_name){
 	std::string temp_str;
 
 	if (!input_file.good())
-		throw std::exception();
+		throw std::exception("Can't open file");
 
 	while (getline(input_file, temp_str)){
 		if (temp_str == "#code"){

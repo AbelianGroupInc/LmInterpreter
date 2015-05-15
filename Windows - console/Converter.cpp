@@ -38,16 +38,16 @@ int Converter::Details::to_dec_system(const std::string &number, size_t k, size_
 }
 
 char Converter::Details::int_to_char(int number){
-	if (number > 36 || number < 0)
-		throw std::exception();
+	if (number > 36 || number < 1)
+		throw std::invalid_argument("Invalid numeral system");
 
 	return number > 9 ? number - 10 + 'A' : number + '0';
 }
 
 int Converter::Details::char_to_int(char number){
 	if (!((number >= '0' && number <= '9') || (number >= 'A' && number <= 'Z')))
-		throw std::exception();
-
+		throw std::invalid_argument("Invalid number");
+	
 	return number <= '9' ? number - '0' : number + 10 - 'A';
 }
 
@@ -55,7 +55,7 @@ std::string Converter::Details::added_zeros(const std::string &number, size_t nu
 	int numer_of_zeros((int)number_size - (int)number.size());
 
 	if (numer_of_zeros < 0)
-		throw std::exception();
+		throw std::invalid_argument("Invalid argument");
 
 	return std::string(numer_of_zeros, '0') + number;
 }

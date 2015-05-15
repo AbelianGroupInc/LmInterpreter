@@ -136,7 +136,7 @@ void Lm2::set_program(const std::vector<std::vector<int> > &program){
 		this->current_address=program.front().front();
 
 	for (size_t i = 0; i < program.size(); i++){
-		if (program[i].front() >= 0)
+		if (program[i].front() >= 0 && program[i].front()<= MAX_MEMORY_SIZE)
 			this->memory.set(program[i].front(), new Lm2Command(program[i][1], program[i][2], program[i][3]));
 		else
 			throw std::out_of_range("Out of Memory");

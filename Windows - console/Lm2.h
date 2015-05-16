@@ -19,8 +19,8 @@ public:
 	virtual void init_variable(int position, int value) override final;
 	virtual void init_variable(int position, std::string name, int value)override final;
 private:
-	
 	enum flags { EQUAL, N_EQUAL, LESS, GREATER, LESS_OR_EQUAL, GREATER_OR_EQUAL, INS_LESS, INS_GREATER, INS_LESS_OR_EQUAL, INS_GREATER_OR_EQUAL };
+
 	std::vector<bool> cmp_op;
 	int current_address;
 	Memory memory;

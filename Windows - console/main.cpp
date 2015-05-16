@@ -11,6 +11,7 @@
 #include "Menu.h"
 
 void CriticalError(){
+	system("cls");
 	std::cout << "Critical error, the program is destroyed" << std::endl;
 	system("PAUSE");
 	exit(EXIT_FAILURE);

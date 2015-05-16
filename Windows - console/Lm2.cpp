@@ -126,8 +126,6 @@ void Lm2::init_variable(int position, std::string name, int value){
 	this->init_variable(position, value);
 }
 
-
-
 void Lm2::set_program(const std::vector<std::vector<int> > &program){
 	if (program.size() == 0)
 		return;
@@ -158,10 +156,11 @@ void Lm2::perform_arithmetic_operation(MemoryItem* (*func)(const MemoryItem*, co
 	
 	this->current_address++;
 }
-void Lm2::perform_goto(){
 
+void Lm2::perform_goto(){
 	this->current_address = this->get_address_operand(this->current_address, 1);
 }
+
 void Lm2::perfom_flag_determination(){
 	MemoryItem* var_1 = new Variable(this->get_value_operand(this->current_address, 1));
 	MemoryItem* var_2 = new Variable(this->get_value_operand(this->current_address, 2));

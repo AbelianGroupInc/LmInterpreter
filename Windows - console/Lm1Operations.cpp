@@ -4,28 +4,28 @@
 #include "LmCommands.h"
 
 const int 
-MAX_CPU_MEMORY_SIZE = 16,
-MAX_RAM_MEMORY_SIZE = 65535;
+	MAX_CPU_MEMORY_SIZE = 16,
+	MAX_RAM_MEMORY_SIZE = 65535;
 
 int const
-CMD_RM_ASSIGMENT_1 = 0,
-CMD_RM_ASSIGMENT_2 = 16,
-CMD_LESS = 131,
-CMD_GREATER = 133,
-CMD_LESS_OR_EQUAL = 134,
-CMD_GREATER_OR_EQUAL = 132,
-CMD_EQUAL = 129,
-CMD_NOT_EQUAL = 130,
-CMD_UNSIGNED_LESS = 147,
-CMD_UNSIGNED_GREATER = 149,
-CMD_UNSIGNED_LESS_OR_EQUAL = 148,
-CMD_UNSIGNED_GREATER_OR_EQUAL = 150,
-CMD_GO_TO = 128,
-COMMAND_IS_LONG = 100;
+	CMD_RM_ASSIGMENT_1            = 0,
+	CMD_RM_ASSIGMENT_2            = 16,
+	CMD_LESS                      = 131,
+	CMD_GREATER                   = 133,
+	CMD_LESS_OR_EQUAL             = 134,
+	CMD_GREATER_OR_EQUAL          = 132,
+	CMD_EQUAL                     = 129,
+	CMD_NOT_EQUAL                 = 130,
+	CMD_UNSIGNED_LESS             = 147,
+	CMD_UNSIGNED_GREATER          = 149,
+	CMD_UNSIGNED_LESS_OR_EQUAL    = 148,
+	CMD_UNSIGNED_GREATER_OR_EQUAL = 150,
+	CMD_GO_TO                     = 128,
+	COMMAND_IS_LONG               = 100;
 
 int const
-FIRST_OPERAND = 1,
-SECOND_OPERAND = 2;
+	FIRST_OPERAND  = 1,
+	SECOND_OPERAND = 2;
 
 void Lm1::perform_arithmetic_operation(MemoryItem* (*func)(const MemoryItem*, const MemoryItem*), int command){
 	MemoryItem* first_operand = this->get_operand(FIRST_OPERAND, command);
@@ -61,7 +61,6 @@ void Lm1::perform_comparison_operation(int command){
 	case CMD_NOT_EQUAL:
 		this->conditional_transit(LmCommands::not_equal, command);
 		break;
-
 	case CMD_UNSIGNED_LESS:
 		this->conditional_transit(LmCommands::unsigned_less, command);
 		break;
@@ -74,11 +73,9 @@ void Lm1::perform_comparison_operation(int command){
 	case CMD_UNSIGNED_GREATER_OR_EQUAL:
 		this->conditional_transit(LmCommands::unsigned_greater_or_equal, command);
 		break;
-
 	case CMD_GO_TO:
 		this->unconditional_transit(LmCommands::go_to);
 		break;
-
 	default:
 		std::exception();
 		break;

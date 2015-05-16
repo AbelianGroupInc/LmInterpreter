@@ -105,7 +105,7 @@ int LmInterpreter::init_address(std::string &str, int &index){
 		}
 	}
 
-	throw std::exception("Error: Wrong Address");
+	throw std::exception("Wrong Address");
 }
 
 void LmInterpreter::init_name(std::string &str, int address, int &index){
@@ -113,7 +113,7 @@ void LmInterpreter::init_name(std::string &str, int address, int &index){
 
 	while (true){
 		if (++index == str.size())
-			throw std::exception("Error: Lost end of the name");
+			throw std::exception("Lost end of the name");
 
 		if (str[index] == '\"'){
 			this->machine->init_variable(address, name);

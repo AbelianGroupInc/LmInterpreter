@@ -11,7 +11,6 @@
 enum Console—olor{Black, Blue, Green ,Cyan ,Red ,Magenta ,Brown ,LightGray ,DarkGray ,LightBlue,
 	LightGreen ,LightCyan ,LightRed ,LightMagenta ,Yellow, White};
 
-
 class Menu{
 public:
 	Menu(std::string menu_name, std::string exit_name);

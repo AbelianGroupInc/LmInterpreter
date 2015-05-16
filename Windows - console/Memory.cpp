@@ -37,5 +37,5 @@ std::string Memory::get_name(int position)const{
 
 void Memory::check(int position)const{
 	if (position < 0 || position > SIZE_OF_MEMORY)
-		throw std::exception("Error: Wrong address");
+		throw std::exception("Wrong address");
 }

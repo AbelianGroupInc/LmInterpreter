@@ -59,7 +59,7 @@ void Menu::show_menu(){
 			}
 		}
 
-		//try{
+		try{
 			if (key == KEY_ENTER){
 				if (this->pointer == this->items.size() - 1){
 					return;
@@ -69,12 +69,12 @@ void Menu::show_menu(){
 					this->items.at(this->pointer).func();
 				}
 			}
-		//}
-		//catch (std::exception& exp){
-		//	system("cls");
-		//	std::cout << "Error: " << exp.what() << std::endl;
-		//	system("PAUSE");
-		//}
+		}
+		catch (std::exception& exp){
+			system("cls");
+			std::cout << "Error: " << exp.what() << std::endl;
+			system("PAUSE");
+		}
 	}
 }
 

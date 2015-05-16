@@ -59,15 +59,22 @@ void Menu::show_menu(){
 			}
 		}
 
-		if (key == KEY_ENTER){
-			if (this->pointer == this->items.size() - 1){
-				return;
+		//try{
+			if (key == KEY_ENTER){
+				if (this->pointer == this->items.size() - 1){
+					return;
+				}
+				else if (!this->items.at(this->pointer).lock){
+					system("cls");
+					this->items.at(this->pointer).func();
+				}
 			}
-			else if (!this->items.at(this->pointer).lock){
-				system("cls");
-				this->items.at(this->pointer).func();
-			}
-		}
+		//}
+		//catch (std::exception& exp){
+		//	system("cls");
+		//	std::cout << "Error: " << exp.what() << std::endl;
+		//	system("PAUSE");
+		//}
 	}
 }
 

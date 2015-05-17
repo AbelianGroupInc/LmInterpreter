@@ -10,6 +10,9 @@ Memory::Memory(){
 
 MemoryItem* Memory::get(int position){
 	this->check(position);
+	
+	if (this->memory[position].get() == nullptr)
+		throw std::out_of_range("Break the sequence of addresses");
 
 	return this->memory[position].get();
 }

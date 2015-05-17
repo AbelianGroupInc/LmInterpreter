@@ -21,6 +21,8 @@ private:
 	Memory ram_memory;
 	std::unordered_map<int, int> cpu_memory;
 
+	void setCellCheck(bool, int, const std::vector<std::vector<int> > &, int);
+
 	int perfom_commands();
 
 	int get_r1_register();

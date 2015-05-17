@@ -2,6 +2,7 @@
 #include "LmCommands.h"
 #include "Lm1ShortCommand.h"
 #include "Lm1LongCommand.h"
+#include "InterpreterException.h"
 
 const int
 	MAX_CPU_MEMORY_SIZE = 15,
@@ -127,7 +128,7 @@ int Lm1::perfom_commands(){
 		return CMD_RR_STOP;
 		break;
 	default:
-		std::exception("Error: Command: incorrect command");
+		std::exception("Command: incorrect command");
 		break;
 	}
 	
@@ -163,8 +164,9 @@ bool Lm1::is_command_long(int command){
 }
 
 void Lm1::set_program(const std::vector<std::vector<int> > &program){
+	bool end = false;
 	if (program.size() == 0)
-		return;
+		throw std::exception("Lost end of program");
 
 	if (program.front().front() >= 0 && program.front().front() <= MAX_RAM_MEMORY_SIZE)
 		this->current_address = program.front().front();
@@ -172,22 +174,40 @@ void Lm1::set_program(const std::vector<std::vector<int> > &program){
 	for (size_t i = 0; i < program.size(); i++){
 		int cur_command_adress = program[i][0];
 		int cur_command_numb = program[i][1];
-		if (cur_command_adress >= 0){		
+		if (cur_command_adress >= 0 && (cur_command_adress) <= MAX_RAM_MEMORY_SIZE &&
+			ram_memory.get(cur_command_adress) == nullptr){
 			if (this->is_command_long(cur_command_numb)){
-				if ((cur_command_adress + 1) > MAX_RAM_MEMORY_SIZE)
-					throw std::exception("Error: Memory: out of range");
-				if (this->ram_memory.get(cur_command_adress + 1) != nullptr)
-					throw std::exception("Error: Command : incorrect command");
+				if ((cur_command_adress + 1) > MAX_RAM_MEMORY_SIZE || ram_memory.get(cur_command_adress + 1) != nullptr)
+					throw std::out_of_range("Out of Memory");
+				try{
+					Lm1LongCommand* firstCommandB = new Lm1LongCommand(program[i][1], program[i][2], program[i][3], program[i][4]);
+					Lm1LongCommand* secondCommandB = new Lm1LongCommand(program[i][1], program[i][2], program[i][3], program[i][4]);
+					this->ram_memory.set(cur_command_adress, firstCommandB);
+					this->ram_memory.set(cur_command_adress + 1, secondCommandB);
 
-				this->ram_memory.set(cur_command_adress, new Lm1LongCommand(program[i][1], program[i][2], program[i][3], program[i][4]));
-				this->ram_memory.set(cur_command_adress + 1, new Lm1LongCommand(program[i][1], program[i][2], program[i][3], program[i][4]));
+				}
+				catch (std::exception& exp){
+					char* temp = new char[strlen(exp.what()) + 1];
+					strcpy(temp, exp.what());
+					throw InterpreterException(temp, i + 1);
+				}
 			}
-			else
+			else{
+				if ((cur_command_adress + 1) > MAX_RAM_MEMORY_SIZE)
+					throw std::out_of_range("Out of Memory");
+
 				this->ram_memory.set(cur_command_adress, new Lm1ShortCommand(program[i][1], program[i][2], program[i][3]));
+
+				if (this->ram_memory.get(cur_command_adress)->get_value() == CMD_RR_STOP)
+					end = true;
+			}
 		}
 		else
-			throw std::exception("Error: Command : incorrect command");
+			throw std::out_of_range("Out of Memory");
 	}
+
+	if (!end)
+		throw std::exception("Lost end of program");
 }
 
 std::vector<std::vector<int> > Lm1::get_program()const{

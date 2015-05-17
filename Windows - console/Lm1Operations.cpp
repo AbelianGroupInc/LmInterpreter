@@ -2,6 +2,7 @@
 #include "Variable.h"
 #include "Converter.h"
 #include "LmCommands.h"
+#include "InterpreterException.h"
 
 const int 
 	MAX_CPU_MEMORY_SIZE = 16,
@@ -83,14 +84,15 @@ void Lm1::perform_comparison_operation(int command){
 }
 
 void Lm1::perform_input_operation(void(*func)(MemoryItem*&, const std::string)){
-	MemoryItem* var = new Variable();
+	MemoryItem* var1 = new Variable();
 
 	if (this->get_second_operand_adress(COMMAND_IS_LONG) + 1 >= MAX_RAM_MEMORY_SIZE)
-		throw std::exception();
+		throw std::out_of_range("Out of Memory");
 
-	func(var, this->ram_memory.get_name(this->get_second_operand_adress(COMMAND_IS_LONG)));
-	this->ram_memory.set(this->get_second_operand_adress(COMMAND_IS_LONG), var);
-	this->ram_memory.set(this->get_second_operand_adress(COMMAND_IS_LONG) + 1, var);
+	func(var1, this->ram_memory.get_name(this->get_second_operand_adress(COMMAND_IS_LONG)));
+	MemoryItem* var2 = new Variable(var1->get_value());
+	this->ram_memory.set(this->get_second_operand_adress(COMMAND_IS_LONG), var1);
+	this->ram_memory.set(this->get_second_operand_adress(COMMAND_IS_LONG) + 1, var2);
 
 	go_to_next_command(COMMAND_IS_LONG);
 }
@@ -120,7 +122,7 @@ void Lm1::perform_division_operation(MemoryItem* (*division_func)(const MemoryIt
 	MemoryItem* var_2 = new Variable(this->get_second_operand_value(COMMAND_IS_LONG));
 
 	if (this->get_cpu_value(this->get_first_operand_adress() + 1) != INT_MAX)
-		throw std::exception("Error: Memory: out of range");
+		throw std::out_of_range("Out of Memory");
 
 	this->cpu_memory[this->get_first_operand_adress()] = division_func(var_1, var_2)->get_value();
 	this->cpu_memory[this->get_first_operand_adress() + 1] = module_func(var_1, var_2)->get_value();

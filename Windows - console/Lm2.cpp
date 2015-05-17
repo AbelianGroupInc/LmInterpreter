@@ -2,6 +2,7 @@
 #include "Lm2Command.h"
 #include "Variable.h"
 #include "LmCommands.h"
+#include "InterpreterException.h"
 #include "Converter.h"
 
 const int MAX_MEMORY_SIZE = 65535;
@@ -127,19 +128,37 @@ void Lm2::init_variable(int position, std::string name, int value){
 }
 
 void Lm2::set_program(const std::vector<std::vector<int> > &program){
+	bool end = false;
 	if (program.size() == 0)
-		return;
+		throw std::exception("Lost end of program");
 
 	if (program.front().front() >= 0 && program.front().front() <= MAX_MEMORY_SIZE)
 		this->current_address=program.front().front();
 
 	for (size_t i = 0; i < program.size(); i++){
-		if (program[i].front() >= 0 && program[i].front()<= MAX_MEMORY_SIZE)
-			this->memory.set(program[i].front(), new Lm2Command(program[i][1], program[i][2], program[i][3]));
-		else
-			throw std::out_of_range("Out of Memory");
+		if (program[i].front() >= 0 && program[i].front() <= MAX_MEMORY_SIZE){
+			try{
+				this->memory.set(program[i].front(), new Lm2Command(program[i][1], program[i][2], program[i][3]));
+				
+					if (this->memory.get(program[i].front())->get_value() == CMD_STOP)
+					 end = true;
+				
+			}
+			catch (std::exception& exp){
+				char* temp = new char[strlen(exp.what()) + 1];
+				strcpy(temp, exp.what());
+				throw InterpreterException(temp, i + 1);
+			}
 
+		}
+		else{
+			throw std::out_of_range("Out of Memory");
+		}
 	}
+	
+		if (!end)
+		  throw std::exception("Lost end of program");
+
 }
 
 std::vector<std::vector<int> > Lm2::get_program()const{

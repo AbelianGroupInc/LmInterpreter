@@ -6,8 +6,8 @@
 
 class MemoryItem{
 public:
-	virtual std::vector<int>& get() = 0;
-	virtual int get_value()const = 0;
+	virtual std::vector<int>& get() _NOEXCEPT = 0;
+	virtual int get_value()const _NOEXCEPT = 0;
 };
 
 #endif

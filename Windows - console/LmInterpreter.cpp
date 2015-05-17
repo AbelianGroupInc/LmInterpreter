@@ -13,27 +13,33 @@ LmInterpreter::LmInterpreter(Lm* machine) :machine(machine), program(){
 }
 
 void LmInterpreter::read_program(){
-	this->parsing_code_string(&std::cin);
+	this->parsing(&std::cin);
 }
 
 void LmInterpreter::read_program(const char* file_name){
 	std::ifstream input_file(file_name);
-	std::string temp_str;
+	
 
 	if (!input_file.good())
 		throw std::exception("Can't open file");
 
-	while (getline(input_file, temp_str)){
+	this->parsing(&input_file);
+
+	input_file.close();
+}
+
+void LmInterpreter::parsing(std::istream* input){
+	std::string temp_str;
+
+	while (getline(*input, temp_str)){
 		if (temp_str == "#code"){
-			this->parsing_code_string(&input_file);
+			this->parsing_code_string(input);
 			break;
 		}
 
 		if (temp_str == "#init")
-			this->parsing_init_string(&input_file);
+			this->parsing_init_string(input);
 	}
-
-	input_file.close();
 }
 
 void LmInterpreter::parsing_code_string(std::istream* input){
@@ -84,6 +90,9 @@ void LmInterpreter::parsing_init_string(std::istream* input){
 		address = this->init_address(temp_str, index);
 
 		for (; index < (int)temp_str.size(); index++){
+			if (temp_str[index] == ';')
+				break;
+
 			if (temp_str[index] == '\"')
 				this->init_name(temp_str, address, index);
 			else if (temp_str[index] != ' '  && temp_str[index] != '\t')
@@ -128,7 +137,7 @@ void LmInterpreter::init_value(std::string &str, int address, int &index){
 	std::string value;
 
 	for (; index <= (int)str.size(); index++){
-		if (index == str.size() || str[index] == ' ' || str[index] == '\t'){
+		if (index == str.size() || str[index] == ' ' || str[index] == '\t' || str[index] == ';'){
 			if (!value.empty()){
 				this->machine->init_variable(address, Converter::to_dec(value));
 				return;

@@ -9,6 +9,7 @@
 class LmInterpreter{
 public:
 	LmInterpreter(Lm* machine);
+	~LmInterpreter();
 
 	void read_program();
 	void read_program(const char* file_name);
@@ -19,6 +20,7 @@ public:
 private:
 	Lm* machine;
 	std::vector<std::vector<int> > program;
+	std::ostream *temp_file;
 
 	void parsing(std::istream* input);
 	void parsing_code_string(std::istream* input);

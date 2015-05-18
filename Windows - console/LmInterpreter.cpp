@@ -12,6 +12,10 @@ LmInterpreter::LmInterpreter(Lm* machine) :machine(machine), program(){
 		throw std::invalid_argument("Miss machine");
 }
 
+LmInterpreter::~LmInterpreter(){
+	remove("temp.dat");
+}
+
 void LmInterpreter::read_program(){
 	this->parsing(&std::cin);
 }
@@ -19,7 +23,6 @@ void LmInterpreter::read_program(){
 void LmInterpreter::read_program(const char* file_name){
 	std::ifstream input_file(file_name);
 	
-
 	if (!input_file.good())
 		throw std::exception("Can't open file");
 
@@ -31,7 +34,12 @@ void LmInterpreter::read_program(const char* file_name){
 void LmInterpreter::parsing(std::istream* input){
 	std::string temp_str;
 
+	std::ofstream tmp("temp.dat");
+	this->temp_file = &tmp;
+
 	while (getline(*input, temp_str)){
+		(*temp_file) << temp_str << std::endl;
+
 		if (temp_str == "#code"){
 			this->parsing_code_string(input);
 			break;
@@ -47,6 +55,8 @@ void LmInterpreter::parsing_code_string(std::istream* input){
 	std::vector<int> temp_arr;
 
 	while (getline(*input, temp_str)){
+		(*temp_file) << temp_str << std::endl;
+
 		if (temp_str == "#end")
 			return;
 
@@ -78,6 +88,8 @@ void LmInterpreter::parsing_init_string(std::istream* input){
 	std::string temp_str;
 
 	while (getline(*input, temp_str)){
+		(*temp_file) << temp_str << std::endl;
+
 		int index(0);
 		int address;
 
@@ -156,21 +168,17 @@ void LmInterpreter::run_program(){
 
 void LmInterpreter::save_programm(const char* file_name)const{
 	std::string temp(file_name);
+	std::string temp_str;
 
 	if (temp.find(".txt") == -1)
 		temp += ".txt";
 
 	std::ofstream output_file(temp.c_str());
+	std::ifstream tmp_file("temp.dat");
 
-	for (size_t i = 0; i < this->program.size(); i++){
-		for (size_t k = 0; k < this->program[i].size(); k++){
-			if (k == 1)
-				output_file << Converter::to_hex(this->program[i][k], 2) << ' ';
-			else
-				output_file << Converter::to_hex(this->program[i][k], 4) << ' ';
-		}
-		std::endl(output_file);
-	}
+	while (getline(tmp_file, temp_str))
+		output_file << temp_str << std::endl;
 
+	tmp_file.close(); 
 	output_file.close();
 }

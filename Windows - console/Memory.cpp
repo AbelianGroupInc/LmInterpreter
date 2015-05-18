@@ -4,6 +4,10 @@
 const int SIZE_OF_MEMORY(65535);
 
 Memory::Memory(){
+	this->clear();
+}
+
+void Memory::clear(){
 	for (int i = 0; i < SIZE_OF_MEMORY; i++)
 		this->memory[i] = nullptr;
 }

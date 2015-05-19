@@ -14,6 +14,10 @@ Menu::Menu(std::string menu_name, std::string exit_name) :name(menu_name), exit_
 	this->push_back(exit_name, [](){}, false);
 }
 
+Menu::Menu(std::string menu_name, std::string exit_name, std::function<void()> exit_func) : name(menu_name), exit_name(exit_name), pointer(0){
+	this->push_back(exit_name, exit_func, false);
+}
+
 void Menu::push_front(std::string name, std::function<void()> func, bool lock){
 	this->items.push_front(MenuItem(name, func, lock));
 }
@@ -23,6 +27,24 @@ void Menu::push_back(std::string name, std::function<void()> func, bool lock){
 
 	if (this->items.size() > 1)
 		std::swap(this->items[this->items.size() - 1], this->items[this->items.size() - 2]);
+}
+
+void Menu::push(std::string name, std::function<void()> func, bool lock, size_t position){
+	if (position < this->items.size())
+		throw std::out_of_range("Wrong position");
+
+	this->items.insert(std::begin(this->items) + position, MenuItem(name, func, lock));
+}
+
+void Menu::set_exit_func(std::function<void()> func){
+	this->items[this->items.size() - 1].func = func;
+}
+
+void Menu::remove(size_t position){
+	if (position < this->items.size())
+		throw std::out_of_range("Wrong position");
+
+	this->items.erase(std::begin(this->items) + position);
 }
 
 void Menu::lock_item(size_t position){
@@ -61,13 +83,13 @@ void Menu::show_menu(){
 
 		try{
 			if (key == KEY_ENTER){
-				if (this->pointer == this->items.size() - 1){
-					return;
-				}
-				else if (!this->items.at(this->pointer).lock){
+				if (!this->items.at(this->pointer).lock){
 					system("cls");
 					this->items.at(this->pointer).func();
 				}
+
+				if (this->pointer == this->items.size() - 1)
+					return;
 			}
 		}
 		catch (std::exception& exp){

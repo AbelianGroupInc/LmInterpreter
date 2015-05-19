@@ -12,6 +12,7 @@ public:
 	virtual void init_variable(int position, std::string name) = 0;
 	virtual void init_variable(int position, int value) = 0;
 	virtual void init_variable(int position, std::string name, int value) = 0;
+	virtual void clear_memory() = 0;
 };
 
 #endif

@@ -113,6 +113,10 @@ void Lm3::execute_the_program(){
 	}
 }
 
+void Lm3::clear_memory(){
+	this->memory.clear();
+}
+
 void Lm3::init_variable(int position, std::string name){
 	this->memory.set_name(position, name);
 }

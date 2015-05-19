@@ -114,6 +114,10 @@ void Lm2::execute_the_program(){
 	}
 }
 
+void Lm2::clear_memory(){
+	this->memory.clear();
+}
+
 void Lm2::init_variable(int position, std::string name){
 	this->memory.set_name(position, name);
 }

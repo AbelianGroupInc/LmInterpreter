@@ -32,6 +32,9 @@ void LmInterpreter::read_program(const char* file_name){
 }
 
 void LmInterpreter::parsing(std::istream* input){
+	this->machine->clear_memory();
+	this->program.clear();
+
 	std::string temp_str;
 
 	std::ofstream tmp("temp.dat");

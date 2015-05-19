@@ -16,6 +16,7 @@ public:
 	virtual void init_variable(int position, std::string name)override final;
 	virtual void init_variable(int position, int value)override final;
 	virtual void init_variable(int position, std::string name, int value)override final;
+	virtual void clear_memory()override final;
 private:
 	int current_address;
 	Memory memory;

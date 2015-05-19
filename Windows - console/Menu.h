@@ -14,9 +14,14 @@ enum Console—olor{Black, Blue, Green ,Cyan ,Red ,Magenta ,Brown ,LightGray ,Dark
 class Menu{
 public:
 	Menu(std::string menu_name, std::string exit_name);
+	Menu(std::string menu_name, std::string exit_name, std::function<void()> exit_func);
 
 	void push_front(std::string name, std::function<void()> func, bool lock);
 	void push_back(std::string name, std::function<void()> func, bool lock);
+	void push(std::string name, std::function<void()> func, bool lock, size_t position);
+	void set_exit_func(std::function<void()> func);
+
+	void remove(size_t position);
 
 	void lock_item(size_t position);
 	void unlock_item(size_t position);

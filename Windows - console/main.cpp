@@ -81,6 +81,10 @@ int main(){
 		main_menu.show_menu();
 	}, false);
 
+	lm.push_back("Developers", []{
+		std::cout << "Developers:\n\tArtem Grigoryann\n\tAlexey Bandura\n\tAndrew Eremeev\n\tVitaliy Bondarenko" << std::endl;
+		system("PAUSE");
+	}, false);
 	lm.show_menu();
 
 	return 0;

@@ -13,6 +13,7 @@ public:
 
 	MemoryItem* get(int position);
 	void set(int position, MemoryItem* item);
+	void clear();
 
 	void set_name(int position,std::string name);
 	std::string get_name(int position)const;

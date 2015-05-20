@@ -10,12 +10,13 @@
 class Lm3 : public Lm{
 public:
 	Lm3() :current_address(0), memory(){}
-	virtual void execute_the_program();
-	virtual void set_program(const std::vector<std::vector<int> > &program);
-	virtual std::vector<std::vector<int> > get_program()const;
-	virtual void init_variable(int position, std::string name);
-	virtual void init_variable(int position, int value);
-	virtual void init_variable(int position, std::string name, int value);
+	virtual void execute_the_program()override final;
+	virtual void set_program(const std::vector<std::vector<int> > &program)override final;
+	virtual std::vector<std::vector<int> > get_program()const override final;
+	virtual void init_variable(int position, std::string name)override final;
+	virtual void init_variable(int position, int value)override final;
+	virtual void init_variable(int position, std::string name, int value)override final;
+	virtual void clear_memory()override final;
 private:
 	int current_address;
 	Memory memory;

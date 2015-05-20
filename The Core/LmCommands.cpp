@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <math.h>
+#include <cctype>
+#include <stdexcept>
 
 #include "LmCommands.h"
 #include "Variable.h"
@@ -9,6 +11,14 @@ void LmCommands::input(MemoryItem* &variable, const std::string name){
 	int value;
 	std::cout << "Enter " << name << ": ";
 	std::cin >> value;
+	
+	if (std::cin.fail() ){
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		
+		throw std::invalid_argument("Wrong symbol");
+	}
+			
 	variable = new Variable(value);
 }
 

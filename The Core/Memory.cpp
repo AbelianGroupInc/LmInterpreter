@@ -4,12 +4,19 @@
 const int SIZE_OF_MEMORY(65535);
 
 Memory::Memory(){
+	this->clear();
+}
+
+void Memory::clear(){
 	for (int i = 0; i < SIZE_OF_MEMORY; i++)
 		this->memory[i] = nullptr;
 }
 
 MemoryItem* Memory::get(int position){
 	this->check(position);
+	
+	if (this->memory[position].get() == nullptr)
+		throw std::out_of_range("Break the sequence of addresses");
 
 	return this->memory[position].get();
 }
@@ -37,5 +44,5 @@ std::string Memory::get_name(int position)const{
 
 void Memory::check(int position)const{
 	if (position < 0 || position > SIZE_OF_MEMORY)
-		throw std::exception("Error: Wrong address");
+		throw std::exception("Wrong address");
 }

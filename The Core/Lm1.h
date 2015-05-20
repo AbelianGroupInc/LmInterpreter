@@ -16,10 +16,13 @@ public:
 	virtual void init_variable(int position, std::string name);
 	virtual void init_variable(int position, int value);
 	virtual void init_variable(int position, std::string name, int value);
+	virtual void clear_memory()override final;
 private:
 	int current_address;
 	Memory ram_memory;
 	std::unordered_map<int, int> cpu_memory;
+
+	void setCellCheck(bool, int, const std::vector<std::vector<int> > &, int);
 
 	int perfom_commands();
 

@@ -1,8 +1,11 @@
+#include <string.h>
+
 #include "Lm3.h"
 #include "Lm3Command.h"
 #include "Variable.h"
 #include "LmCommands.h"
 #include "Converter.h"
+#include "InterpreterException.h"
 
 const int MAX_MEMORY_SIZE = 65535;
 const int
@@ -110,6 +113,10 @@ void Lm3::execute_the_program(){
 	}
 }
 
+void Lm3::clear_memory(){
+	this->memory.clear();
+}
+
 void Lm3::init_variable(int position, std::string name){
 	this->memory.set_name(position, name);
 }
@@ -124,18 +131,35 @@ void Lm3::init_variable(int position, std::string name, int value){
 }
 
 void Lm3::set_program(const std::vector<std::vector<int> > &program){
+	bool end = false;
 	if (program.size() == 0)
-		return;
+		throw std::exception("Lost end of program");
 
 	if (program.front().front() >= 0 && program.front().front() <= MAX_MEMORY_SIZE)
 		this->current_address=program.front().front();
 
 	for (size_t i = 0; i < program.size(); i++){
-		if (program[i].front() >= 0 && program[i].front() >= 0)
-			this->memory.set(program[i].front(), new Lm3Command(program[i][1], program[i][2], program[i][3], program[i][4]));
-		else
-			throw std::exception();
+		if (program[i].front() >= 0 && program[i].front() <= MAX_MEMORY_SIZE){
+			try{
+				this->memory.set(program[i].front(), new Lm3Command(program[i][1], program[i][2], program[i][3], program[i][4]));
+
+				if (this->memory.get(program[i].front())->get_value() == CMD_STOP)
+					end = true;
+			}
+			catch(std::exception& exp){
+				char* temp = new char[strlen(exp.what()) + 1];
+				strcpy(temp, exp.what());
+				throw InterpreterException(temp, i + 1);
+			}
+			
+		}
+		else{
+			throw std::out_of_range("Out of Memory");
+		}
 	}
+
+	if (!end)
+		throw std::exception("Lost end of program");
 }
 
 std::vector<std::vector<int> > Lm3::get_program()const{
@@ -200,20 +224,20 @@ void Lm3::perform_division_operation(MemoryItem* (*division_func)(const MemoryIt
 
 int Lm3::get_value_operand(int position_in_memory, int number_of_operands){
 	if (position_in_memory < 0 || position_in_memory > MAX_MEMORY_SIZE)
-		throw std::exception();
+		throw std::out_of_range("Wrong position in memory");
 
 	if (number_of_operands < 0 || number_of_operands > 3)
-		throw std::exception();
+		throw std::length_error("Invalid numbers of operands!");
 
 	return this->memory.get(this->memory.get(position_in_memory)->get().at(number_of_operands))->get_value();
 }
 
 int Lm3::get_address_operand(int position_in_memory, int number_of_operands){
 	if (position_in_memory < 0 || position_in_memory > MAX_MEMORY_SIZE)
-		throw std::exception();
+		throw std::out_of_range("Wrong position in memory");
 
 	if (number_of_operands < 0 || number_of_operands > 3)
-		throw std::exception();
+		throw std::length_error("Invalid numbers of operands!");
 
 	return this->memory.get(position_in_memory)->get().at(number_of_operands);
 }

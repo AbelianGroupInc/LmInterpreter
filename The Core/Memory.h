@@ -14,9 +14,11 @@ public:
 	MemoryItem* get(int position);
 	void set(int position, MemoryItem* item);
 	void clear();
-
+	bool is_memory_cell_empty(int position);
 	void set_name(int position,std::string name);
 	std::string get_name(int position)const;
+
+	
 private:
 	std::unordered_map<int,std::shared_ptr<MemoryItem> > memory;
 	std::unordered_map<int, std::string> names;

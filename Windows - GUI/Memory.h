@@ -17,6 +17,9 @@ public:
 
 	void set_name(int position,std::string name);
 	std::string get_name(int position)const;
+
+	std::vector<std::string> get_var_inf();
+	std::vector<std::string> get_cmd_inf();
 private:
 	std::unordered_map<int,std::shared_ptr<MemoryItem> > memory;
 	std::unordered_map<int, std::string> names;

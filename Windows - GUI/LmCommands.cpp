@@ -7,34 +7,17 @@
 #include "LmCommands.h"
 #include "Variable.h"
 
-void LmCommands::input(MemoryItem* &variable, const std::string name){
-	int value;
-	std::cout << "Enter " << name << ": ";
-	std::cin >> value;
-	
-	if (std::cin.fail() ){
-		std::cin.clear();
-		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		
-		throw std::invalid_argument("Wrong symbol");
-	}
-			
-	variable = new Variable(value);
+
+void LmCommands::output(System::Windows::Forms::RichTextBox^ out, const MemoryItem* variable, const std::string name){
+	System::String^ temp = gcnew System::String(name.c_str());
+	temp += ": " + variable->get_value().ToString() + "\n";
+	out->Text += temp;
 }
 
-void LmCommands::output(const MemoryItem* variable, const std::string name){
-	std::cout << name << ": " << variable->get_value() << std::endl;
-}
-
-void LmCommands::unsigned_input(MemoryItem* &variable, const std::string name){
-	int value;
-	std::cout << "Enter " << name << ": ";
-	std::cin >> value;
-	variable = new Variable(abs(value));
-}
-
-void LmCommands::unsigned_output(const MemoryItem* variable, const std::string name){
-	std::cout << name << ": " << abs(variable->get_value()) << std::endl;
+void LmCommands::unsigned_output(System::Windows::Forms::RichTextBox^ out, const MemoryItem* variable, const std::string name){
+	System::String^ temp = gcnew System::String(name.c_str());
+	temp += ": " + abs(variable->get_value()).ToString() + "\n";
+	out->Text += temp;
 }
 
 MemoryItem* LmCommands::add(const MemoryItem* variable_1, const MemoryItem* variable_2){

@@ -3,6 +3,7 @@
 #include <queue>
 #include <string>
 #include <fstream>
+#include <vcclr.h>
 #include <ios>
 
 #include "Converter.h"
@@ -12,16 +13,24 @@ LmInterpreter::LmInterpreter(Lm* machine) :machine(machine), program(){
 		throw std::invalid_argument("Miss machine");
 }
 
-LmInterpreter::~LmInterpreter(){
-	remove("temp.dat");
+std::vector<std::string>  LmInterpreter::get_var_inf(){
+	return this->machine->get_var_inf();
 }
 
-void LmInterpreter::read_program(){
-	this->parsing(&std::cin);
+std::vector<std::string>  LmInterpreter::get_cmd_inf(){
+	return this->machine->get_cmd_inf();
 }
 
-void LmInterpreter::read_program(const char* file_name){
-	std::ifstream input_file(file_name);
+void LmInterpreter::input(int value){
+	this->machine->input(value);
+}
+
+std::string LmInterpreter::current_command(){
+	return this->machine->current_command();
+}
+
+void LmInterpreter::read_program(System::String^ file_name){
+	std::ifstream input_file(sstring_to_wchar(file_name));
 	
 	if (!input_file.good())
 		throw std::exception("Can't open file");
@@ -37,12 +46,7 @@ void LmInterpreter::parsing(std::istream* input){
 
 	std::string temp_str;
 
-	std::ofstream tmp("temp.dat");
-	this->temp_file = &tmp;
-
 	while (getline(*input, temp_str)){
-		(*temp_file) << temp_str << std::endl;
-
 		if (temp_str == "#code"){
 			this->parsing_code_string(input);
 			break;
@@ -58,8 +62,6 @@ void LmInterpreter::parsing_code_string(std::istream* input){
 	std::vector<int> temp_arr;
 
 	while (getline(*input, temp_str)){
-		(*temp_file) << temp_str << std::endl;
-
 		if (temp_str == "#end")
 			return;
 
@@ -91,8 +93,6 @@ void LmInterpreter::parsing_init_string(std::istream* input){
 	std::string temp_str;
 
 	while (getline(*input, temp_str)){
-		(*temp_file) << temp_str << std::endl;
-
 		int index(0);
 		int address;
 
@@ -164,24 +164,19 @@ void LmInterpreter::init_value(std::string &str, int address, int &index){
 	}
 }
 
-void LmInterpreter::run_program(){
+void LmInterpreter::init_program(){
 	this->machine->set_program(this->program);
-	this->machine->execute_the_program();
 }
 
-void LmInterpreter::save_programm(const char* file_name)const{
-	std::string temp(file_name);
-	std::string temp_str;
+void LmInterpreter::step(System::Windows::Forms::RichTextBox^ out){
+	this->machine->do_one_step(out);
+}
 
-	if (temp.find(".txt") == -1)
-		temp += ".txt";
+bool LmInterpreter::is_end(){
+	return this->machine->is_end();
+}
 
-	std::ofstream output_file(temp.c_str());
-	std::ifstream tmp_file("temp.dat");
-
-	while (getline(tmp_file, temp_str))
-		output_file << temp_str << std::endl;
-
-	tmp_file.close(); 
-	output_file.close();
+const wchar_t * LmInterpreter::sstring_to_wchar(System::String^ str){
+	pin_ptr<const wchar_t> convertedValue = PtrToStringChars(str);
+	return convertedValue;
 }

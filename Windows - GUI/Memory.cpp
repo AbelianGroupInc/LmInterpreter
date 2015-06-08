@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "Memory.h"
 #include "Converter.h"
 
@@ -5,6 +7,54 @@ const int SIZE_OF_MEMORY(65535);
 
 Memory::Memory(){
 	this->clear();
+}
+
+std::vector<std::string> Memory::get_var_inf(){
+	std::vector<std::string> answer;
+
+	for (std::unordered_map<int, std::shared_ptr<MemoryItem> >::iterator itr = this->memory.begin();
+		itr != this->memory.end(); itr++){
+
+		if (itr->second && itr->second->get().size() == 1){
+			std::ostringstream out;
+			out << Converter::to_hex(itr->first, 4);
+
+			if (this->names.find(itr->first) != this->names.end())
+				out << " (" << this->get_name(itr->first) << ")";
+
+			out << " = " << itr->second->get_value();
+			answer.push_back(out.str());
+		}
+	}
+
+	return answer;
+}
+
+std::vector<std::string> Memory::get_cmd_inf(){
+	std::vector<std::string> answer;
+
+	for (std::unordered_map<int, std::shared_ptr<MemoryItem> >::iterator itr = this->memory.begin();
+		itr != this->memory.end(); itr++){
+
+		if (itr->second && itr->second->get().size() > 1){
+			std::ostringstream out;
+			out << Converter::to_hex(itr->first, 4);
+
+			if (this->names.find(itr->first) != this->names.end())
+				out << " (" << this->get_name(itr->first) << ")";
+
+			out << " = ";
+
+			std::vector<int> cmd = itr->second->get();
+
+			for (int k = 0; k < cmd.size(); k++)
+				out << Converter::to_hex(cmd[k]) << ' ';
+
+			answer.push_back(out.str());
+		}
+	}
+
+	return answer;
 }
 
 void Memory::clear(){

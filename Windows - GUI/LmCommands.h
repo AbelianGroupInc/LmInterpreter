@@ -5,11 +5,8 @@
 #include "MemoryItem.h"
 
 namespace LmCommands{
-	void input(MemoryItem* &variable, const std::string name);
-	void output(const MemoryItem* variable, const std::string name);
-
-	void unsigned_input(MemoryItem* &variable, const std::string name);
-	void unsigned_output(const MemoryItem* variable, const std::string name);
+	void output(System::Windows::Forms::RichTextBox^ out, const MemoryItem* variable, const std::string name);
+	void unsigned_output(System::Windows::Forms::RichTextBox^ out, const MemoryItem* variable, const std::string name);
 
 	MemoryItem* add(const MemoryItem* variable_1, const MemoryItem* variable_2);
 	MemoryItem* subsract(const MemoryItem* variable_1, const MemoryItem* variable_2);

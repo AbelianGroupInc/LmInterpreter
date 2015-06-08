@@ -6,8 +6,13 @@
 
 class Lm{
 public:
-	virtual void execute_the_program() = 0;
+	virtual void do_one_step(System::Windows::Forms::RichTextBox^ out) = 0;
+	virtual bool is_end() = 0;
+	virtual void input(int value) = 0;
+	virtual std::string current_command() = 0;
 	virtual void set_program(const std::vector<std::vector<int> > &program) = 0;
+	virtual std::vector<std::string> get_var_inf() = 0;
+	virtual std::vector<std::string> get_cmd_inf() = 0;
 	virtual std::vector<std::vector<int> > get_program()const = 0;
 	virtual void init_variable(int position, std::string name) = 0;
 	virtual void init_variable(int position, int value) = 0;

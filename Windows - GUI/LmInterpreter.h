@@ -11,16 +11,20 @@ public:
 	LmInterpreter(Lm* machine);
 	~LmInterpreter();
 
-	void read_program();
-	void read_program(const char* file_name);
-	
-	void run_program();
+	void read_program(System::String^ file_name);
+	void LmInterpreter::input(int value);
+	std::string current_command();
 
-	void save_programm(const char* file_name)const;
+	std::vector<std::string> get_var_inf();
+	std::vector<std::string> get_cmd_inf();
+
+	void init_program();
+	void step(System::Windows::Forms::RichTextBox^ out);
+
+	bool is_end();
 private:
 	Lm* machine;
 	std::vector<std::vector<int> > program;
-	std::ostream *temp_file;
 
 	void parsing(std::istream* input);
 	void parsing_code_string(std::istream* input);
@@ -29,6 +33,7 @@ private:
 	int init_address(std::string &str, int &index);
 	void init_name(std::string &str, int address, int &index);
 	void init_value(std::string &str, int address, int &index);
+	const wchar_t * sstring_to_wchar(System::String^ str);
 };
 
 #endif

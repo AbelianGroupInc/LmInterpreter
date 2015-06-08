@@ -27,6 +27,11 @@ void Memory::set(int position, MemoryItem* item){
 	this->memory[position] = std::shared_ptr<MemoryItem>(item);
 }
 
+bool Memory::is_memory_cell_empty(int position){
+	this->check(position);
+	return this->memory[position].get() == nullptr;
+}
+
 void Memory::set_name(int position, std::string name){
 	this->check(position);
 

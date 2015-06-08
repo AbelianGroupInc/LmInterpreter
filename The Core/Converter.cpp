@@ -38,7 +38,7 @@ int Converter::Details::to_dec_system(const std::string &number, size_t k, size_
 }
 
 char Converter::Details::int_to_char(int number){
-	if (number > 36 || number < 1)
+	if (number > 36 || number < 0)
 		throw std::invalid_argument("Invalid numeral system");
 
 	return number > 9 ? number - 10 + 'A' : number + '0';

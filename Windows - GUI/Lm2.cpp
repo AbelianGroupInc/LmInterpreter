@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "Lm2.h"
 #include "Lm2Command.h"
 #include "Variable.h"
@@ -33,90 +35,113 @@ const int
 	CMD_STOP                      = 153;
 
 
-void Lm2::execute_the_program(){
-	while (true){
-		switch (this->memory.get(this->current_address)->get_value()){
-		case CMD_COMPARE:
-			this->perfom_flag_determination();
-			break;
-		case CMD_INPUT:
-			this->perform_input_operation(LmCommands::input);
-			break;
-		case CMD_OUTPUT:
-			this->perform_output_operation(LmCommands::output);
-			break;
-		case CMD_UNSIGNED_INPUT:
-			this->perform_input_operation(LmCommands::unsigned_input);
-			break;
-		case CMD_UNSIGNED_OUTPUT:
-			this->perform_output_operation(LmCommands::unsigned_output);
-			break;
-		case CMD_ADD:
-			this->perform_arithmetic_operation(LmCommands::add,CMD_ADD);
-			break;
-		case CMD_SUBSRACT:
-			this->perform_arithmetic_operation(LmCommands::subsract, CMD_SUBSRACT);
-			break;
-		case CMD_MULTIPLICATION:
-			this->perform_arithmetic_operation(LmCommands::multiplication,CMD_MULTIPLICATION);
-			break;
-		case CMD_DIVISION:
-			this->perform_arithmetic_operation(LmCommands::division,CMD_DIVISION);
-			break;
-		case CMD_UNSIGNED_MULTIPLICATION:
-			this->perform_arithmetic_operation(LmCommands::unsigned_multiplication,CMD_UNSIGNED_MULTIPLICATION);
-			break;
-		case CMD_UNSIGNED_DIVISION:
-			this->perform_arithmetic_operation(LmCommands::unsigned_division,CMD_UNSIGNED_DIVISION);
-			break;
-		case CMD_ASSIGMENT:
-			perform_assignment_operation();
-			break;
-		case CMD_GOTO:
-			this->perform_goto();
-			break;
-		case CMD_LESS:
-			this->perform_comparison_operation(flags::LESS);
-			break;
-		case CMD_GREATER:
-			this->perform_comparison_operation(flags::GREATER);
-			break;
-		case CMD_LESS_OR_EQUAL:
-			this->perform_comparison_operation(flags::LESS_OR_EQUAL);
-			break;
-		case CMD_GREATER_OR_EQUAL:
-			this->perform_comparison_operation(flags::GREATER_OR_EQUAL);
-			break;
-		case CMD_EQUAL:
-			this->perform_comparison_operation(flags::EQUAL);
-			break;
-		case CMD_NOT_EQUAL:
-			this->perform_comparison_operation(flags::N_EQUAL);
-			break;
-		case CMD_UNSIGNED_LESS:
-			this->perform_comparison_operation(flags::INS_LESS);
-			break;
-		case CMD_UNSIGNED_GREATER:
-			this->perform_comparison_operation(flags::INS_GREATER);
-			break;
-		case CMD_UNSIGNED_LESS_OR_EQUAL:
-			this->perform_comparison_operation(flags::INS_LESS_OR_EQUAL);
-			break;
-		case CMD_UNSIGNED_GREATER_OR_EQUAL:
-			this->perform_comparison_operation(flags::INS_GREATER_OR_EQUAL);
-			break;
-		case CMD_STOP:
-			return;
-			break;
-		default:
-			break;
-		}
+std::vector<std::string> Lm2::get_var_inf(){
+	return this->memory.get_var_inf();
+}
+
+std::vector<std::string> Lm2::get_cmd_inf(){
+	return this->memory.get_cmd_inf();
+}
+
+bool Lm2::is_end(){
+	return this->end_flag;
+}
+
+void Lm2::input(int value){
+	if (this->memory.get(this->current_address)->get_value() == CMD_INPUT)
+		this->perform_input_operation(value);
+}
+
+void Lm2::do_one_step(System::Windows::Forms::RichTextBox^ out){
+	if (this->end_flag)
+		throw std::out_of_range("Program end");
+
+	if (this->input_flag)
+		throw std::exception("The value is not received, enter please");
+
+	switch (this->memory.get(this->current_address)->get_value()){
+	case CMD_COMPARE:
+		this->perfom_flag_determination();
+		break;
+	case CMD_INPUT:
+		this->input_flag = true;
+		break;
+	case CMD_OUTPUT:
+		this->perform_output_operation(LmCommands::output, out);
+		break;
+	case CMD_UNSIGNED_INPUT:
+		this->input_flag = true;
+		break;
+	case CMD_UNSIGNED_OUTPUT:
+		this->perform_output_operation(LmCommands::unsigned_output, out);
+		break;
+	case CMD_ADD:
+		this->perform_arithmetic_operation(LmCommands::add, CMD_ADD);
+		break;
+	case CMD_SUBSRACT:
+		this->perform_arithmetic_operation(LmCommands::subsract, CMD_SUBSRACT);
+		break;
+	case CMD_MULTIPLICATION:
+		this->perform_arithmetic_operation(LmCommands::multiplication, CMD_MULTIPLICATION);
+		break;
+	case CMD_DIVISION:
+		this->perform_arithmetic_operation(LmCommands::division, CMD_DIVISION);
+		break;
+	case CMD_UNSIGNED_MULTIPLICATION:
+		this->perform_arithmetic_operation(LmCommands::unsigned_multiplication, CMD_UNSIGNED_MULTIPLICATION);
+		break;
+	case CMD_UNSIGNED_DIVISION:
+		this->perform_arithmetic_operation(LmCommands::unsigned_division, CMD_UNSIGNED_DIVISION);
+		break;
+	case CMD_ASSIGMENT:
+		perform_assignment_operation();
+		break;
+	case CMD_GOTO:
+		this->perform_goto();
+		break;
+	case CMD_LESS:
+		this->perform_comparison_operation(flags::LESS);
+		break;
+	case CMD_GREATER:
+		this->perform_comparison_operation(flags::GREATER);
+		break;
+	case CMD_LESS_OR_EQUAL:
+		this->perform_comparison_operation(flags::LESS_OR_EQUAL);
+		break;
+	case CMD_GREATER_OR_EQUAL:
+		this->perform_comparison_operation(flags::GREATER_OR_EQUAL);
+		break;
+	case CMD_EQUAL:
+		this->perform_comparison_operation(flags::EQUAL);
+		break;
+	case CMD_NOT_EQUAL:
+		this->perform_comparison_operation(flags::N_EQUAL);
+		break;
+	case CMD_UNSIGNED_LESS:
+		this->perform_comparison_operation(flags::INS_LESS);
+		break;
+	case CMD_UNSIGNED_GREATER:
+		this->perform_comparison_operation(flags::INS_GREATER);
+		break;
+	case CMD_UNSIGNED_LESS_OR_EQUAL:
+		this->perform_comparison_operation(flags::INS_LESS_OR_EQUAL);
+		break;
+	case CMD_UNSIGNED_GREATER_OR_EQUAL:
+		this->perform_comparison_operation(flags::INS_GREATER_OR_EQUAL);
+		break;
+	case CMD_STOP:
+		this->end_flag = true;
+		break;
+	default:
+		std::exception();
+		break;
 	}
 }
 
-void Lm2::clear_memory(){
-	this->memory.clear();
-}
+
+	void Lm2::clear_memory(){
+		this->memory.clear();
+	}
 
 void Lm2::init_variable(int position, std::string name){
 	this->memory.set_name(position, name);
@@ -205,19 +230,32 @@ void Lm2::perform_comparison_operation(flags flag){
 	this->current_address = cmp_op[flag] ? this->get_address_operand(this->current_address, 1) : this->current_address + 1;
 }
 
-void Lm2::perform_input_operation(void(*func)(MemoryItem*&, const std::string)){
-	MemoryItem* var = new Variable();
+void Lm2::perform_input_operation(int value){
+	MemoryItem* var = new Variable(value);
 
-	func(var, this->memory.get_name(this->get_address_operand(this->current_address, 1)));
 	this->memory.set(this->get_address_operand(this->current_address, 1), var);
 
+	this->input_flag = false;
 	this->current_address++;
 }
 
-void Lm2::perform_output_operation(void(*func)(const MemoryItem*, const std::string)){
+std::string Lm2::current_command(){
+	std::ostringstream out;
+	std::vector<int> temp = this->memory.get(this->current_address)->get();
+
+	out << Converter::to_hex(this->current_address) << ' ';
+
+	for (auto &i : temp){
+		std::string x = Converter::to_hex(i);
+		out << (x.empty() ? "0" : x) << ' ';
+	}
+
+	return out.str();
+}
+void Lm2::perform_output_operation(void(*func)(System::Windows::Forms::RichTextBox^ out, const MemoryItem*, const std::string), System::Windows::Forms::RichTextBox^ out){
 	MemoryItem* var = new Variable(this->get_value_operand(this->current_address, 1));
 
-	func(var, this->memory.get_name(this->get_address_operand(this->current_address, 1)));
+	func(out, var, this->memory.get_name(this->get_address_operand(this->current_address, 1)));
 
 	this->current_address++;
 }

@@ -11,25 +11,37 @@
 
 class Lm2 : public Lm{
 public:
-	Lm2() :current_address(0), memory(),cmp_op(10){}
-	virtual void execute_the_program() override final;
+	Lm2() :current_address(0), memory(), cmp_op(10),end_flag(false), input_flag(false){}
+	virtual void do_one_step(System::Windows::Forms::RichTextBox^ out)override final;
+
 	virtual void set_program(const std::vector<std::vector<int> > &program)override final;
+	virtual std::string current_command();
+	virtual bool is_end()override final;
+	virtual void input(int value);
+
+
+	virtual std::vector<std::string> get_var_inf();
+	virtual std::vector<std::string> get_cmd_inf();
 	virtual std::vector<std::vector<int> > get_program()const override final;
+
 	virtual void init_variable(int position, std::string name)override final;
 	virtual void init_variable(int position, int value) override final;
 	virtual void init_variable(int position, std::string name, int value)override final;
+
 	virtual void clear_memory()override final;
 private:
 	enum flags { EQUAL, N_EQUAL, LESS, GREATER, LESS_OR_EQUAL, GREATER_OR_EQUAL, INS_LESS, INS_GREATER, INS_LESS_OR_EQUAL, INS_GREATER_OR_EQUAL };
 
 	std::vector<bool> cmp_op;
+	bool end_flag;
+	bool input_flag;
 	int current_address;
 	Memory memory;
 	
 	void perform_arithmetic_operation(MemoryItem* (*func)(const MemoryItem*, const MemoryItem*),int type);
 	void perform_comparison_operation(flags flag);
-	void perform_input_operation(void(*func)(MemoryItem*&, const std::string));
-	void perform_output_operation(void(*func)(const MemoryItem*, const std::string));
+	void perform_input_operation(int value);
+	void perform_output_operation(void(*func)(System::Windows::Forms::RichTextBox^ out, const MemoryItem*, const std::string), System::Windows::Forms::RichTextBox^ out);
 	void perform_assignment_operation();
 	void perfom_flag_determination();
 	void perform_goto();

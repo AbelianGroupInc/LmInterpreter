@@ -46,26 +46,26 @@ const int
 	CMD_RR_COMPARISON = 37,
 	COMMAND_IS_NOT_LONG = 200;
 
-Lm1::Lm1() :current_address(0), ram_memory(){
+Lm1::Lm1() :current_address(0), ram_memory(), end_flag(false), input_flag(false){
 	for (int i = 0; i < MAX_CPU_MEMORY_SIZE; i++)
 		this->cpu_memory[i] = INT_MAX;
 }
 
-int Lm1::perfom_commands(){
+void Lm1::perfom_command(System::Windows::Forms::RichTextBox^ out){
 	int command = this->ram_memory.get(this->current_address)->get_value();
 	switch (command){
 	case CMD_RM_INPUT:
-		this->perform_input_operation(LmCommands::input);
+		this->input_flag = true;
 		break;
 	case CMD_RM_OUTPUT:
-		this->perform_output_operation(LmCommands::output);
+		this->perform_output_operation(LmCommands::output, out);
 		break;
 
 	case CMD_RM_UNSIGNED_INPUT:
-		this->perform_input_operation(LmCommands::unsigned_input);
+		this->input_flag = true;
 		break;
 	case CMD_RM_UNSIGNED_OUTPUT:
-		this->perform_output_operation(LmCommands::unsigned_output);
+		this->perform_output_operation(LmCommands::unsigned_output, out);
 		break;
 	case CMD_RM_ADD:
 		this->perform_arithmetic_operation(LmCommands::add, command);
@@ -125,14 +125,12 @@ int Lm1::perfom_commands(){
 		break;
 
 	case CMD_RR_STOP:
-		return CMD_RR_STOP;
+		this->end_flag = true;
 		break;
 	default:
 		std::exception("Command: incorrect command");
 		break;
 	}
-	
-	return command;
 }
 
 bool Lm1::is_command_long(int command){

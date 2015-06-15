@@ -1,8 +1,11 @@
+#include <sstream>
+
 #include "Lm1.h"
 #include "Variable.h"
 #include "InterpreterException.h"
 #include "Lm1ShortCommand.h"
 #include "Lm1LongCommand.h"
+#include "Converter.h"
 
 const int
 MAX_CPU_MEMORY_SIZE = 15,
@@ -38,6 +41,18 @@ int Lm1::get_ram_value(int adress){
 
 int Lm1::get_cpu_value(int adress){
 	return this->cpu_memory[adress];
+}
+
+std::vector<std::string> Lm1::get_var_inf(){
+	return this->ram_memory.get_var_inf();
+}
+
+std::vector<std::string> Lm1::get_cmd_inf(){
+	return this->ram_memory.get_cmd_inf();
+}
+
+bool Lm1::is_end(){
+	return this->end_flag;
 }
 
 void Lm1::go_to_next_command(int command){
@@ -137,6 +152,20 @@ MemoryItem* Lm1::get_operand(const int operandNumb, int command){
 		operand = this->get_second_operand(command);
 
 	return operand;
+}
+
+std::string Lm1::current_command(){
+	std::ostringstream out;
+	std::vector<int> temp = this->ram_memory.get(this->current_address)->get();
+
+	out << Converter::to_hex(this->current_address) << ' ';
+
+	for (auto &i : temp){
+		std::string x = Converter::to_hex(i);
+		out << (x.empty() ? "0" : x) << ' ';
+	}
+
+	return out.str();
 }
 
 void Lm1::unconditional_transit(bool(*func)(const MemoryItem*, const MemoryItem*)){

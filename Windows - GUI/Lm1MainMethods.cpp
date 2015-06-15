@@ -173,16 +173,15 @@ void Lm1::set_program(const std::vector<std::vector<int> > &program){
 		int cur_command_adress = program[i][0];
 		int cur_command_numb = program[i][1];
 		if (cur_command_adress >= 0 && (cur_command_adress) <= MAX_RAM_MEMORY_SIZE &&
-			ram_memory.get(cur_command_adress) == nullptr){
+			ram_memory.is_memory_cell_empty(cur_command_adress)){
 			if (this->is_command_long(cur_command_numb)){
-				if ((cur_command_adress + 1) > MAX_RAM_MEMORY_SIZE || ram_memory.get(cur_command_adress + 1) != nullptr)
+				if ((cur_command_adress + 1) > MAX_RAM_MEMORY_SIZE || !ram_memory.is_memory_cell_empty(cur_command_adress + 1))
 					throw std::out_of_range("Out of Memory");
 				try{
 					Lm1LongCommand* firstCommandB = new Lm1LongCommand(program[i][1], program[i][2], program[i][3], program[i][4]);
 					Lm1LongCommand* secondCommandB = new Lm1LongCommand(program[i][1], program[i][2], program[i][3], program[i][4]);
 					this->ram_memory.set(cur_command_adress, firstCommandB);
 					this->ram_memory.set(cur_command_adress + 1, secondCommandB);
-
 				}
 				catch (std::exception& exp){
 					char* temp = new char[strlen(exp.what()) + 1];
@@ -207,6 +206,7 @@ void Lm1::set_program(const std::vector<std::vector<int> > &program){
 	if (!end)
 		throw std::exception("Lost end of program");
 }
+
 
 std::vector<std::vector<int> > Lm1::get_program()const{
 	return std::vector<std::vector<int> >();

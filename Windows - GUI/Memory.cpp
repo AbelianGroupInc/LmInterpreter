@@ -9,6 +9,11 @@ Memory::Memory(){
 	this->clear();
 }
 
+bool Memory::is_memory_cell_empty(int position){
+	this->check(position);
+	return this->memory[position].get() == nullptr;
+}
+
 std::vector<std::string> Memory::get_var_inf(){
 	std::vector<std::string> answer;
 
@@ -47,7 +52,7 @@ std::vector<std::string> Memory::get_cmd_inf(){
 
 			std::vector<int> cmd = itr->second->get();
 
-			for (int k = 0; k < cmd.size(); k++)
+			for (int k = 0; k < (int)cmd.size(); k++)
 				out << Converter::to_hex(cmd[k]) << ' ';
 
 			answer.push_back(out.str());

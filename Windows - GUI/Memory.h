@@ -18,6 +18,8 @@ public:
 	void set_name(int position,std::string name);
 	std::string get_name(int position)const;
 
+	bool is_memory_cell_empty(int position);
+
 	std::vector<std::string> get_var_inf();
 	std::vector<std::string> get_cmd_inf();
 private:

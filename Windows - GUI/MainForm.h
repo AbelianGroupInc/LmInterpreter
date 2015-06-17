@@ -4,6 +4,8 @@
 
 #include "LmInterpreter.h"
 #include "Lm3.h"
+#include "Lm2.h"
+#include "Lm1.h"
 
 namespace LmGUI {
 
@@ -1008,10 +1010,10 @@ namespace LmGUI {
 			this->lmc = new LmInterpreter(new Lm3);
 
 		if (this->menu_lm_2->Checked)
-			this->lmc = new LmInterpreter(new Lm3);
+			this->lmc = new LmInterpreter(new Lm2);
 
 		if (this->menu_lm_rm->Checked)
-			this->lmc = new LmInterpreter(new Lm3);
+			this->lmc = new LmInterpreter(new Lm1);
 	}
 
 	private: System::Void start_program();

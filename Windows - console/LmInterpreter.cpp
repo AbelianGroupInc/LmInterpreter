@@ -9,7 +9,7 @@
 
 LmInterpreter::LmInterpreter(Lm* machine) :machine(machine), program(){
 	if (machine == nullptr)
-		throw std::invalid_argument("Miss machine");
+		throw std::invalid_argument("Lost machine");
 }
 
 LmInterpreter::~LmInterpreter(){
@@ -24,7 +24,7 @@ void LmInterpreter::read_program(const char* file_name){
 	std::ifstream input_file(file_name);
 	
 	if (!input_file.good())
-		throw std::exception("Can't open file");
+		throw std::exception("File openning failure");
 
 	this->parsing(&input_file);
 

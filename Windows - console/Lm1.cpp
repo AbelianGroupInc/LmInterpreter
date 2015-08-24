@@ -1,3 +1,5 @@
+//Implementation of perfoming of commands is located in "Lm1MainMethods.cpp"
+
 #include "Lm1.h"
 
 #define STOP_COMMAND 153

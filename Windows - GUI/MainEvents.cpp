@@ -115,7 +115,7 @@ System::Void LmGUI::MainForm::check_file(){
 
 System::Void LmGUI::MainForm::start_program(){
 	this->button_start->Text = "Остановить";
-	
+
 	this->text_output->Text = "";
 	this->text_errors->Text = "";
 	this->temp_save();
@@ -146,5 +146,5 @@ System::Void LmGUI::MainForm::stop_program(){
 	if (this->menu_test_def->Checked)
 		this->main_timer->Stop();
 	else
-		this->button_do_step->Hide();	
+		this->button_do_step->Hide();
 }

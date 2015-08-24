@@ -1,3 +1,6 @@
+//This file contains all auxilliary methods for comfortable implementation
+//of methods in "Lm1MainMethods.cpp" and "Lm1Operations.cpp"
+
 #include "Lm1.h"
 #include "Variable.h"
 #include "InterpreterException.h"
@@ -34,14 +37,14 @@ int Lm1::get_r2_register(){
 
 int Lm1::get_ram_value(int adress){
 	if (ram_memory.is_memory_cell_empty(adress))
-		throw std::out_of_range("Break the sequence of addresses");
+		throw std::out_of_range("Appealing to a non-existent adress");
 
 	return ram_memory.get(adress)->get_value();
 }
 
 int Lm1::get_cpu_value(int adress){
 	if (cpu_memory[adress] == INT_MAX)
-		throw std::out_of_range("Break the sequence of addresses");
+		throw std::out_of_range("Appealing to a non-existent adress");
 
 	return this->cpu_memory[adress];
 }
@@ -49,13 +52,13 @@ int Lm1::get_cpu_value(int adress){
 void Lm1::go_to_next_command(int command){
 	if (this->is_command_long(command)){
 		if (this->current_address + 2 > MAX_RAM_MEMORY_SIZE)
-			throw std::out_of_range("Wrong position in memory");
+			throw std::out_of_range("Memory bounds violation");
 
 		this->current_address += 2;
 	}
 	else{
 		if (this->current_address + 1 > MAX_RAM_MEMORY_SIZE)
-			throw std::out_of_range("Wrong position in memory");
+			throw std::out_of_range("Memory bounds violation");
 
 		this->current_address++;
 	}
@@ -64,15 +67,18 @@ void Lm1::go_to_next_command(int command){
 int Lm1::get_cmp_command(int command){
 	int comp_command;
 	if (this->is_command_long(command)){
-		if (this->current_address + 2 > MAX_RAM_MEMORY_SIZE ||
-			ram_memory.is_memory_cell_empty(current_address + 2))
-			throw std::out_of_range("Wrong position in memory");
+		if (this->current_address + 2 > MAX_RAM_MEMORY_SIZE)
+			throw std::out_of_range("Memory bounds violation");
+		if (ram_memory.is_memory_cell_empty(current_address + 2))
+			throw std::out_of_range("Appealing to a non-existent adress");
+			
 		comp_command = this->get_ram_value(this->current_address + 2);
 	}
 	else {
-		if (this->current_address + 1 > MAX_RAM_MEMORY_SIZE ||
-			ram_memory.is_memory_cell_empty(current_address + 1))
-			throw std::out_of_range("Wrong position in memory");
+		if (this->current_address + 1 > MAX_RAM_MEMORY_SIZE)
+			throw std::out_of_range("Memory bounds violation");
+		if(ram_memory.is_memory_cell_empty(current_address + 1))
+			throw std::out_of_range("Appealing to a non-existent adress");
 
 		comp_command = this->get_ram_value(this->current_address + 1);
 	}
@@ -81,7 +87,7 @@ int Lm1::get_cmp_command(int command){
 
 int Lm1::get_first_operand_adress(){
 	if (current_address < 0 || current_address > MAX_RAM_MEMORY_SIZE)
-		throw std::out_of_range("Wrong position in memory");
+		throw std::out_of_range("Memory bounds violation");
 	return this->get_r1_register();
 }
 
@@ -94,7 +100,7 @@ int Lm1::get_second_operand_adress(int command){
 	int operand_adress;
 
 	if (current_address < 0 || current_address > MAX_RAM_MEMORY_SIZE)
-		throw std::out_of_range("Wrong position in memory");
+		throw std::out_of_range("Memory bounds violation");
 
 	if (this->is_command_long(command)){
 		if (this->get_m2_register() == 0)
@@ -111,7 +117,7 @@ int Lm1::get_second_operand_adress(int command){
 int Lm1::get_second_operand_value(int command){
 	int operand_value;
 	if (current_address < 0 || current_address > MAX_RAM_MEMORY_SIZE)
-		throw std::out_of_range("Wrong position in memory");
+		throw std::out_of_range("Memory bounds violation");
 
 	if (this->is_command_long(command))
 		operand_value = this->get_ram_value(this->get_second_operand_adress(command));
@@ -159,17 +165,17 @@ void Lm1::conditional_transit(bool(*func)(const MemoryItem*, const MemoryItem*),
 	this->go_to_next_command(command);
 
 	if (ram_memory.is_memory_cell_empty(this->get_a2_register()))
-		throw std::exception("Incorrect command adress");
+		throw std::exception("Appealing to a non-existent adress");
 
 	if(this->current_address + 2 > MAX_RAM_MEMORY_SIZE)
-		std::exception("Error: Memory: out of range");
+		std::exception("Memory bounds violation");
 
 	this->current_address = func(first_operand, second_operand) ? this->get_a2_register() : this->current_address + 2;
 }
 
 void Lm1::cmd_rm_assigment_1_work(){
 	if (this->get_first_operand_adress() >= MAX_CPU_MEMORY_SIZE)
-		throw std::out_of_range("Out of Memory");
+		throw std::out_of_range("Memory bounds violation");
 
 	this->cpu_memory[this->get_first_operand_adress()] =
 		this->get_operand(SECOND_OPERAND, COMMAND_IS_LONG)->get_value();
@@ -177,7 +183,7 @@ void Lm1::cmd_rm_assigment_1_work(){
 
 void Lm1::cmd_rm_assigment_2_work(){
 	if (this->get_first_operand_adress() + 1 >= MAX_CPU_MEMORY_SIZE)
-		throw std::out_of_range("Out of Memory");
+		throw std::out_of_range("Memory bounds violation");
 
 	MemoryItem* newVal1 = new Variable(this->get_cpu_value(this->get_r1_register()));
 	MemoryItem* newVal2 = new Variable(this->get_cpu_value(this->get_r1_register()));
@@ -188,7 +194,7 @@ void Lm1::cmd_rm_assigment_2_work(){
 void Lm1::cmd_rr_assigment_work(){
 	if (this->get_first_operand_adress() >= MAX_CPU_MEMORY_SIZE ||
 		this->get_second_operand_adress(COMMAND_IS_NOT_LONG) >= MAX_CPU_MEMORY_SIZE)
-		throw std::out_of_range("Out of Memory");
+		throw std::out_of_range("Memory bounds violation");
 
 	this->cpu_memory[this->get_r1_register()] = this->cpu_memory[this->get_r2_register()];
 

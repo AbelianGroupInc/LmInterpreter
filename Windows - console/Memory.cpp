@@ -16,7 +16,7 @@ MemoryItem* Memory::get(int position){
 	this->check(position);
 	
 	if (this->memory[position].get() == nullptr)
-		throw std::out_of_range("Break the sequence of addresses");
+		throw std::out_of_range("Appealing to a non-existent adress");
 
 	return this->memory[position].get();
 }
@@ -49,5 +49,5 @@ std::string Memory::get_name(int position)const{
 
 void Memory::check(int position)const{
 	if (position < 0 || position > SIZE_OF_MEMORY)
-		throw std::exception("Wrong address");
+		throw std::exception("Memory bounds violation");
 }

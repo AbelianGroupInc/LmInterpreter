@@ -134,7 +134,7 @@ void Lm2::init_variable(int position, std::string name, int value){
 void Lm2::set_program(const std::vector<std::vector<int> > &program){
 	bool end = false;
 	if (program.size() == 0)
-		throw std::exception("Lost end of program");
+		throw std::exception("The program is empty");
 
 	if (program.front().front() >= 0 && program.front().front() <= MAX_MEMORY_SIZE)
 		this->current_address=program.front().front();
@@ -156,7 +156,7 @@ void Lm2::set_program(const std::vector<std::vector<int> > &program){
 
 		}
 		else{
-			throw std::out_of_range("Out of Memory");
+			throw std::out_of_range("Memory bounds violation");
 		}
 	}
 	
@@ -234,7 +234,7 @@ void Lm2::perform_assignment_operation(){
 
 int Lm2::get_value_operand(int position_in_memory, int number_of_operands){
 	if (position_in_memory < 0 || position_in_memory > MAX_MEMORY_SIZE)
-		throw std::out_of_range("Wrong position in memory");
+		throw std::out_of_range("Memory bounds violation");
 
 	if (number_of_operands < 0 || number_of_operands > 2)
 		throw std::length_error("Invalid numbers of operands!");
@@ -244,7 +244,7 @@ int Lm2::get_value_operand(int position_in_memory, int number_of_operands){
 
 int Lm2::get_address_operand(int position_in_memory, int number_of_operands){
 	if (position_in_memory < 0 || position_in_memory > MAX_MEMORY_SIZE)
-		throw std::out_of_range("Wrong position in memory");
+		throw std::out_of_range("Memory bounds violation");
 
 	if (number_of_operands < 0 || number_of_operands > 2)
 		throw std::length_error("Invalid numbers of operands!");

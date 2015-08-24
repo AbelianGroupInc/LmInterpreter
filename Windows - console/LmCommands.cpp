@@ -16,7 +16,7 @@ void LmCommands::input(MemoryItem* &variable, const std::string name){
 		std::cin.clear();
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		
-		throw std::invalid_argument("Wrong symbol");
+		throw std::invalid_argument("Entered the wrong character");
 	}
 			
 	variable = new Variable(value);

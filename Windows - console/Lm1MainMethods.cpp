@@ -1,3 +1,6 @@
+//The file with implemention of the main methods of processing
+//and executing Lm1 program
+
 #include "Lm1.h"
 #include "LmCommands.h"
 #include "Lm1ShortCommand.h"
@@ -128,7 +131,7 @@ int Lm1::perfom_commands(){
 		return CMD_RR_STOP;
 		break;
 	default:
-		std::exception("Command: incorrect command");
+		std::exception("Incorrect command");
 		break;
 	}
 	
@@ -166,7 +169,7 @@ bool Lm1::is_command_long(int command){
 void Lm1::set_program(const std::vector<std::vector<int> > &program){
 	bool end = false;
 	if (program.size() == 0)
-		throw std::exception("Lost end of program");
+		throw std::exception("The program is empty");
 
 	if (program.front().front() >= 0 && program.front().front() <= MAX_RAM_MEMORY_SIZE)
 		this->current_address = program.front().front();
@@ -177,8 +180,10 @@ void Lm1::set_program(const std::vector<std::vector<int> > &program){
 		if (cur_command_adress >= 0 && (cur_command_adress) <= MAX_RAM_MEMORY_SIZE &&
 			ram_memory.is_memory_cell_empty(cur_command_adress)){
 			if (this->is_command_long(cur_command_numb)){
-				if ((cur_command_adress + 1) > MAX_RAM_MEMORY_SIZE || !ram_memory.is_memory_cell_empty(cur_command_adress + 1))
-					throw std::out_of_range("Out of Memory");
+				if ((cur_command_adress + 1) > MAX_RAM_MEMORY_SIZE)
+					throw std::out_of_range("Memory bounds violation");
+				if(!ram_memory.is_memory_cell_empty(cur_command_adress + 1))
+					throw std::out_of_range("Writing in occupied cell");
 				try{
 					Lm1LongCommand* firstCommandB = new Lm1LongCommand(program[i][1], program[i][2], program[i][3], program[i][4]);
 					Lm1LongCommand* secondCommandB = new Lm1LongCommand(program[i][1], program[i][2], program[i][3], program[i][4]);
@@ -192,9 +197,6 @@ void Lm1::set_program(const std::vector<std::vector<int> > &program){
 				}
 			}
 			else{
-				if ((cur_command_adress + 1) > MAX_RAM_MEMORY_SIZE)
-					throw std::out_of_range("Out of Memory");
-
 				this->ram_memory.set(cur_command_adress, new Lm1ShortCommand(program[i][1], program[i][2], program[i][3]));
 
 				if (this->ram_memory.get(cur_command_adress)->get_value() == CMD_RR_STOP)
@@ -202,7 +204,7 @@ void Lm1::set_program(const std::vector<std::vector<int> > &program){
 			}
 		}
 		else
-			throw std::out_of_range("Out of Memory");
+			throw std::out_of_range("Memory bounds violation");
 	}
 
 	if (!end)

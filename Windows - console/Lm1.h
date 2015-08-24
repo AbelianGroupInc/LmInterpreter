@@ -26,15 +26,7 @@ private:
 
 	int perfom_commands();
 
-	int get_r1_register();
-	int get_a2_register();
-	int get_m2_register();
-	int get_r2_register();
-	int get_ram_value(int);
-	int get_cpu_value(int);
-
 	void go_to_next_command(int);
-	int get_cmp_command(int);
 
 	void perform_arithmetic_operation(MemoryItem* (*func)(const MemoryItem*, const MemoryItem*), int);
 	void perform_comparison_operation(int);
@@ -52,6 +44,17 @@ private:
 	void cmd_rr_assigment_work();
 
 	bool is_command_long(int);
+
+	int get_cmp_command(int);
+	//The commant for getting the number of the command of comparison
+	//for "perform_comparison_operation"
+
+	int get_r1_register();
+	int get_a2_register();
+	int get_m2_register();
+	int get_r2_register();
+	int get_ram_value(int);
+	int get_cpu_value(int);
 	
 	int get_first_operand_adress();
 	int get_first_operand_value();

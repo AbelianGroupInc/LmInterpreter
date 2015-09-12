@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="510358d3-9097-45fc-8fa6-0ab14d3502de" name="MainСlassDiagram" linkedPackageId="7761d908-a025-4582-bef5-cfe8e5309f4d" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <ownedCommentsInternal>
+    <comment Id="3b8b6c43-8c5b-493f-985a-9c8b6494a1bf">
+      <elementDefinition Id="b69c02cd-6f3c-418c-89a0-5880e5c06e92" />
+      <body>class of delegates
+</body>
+      <annotatedElements>
+        <classMoniker Id="4703f3ac-4d47-4062-85ba-f9c79f9e40c6" LastKnownName="Lm Commands" />
+      </annotatedElements>
+    </comment>
+  </ownedCommentsInternal>
   <packagedElements>
     <logicalClassDesignerModelHasTypes>
       <class Id="59188e95-3db3-46ad-b1e7-ec9a33f53c38" name="Um_1 LongCommand" isAbstract="false" isLeaf="false" isActiveClass="false">
@@ -16,8 +26,11 @@
           </property>
         </ownedAttributesInternal>
         <ownedOperationsInternal>
-          <operation Id="609a03a0-1802-476c-9bf3-7ea45f5d6f34" name="get" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="beabb2e2-6d72-44bf-beae-49be97e47b18" />
+          <operation Id="b032f083-34bd-42dc-8127-c5234bda46c1" name="get_item" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="77851999-608e-4b9c-a605-2cfa6eef89b8" />
+          </operation>
+          <operation Id="bd8c6dac-009f-4523-ae77-7133f5981acd" name="get_value" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="084be060-00e4-41b5-b008-675351199b52" />
           </operation>
         </ownedOperationsInternal>
       </class>
@@ -37,8 +50,11 @@
           </property>
         </ownedAttributesInternal>
         <ownedOperationsInternal>
-          <operation Id="68b115d1-9750-4161-921b-17d113c7a737" name="get" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="31473d91-20f1-4499-b69c-c28d1bec0b2d" />
+          <operation Id="7ecda493-f2a6-428e-93cd-ddf0a6dd9649" name="get_item" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="58749d7d-0300-4e75-9df6-d6ec522ae365" />
+          </operation>
+          <operation Id="511ff7d4-591f-48a7-8714-43dea550bd3b" name="get_value" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="e36ad61b-42c8-4bc8-82b9-bf250cea87fe" />
           </operation>
         </ownedOperationsInternal>
       </class>
@@ -52,11 +68,6 @@
             <elementDefinition Id="e1d6ee8b-ae39-4f8c-aedb-d8df5c0a68fc" />
           </generalization>
         </generalsInternal>
-        <ownedOperations>
-          <operation Id="1fb03933-3f75-468e-ad07-74b5163587f2" name="get" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="d9ba6316-05c7-409e-82a8-082ba5d4d795" />
-          </operation>
-        </ownedOperations>
       </Interface>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
@@ -74,8 +85,11 @@
           </property>
         </ownedAttributesInternal>
         <ownedOperationsInternal>
-          <operation Id="070d1a6e-4dc6-4378-bae2-5011964639ff" name="get" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="63a1b26c-9026-4430-8d66-6521a1913a0e" />
+          <operation Id="7ecda347-2b77-4458-8975-44f87ac8188b" name="get_item" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="3802f099-7a6a-4a0a-a05c-345d00b5ca3e" />
+          </operation>
+          <operation Id="c81a75c0-fbe7-49ea-8ea8-a61739d906b7" name="get_value" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="64197451-6de4-4f1f-986b-c8525f2e18c4" />
           </operation>
         </ownedOperationsInternal>
       </class>
@@ -95,8 +109,11 @@
           </property>
         </ownedAttributesInternal>
         <ownedOperationsInternal>
-          <operation Id="a8382efd-5f74-4da7-ac20-7ff0a63c6aec" name="get" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="bd5d0095-2063-40d7-a6de-3dbf31c5abdf" />
+          <operation Id="8429555f-1245-467d-8cb6-17c5adf0cf0a" name="get_item" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="8b5eefcc-41ac-4c22-83a6-5d0160f4f069" />
+          </operation>
+          <operation Id="1cf13dbd-b3e3-48fe-9612-fc6e27d2f783" name="get_value" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="72b1fcb8-f58c-445c-8561-883489247729" />
           </operation>
         </ownedOperationsInternal>
       </class>
@@ -105,25 +122,25 @@
       <Interface Id="7c301705-821f-4c9d-8b3e-1e518a13d41a" name="Command" isAbstract="false" isLeaf="false">
         <elementDefinition Id="fa94d35d-8bbd-4638-b2a5-a9bdab86f946" />
         <generalsInternal>
-          <generalization Id="4fef9c4c-a5a3-4e04-8069-6aa9006d5935" isSubstitutable="false">
+          <generalization Id="008eb270-8a32-4397-be16-ba4e170fe60f" isSubstitutable="false">
             <interfaceMoniker Id="9099c164-2582-46f3-b3d7-6af8831d57aa" LastKnownName="Memory Item" />
-            <elementDefinition Id="af19d932-3066-4923-a229-0d1f2d265457" />
+            <elementDefinition Id="5a1dd7e0-5241-4cb4-88c7-ed01936059f4" />
           </generalization>
         </generalsInternal>
-        <ownedOperations>
-          <operation Id="fdbba43d-f6cc-42c8-a8e0-b07341f0a5fb" name="get" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="3a3250a8-6618-4e32-9af3-46aef49b1795" />
-          </operation>
-        </ownedOperations>
+        <ownedAttributes>
+          <property Id="5f27fbd3-41e2-4b32-9a65-c2297a3e8f7a" name="vector command" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="3094e0ff-cdf8-4f57-8c54-c225c5130caa" />
+          </property>
+        </ownedAttributes>
       </Interface>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
       <class Id="dd1cadf3-e069-4a5d-a425-116561ca9853" name="Variable" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="9a17d893-bc16-4def-8a58-97a7cdc76cb7" />
         <suppliersInternal>
-          <interfaceRealization Id="c02c0a72-7e99-4ea5-933f-a26be513d926">
+          <interfaceRealization Id="b0dc7d2f-696e-4faa-8742-e161ecf7cdbd">
             <interfaceMoniker Id="9099c164-2582-46f3-b3d7-6af8831d57aa" LastKnownName="Memory Item" />
-            <elementDefinition Id="5d560129-6eed-429f-8066-46b946bd882f" />
+            <elementDefinition Id="e3dd2083-cff6-4423-8eaf-4d0174659ba2" />
           </interfaceRealization>
         </suppliersInternal>
         <ownedAttributesInternal>
@@ -132,11 +149,11 @@
           </property>
         </ownedAttributesInternal>
         <ownedOperationsInternal>
-          <operation Id="7fd3d00e-1a10-4dcb-b754-7a8efa39c182" name="get" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="d4bc8bf9-6c6d-4664-8ef3-1198d7681802" />
-          </operation>
           <operation Id="a4a41373-0c86-4238-9e92-0a352b3192ee" name="get_value" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
             <elementDefinition Id="a9e09c94-7441-4999-8fd5-24dc76b52559" />
+          </operation>
+          <operation Id="1c5a46d7-cbcd-4798-8b89-0b0983df9c61" name="get_item" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="a3160ea7-1720-4945-affe-c2931f3f0538" />
           </operation>
         </ownedOperationsInternal>
       </class>
@@ -144,34 +161,70 @@
     <logicalClassDesignerModelHasTypes>
       <Interface Id="9099c164-2582-46f3-b3d7-6af8831d57aa" name="Memory Item" isAbstract="false" isLeaf="false">
         <elementDefinition Id="3e54e1c9-34a0-4a32-a6f8-ca1cb92beb0f" />
-        <suppliersInternal>
-          <dependency Id="b79b6e4b-bb05-4193-8176-90946dfd0bb5">
+        <targetEnds>
+          <association Id="4eed529e-f114-49bd-ad53-51ec2a69a91f" isDerived="false" sourceEndRoleName="Memory Item" targetEndRoleName="Memory" isLeaf="false" isAbstract="false">
             <classMoniker Id="fad672ba-c66d-4972-a175-bee75f5075e9" LastKnownName="Memory" />
-            <elementDefinition Id="9d23c76f-6bee-4ac3-97bb-eacd7eca23a9" />
-          </dependency>
-        </suppliersInternal>
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="6b0c6d95-9b1e-401c-9ccc-e6718a7b60d0" name="Memory Item" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="93020512-06cc-43e7-8cd3-f33e7ed5545b" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="d4ac22dc-b2f6-4af0-a0d9-7bd671019bec" name="Memory" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="b5a922f6-d709-4713-9b76-9d0391f09435" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="4c32c5f0-b44f-4132-9c5e-56923b4bbee5" />
+          </association>
+        </targetEnds>
         <ownedOperations>
-          <operation Id="5c772ba4-b3fc-4dff-8bb2-0b5f2fc2d0c1" name="get" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+          <operation Id="5c772ba4-b3fc-4dff-8bb2-0b5f2fc2d0c1" name="get_item" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
             <elementDefinition Id="fdcc397e-43d9-4616-b8ba-8c8e6246df14" />
+          </operation>
+          <operation Id="3f699b8f-8a91-4979-9480-c25540db39f4" name="get_value" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="29c4eb37-2da7-47a9-91d6-bbf18b65cfe2" />
           </operation>
         </ownedOperations>
       </Interface>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <class Id="2cad9e83-6474-4ce0-8eba-3887b535fc0a" name="Convertor" isAbstract="false" isLeaf="false" isActiveClass="false">
+      <class Id="2cad9e83-6474-4ce0-8eba-3887b535fc0a" name="InputProgramParser" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="8a4c0ddc-c56b-42e7-8b8c-7d13c605efdb" />
+        <targetEnds>
+          <association Id="1ec2c987-c00c-483f-b186-53ee75697773" isDerived="false" sourceEndRoleName="InputProgramParser" targetEndRoleName="Lm Compiler" isLeaf="false" isAbstract="false">
+            <classMoniker Id="9c133b4e-cc23-40a1-ae3c-426b41b3ee73" LastKnownName="Lm Compiler" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="b3070fb3-42ee-48df-a736-a6c85d7df385" name="InputProgramParser" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="df068652-6b1b-445f-9b2d-e339a5b810f9" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="69e671c7-71b6-48ed-a216-456217423228" name="Lm Compiler" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="0bc29dde-459c-4b2c-b59d-baf1d2d95b66" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="e8fe334d-1120-4ccb-82fd-29378a1266e4" />
+          </association>
+        </targetEnds>
         <ownedOperationsInternal>
-          <operation Id="37f63bd4-62e7-418f-835d-413a5112f4f8" name="to_dec" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="cc72aa08-2f5d-4baa-871d-11d38a646428" />
+          <operation Id="c26e4f5f-ec1e-49c5-9e22-b01f96a0bcbd" name="parsing" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="01dfa1e5-818c-4f5c-b868-79293af0a3d8" />
           </operation>
-          <operation Id="0ec25c3b-602a-4458-9c5a-05929f6a76a3" name="to_hex" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="ec5c1aec-dc2e-45b9-b8e5-36870e087dd9" />
+          <operation Id="97b07852-7314-4014-a848-230a1d42830b" name="parsing_code_string" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="f9a3426a-11aa-4b76-8dea-1bf21a08375c" />
+          </operation>
+          <operation Id="03ea2de7-af2f-422f-bedf-d7e66c13ba69" name="parsing_init_string" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="78b47544-b992-4d42-970e-5a072d587b45" />
           </operation>
         </ownedOperationsInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <class Id="4703f3ac-4d47-4062-85ba-f9c79f9e40c6" name="Um Commands" isAbstract="false" isLeaf="false" isActiveClass="false">
+      <class Id="4703f3ac-4d47-4062-85ba-f9c79f9e40c6" name="Lm Commands" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="ab5fcc90-858b-4678-b2cb-a5e89c986d46" />
         <ownedOperationsInternal>
           <operation Id="e05ab028-e747-4948-8db0-e70db266e84a" name="input" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
@@ -240,61 +293,171 @@
     <logicalClassDesignerModelHasTypes>
       <class Id="fad672ba-c66d-4972-a175-bee75f5075e9" name="Memory" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="51d12fad-d3b0-41d5-85ba-10272cc4680b" />
-        <suppliersInternal>
-          <dependency Id="d83680db-a8c7-4722-aa76-e05093e6138d">
-            <interfaceMoniker Id="d0f4ea28-9db5-48ec-8a1c-ed5ae92662c2" LastKnownName="Um" />
-            <elementDefinition Id="0610d1b3-74f7-4731-99e6-ac26fd8d8ea5" />
-          </dependency>
-        </suppliersInternal>
+        <targetEnds>
+          <association Id="21ac5ed2-c178-42c9-9ce0-bf11ac455dc5" isDerived="false" sourceEndRoleName="Memory" targetEndRoleName="Lm" isLeaf="false" isAbstract="false">
+            <interfaceMoniker Id="d0f4ea28-9db5-48ec-8a1c-ed5ae92662c2" LastKnownName="Lm" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="35dd5329-dd16-499b-a75c-a48e854efaf1" name="Memory" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="8b85bf37-e543-4c9c-ba7c-34dc6ced6893" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="79dee4d8-763e-4d58-8483-da7b9d20c666" name="Lm" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="9ca2e584-4238-4510-9d4e-822637358486" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="d946bdf4-ed78-442f-8ac1-5329173a8732" />
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property Id="f91a77b9-0cd5-4cad-9238-9c23f3517616" name="hashTable&lt;memoryITem&gt; ram_memory" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="29d9a22e-2147-49a5-9392-e3a03cbbcf41" />
+          </property>
+          <property Id="45b47dc4-e422-4368-ae1c-7460f6233e74" name="class Names" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="22839b05-6f1a-46be-ba37-1f183086b0e8" />
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation Id="cc2b7063-3508-43c6-9716-5af24a818a4e" name="get_cell" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="835cb578-3654-499f-b599-7ff7cb9d419c" />
+          </operation>
+          <operation Id="265c8bc8-356c-4785-af0e-71f4aadb8866" name="set_cell" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="a4f49d76-e37a-42d2-a9fc-2d807642da50" />
+          </operation>
+          <operation Id="9a9ee087-43bd-4a9a-83a0-c3598a319fab" name="clear" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="806e4ad8-363b-4291-8234-7b0e77110c33" />
+          </operation>
+          <operation Id="e8bfe795-87f7-415e-80dd-9eab3c75794c" name="is_memory_cell_empty" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="8a605cff-61b8-4799-876c-f197c4d731b3" />
+          </operation>
+        </ownedOperationsInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <class Id="9c133b4e-cc23-40a1-ae3c-426b41b3ee73" name="Um Compiler" isAbstract="false" isLeaf="false" isActiveClass="false">
+      <class Id="9c133b4e-cc23-40a1-ae3c-426b41b3ee73" name="Lm Compiler" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="c97f90d3-f10a-4c15-9de6-6de1e3d9a3f2" />
+        <ownedAttributesInternal>
+          <property Id="cc4b021c-4b4a-4f4d-8d30-08f3cc7c51cf" name="Lm machine" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="2f34ad7c-b637-4020-b896-6eec4b8e60ac" />
+          </property>
+          <property Id="fd2dd1d0-a607-472d-b424-a34e03103ae0" name="temp_file" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="17a81ecc-07e1-4974-b048-574376ad4566" />
+          </property>
+          <property Id="a8d71421-c938-4bdb-9d1e-b97899b717c5" name="class InputProgramParser" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="14c95fcf-bbae-47bc-b5bc-301b7c498fa6" />
+          </property>
+          <property Id="fa358609-738f-4a83-bd52-2bb95ae59dd0" name="class  InputProgrammInitilizator" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="e38a4f39-1c2c-4265-bba5-5e24d5206771" />
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation Id="a0de76fe-bbe7-4071-9ab2-43eec808a0ae" name="read_program" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="5efc650a-2c38-4c0a-98a0-7753ccfc8131" />
+          </operation>
+          <operation Id="275434c4-cdae-4d82-be85-d23316df0677" name="run_program" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="4a4da83e-9442-4f95-ad45-64eea0d96bce" />
+          </operation>
+          <operation Id="86336c69-de1c-4e76-918c-e6151f42cd47" name="save_program" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="38e967e4-0a37-466b-8f24-442e18e6cefa" />
+          </operation>
+        </ownedOperationsInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <Interface Id="d0f4ea28-9db5-48ec-8a1c-ed5ae92662c2" name="Um" isAbstract="false" isLeaf="false">
+      <Interface Id="d0f4ea28-9db5-48ec-8a1c-ed5ae92662c2" name="Lm" isAbstract="false" isLeaf="false">
         <elementDefinition Id="9fac323b-2673-4f56-848e-9eeb86dcc8e4" />
-        <suppliersInternal>
-          <dependency Id="f2c77f41-ae87-4597-a7b1-c957652caea2">
-            <classMoniker Id="9c133b4e-cc23-40a1-ae3c-426b41b3ee73" LastKnownName="Um Compiler" />
-            <elementDefinition Id="6c219443-9a58-41f4-b46f-7cd854a80ae0" />
-          </dependency>
-        </suppliersInternal>
+        <targetEnds>
+          <association Id="fcc14bf6-70bb-426e-9f5d-11c054f28658" isDerived="false" sourceEndRoleName="Lm" targetEndRoleName="Lm Compiler" isLeaf="false" isAbstract="false">
+            <classMoniker Id="9c133b4e-cc23-40a1-ae3c-426b41b3ee73" LastKnownName="Lm Compiler" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="904a0f47-a320-47f8-8103-525100ae6b9f" name="Lm" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="a41457f7-100b-4b61-aec0-09b80bb82ae2" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="7a46f6c7-4f44-4e14-afc6-c016205a74fb" name="Lm Compiler" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="374a3956-13fc-409a-8529-09c8ba9723b0" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="5ade3790-6b80-42a2-a0e0-499c6f560d15" />
+          </association>
+        </targetEnds>
+        <ownedAttributes>
+          <property Id="e509e2b2-0dad-4677-aeca-6859b3072c63" name="Memory ram_memory" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="30c3b8ae-da86-4c69-b4fa-77fd21a75591" />
+          </property>
+          <property Id="4cfb662e-21b9-405d-a7a8-149721457213" name="current_adress" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="76b0eabd-3a0f-462d-b7c4-dd50911c9b45" />
+          </property>
+          <property Id="526c923b-ab70-4c5b-afd8-fb8a9bbdbb7b" name="delegateHashTable" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="ab926f8d-9bb5-4c3b-99ad-68bb8ba2991d" />
+          </property>
+        </ownedAttributes>
+        <ownedOperations>
+          <operation Id="015cf8f0-6665-4a6d-8e18-e86c981963d0" name="execute_program" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="9ec7991f-9b8c-45ff-ae23-99c8741c3fda" />
+          </operation>
+          <operation Id="5a1b3809-c54d-4d3b-a38a-af69fe59e135" name="+ set_program() = 0" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="7794b13f-3aa8-4650-8a40-901dcaead61e" />
+          </operation>
+          <operation Id="02c7d1b6-d567-4028-b516-44c7e099b103" name="+ get_value_operand() = 0" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="94ef0f3c-e99a-4138-b8c0-a34275da063d" />
+          </operation>
+          <operation Id="1a353d91-35f3-4536-9938-660abfd4f7ca" name="+ get_adress_operand() = 0" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="ad4b0d37-ac22-4245-82c5-6ac69d9debab" />
+          </operation>
+        </ownedOperations>
       </Interface>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <class Id="f1fc308f-5ded-43ff-942b-749030a6a76d" name="Um_1" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <elementDefinition Id="a8f47371-980c-4083-9bef-1710b5152580" />
-        <suppliersInternal>
-          <interfaceRealization Id="83a0c06b-154a-47f2-8335-8915c0f53569">
-            <interfaceMoniker Id="d0f4ea28-9db5-48ec-8a1c-ed5ae92662c2" LastKnownName="Um" />
-            <elementDefinition Id="dfd33576-9fbf-47e6-9398-a1e23af92cc6" />
-          </interfaceRealization>
-        </suppliersInternal>
-      </class>
-    </logicalClassDesignerModelHasTypes>
-    <logicalClassDesignerModelHasTypes>
-      <class Id="c772f08b-66a8-43c2-bb4a-205e30903623" name="Um_3" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <elementDefinition Id="0337f21c-3d4a-4bf6-91c4-b06997cc73cb" />
-        <suppliersInternal>
-          <interfaceRealization Id="b67b8e43-ccf2-404f-8206-5ee8690c9dc3">
-            <interfaceMoniker Id="d0f4ea28-9db5-48ec-8a1c-ed5ae92662c2" LastKnownName="Um" />
-            <elementDefinition Id="619cca34-d2c4-4728-a31d-6892a24f476f" />
-          </interfaceRealization>
-        </suppliersInternal>
-      </class>
-    </logicalClassDesignerModelHasTypes>
-    <logicalClassDesignerModelHasTypes>
-      <class Id="0084e0f9-c8c7-40e7-9fc1-7904cd39dad5" name="Um_2" isAbstract="false" isLeaf="false" isActiveClass="false">
+      <class Id="0084e0f9-c8c7-40e7-9fc1-7904cd39dad5" name="Lm3" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="95f5d10b-bc2c-4454-a8b1-5c5dea8a901c" />
         <suppliersInternal>
           <interfaceRealization Id="dad6d25d-3e69-4fb3-bd30-a811c6c16b74">
-            <interfaceMoniker Id="d0f4ea28-9db5-48ec-8a1c-ed5ae92662c2" LastKnownName="Um" />
+            <interfaceMoniker Id="d0f4ea28-9db5-48ec-8a1c-ed5ae92662c2" LastKnownName="Lm" />
             <elementDefinition Id="044e0729-2b38-4492-a248-99e4869d3812" />
           </interfaceRealization>
+          <interfaceRealization Id="b3936e7d-4f21-423f-b546-14875e73f0c4">
+            <interfaceMoniker Id="790cec77-f595-4fa1-ac24-8764d67b0c79" LastKnownName="LmOperationsPerfoming" />
+            <elementDefinition Id="fa60325f-987e-460a-82a2-b380ece9eb43" />
+          </interfaceRealization>
         </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation Id="a5429c70-73b4-471b-a97d-0cc91c2d75ac" name="set_program" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="f7d8057d-18ab-41b4-90ab-83c4b081abb2" />
+          </operation>
+          <operation Id="698e6541-61c8-4b3f-889c-c0560a6d28ea" name="get_value_operand" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="50dfce74-b427-4381-b44e-8d8f85264c86" />
+          </operation>
+          <operation Id="0969b560-d5e5-4229-aa60-535ad9dca292" name="get_adress_operand" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="2a159f3b-108c-4b26-82a6-e849924d5190" />
+          </operation>
+          <operation Id="5d424df4-9cf9-4f29-8a17-b3b9939ca9d8" name="perfom_arithmetic_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="acb5b76b-b69f-4e97-a5c2-eb575e57f658" />
+          </operation>
+          <operation Id="22890eef-2e72-4357-a6f9-e06f5dfeec33" name="perfom_division_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="37791ae0-6c75-4831-9f3e-8a4db7c73609" />
+          </operation>
+          <operation Id="8c78b372-22a9-435e-acea-58028a805b49" name="perfom_input_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="31e1d5e9-64d2-45fb-b2a5-5455aa5d80ef" />
+          </operation>
+          <operation Id="799889f3-deec-4638-b605-a567a8242a17" name="perform_output_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="07ad5b0d-922f-4dd9-80e1-d75d00b9400f" />
+          </operation>
+          <operation Id="ab0cc646-464c-493f-9b31-6d2942f52422" name="perfom_assigment_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="329bfe46-ef0e-4516-8387-8452364a5ec0" />
+          </operation>
+          <operation Id="85403077-8ca8-4351-a4cb-b5f3c7bdd470" name="perfom_goto_opeartion" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="d6b6d329-d8fb-4a78-b72a-2c546004be82" />
+          </operation>
+          <operation Id="ea0058c9-610c-438a-ba4c-55cee4921c64" name="perfom_comparison_opeationt" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="206bc79e-a1d2-414a-8b5a-4cd5ae09fc25" />
+          </operation>
+        </ownedOperationsInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
@@ -303,47 +466,195 @@
       </Interface>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <class Id="60de5950-6b02-4dee-82d4-d1a1844043d4" name="Memory Exceptions" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <elementDefinition Id="e0005af0-2b36-48e2-8bb6-db7d1ef82f31" />
-        <suppliersInternal>
-          <interfaceRealization Id="406f6aaa-0e7f-4a9f-9ca1-2eeda178eede">
-            <interfaceMoniker Id="5cb537ec-9660-4dc7-8153-c0d3a86c51fd" LastKnownName="Compiler Exceptions" />
-            <elementDefinition Id="568d7991-ff43-4e88-952f-00a0e7685583" />
-          </interfaceRealization>
-        </suppliersInternal>
+      <class Id="3b843c37-3cb4-4372-99f9-15b116734063" name="InputProgramIntitliazator" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="1fdd6a74-2116-4803-92e4-966f764e3526" />
+        <targetEnds>
+          <association Id="fed52531-b26e-4f45-8d8a-28487385f1f2" isDerived="false" sourceEndRoleName="InputProgramIntitliazator" targetEndRoleName="Lm Compiler" isLeaf="false" isAbstract="false">
+            <classMoniker Id="9c133b4e-cc23-40a1-ae3c-426b41b3ee73" LastKnownName="Lm Compiler" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="27819b7e-bc51-4dda-a700-c350c1733679" name="InputProgramIntitliazator" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="8d5f24d9-e4b0-43eb-8ce9-c8f5cc7af15e" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="5e517ff9-f8f6-4c32-9950-50e7349747e0" name="Lm Compiler" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="f47deb19-c1e3-41ba-aafd-ec7c01794e97" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="ba4b6104-97ae-4d53-b581-70363b185f46" />
+          </association>
+        </targetEnds>
+        <ownedOperationsInternal>
+          <operation Id="e0faf802-82a1-4a75-a666-81934bd3aa66" name="init_adress" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="1761a920-454f-4b4c-8313-3a2223623d6a" />
+          </operation>
+          <operation Id="eec90bb2-9157-4ab4-b091-2d563ccdd2c3" name="init_name" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="420abfc1-61ef-428c-9a08-0888c00169f7" />
+          </operation>
+          <operation Id="ceeda782-eb89-4b1d-b31b-4828b0a5efae" name="init_value" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="3b7b6663-923d-45a5-a735-547425d8690c" />
+          </operation>
+        </ownedOperationsInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <class Id="92f28996-32e9-416a-927c-493c6307c5bb" name="Variable Exceptions" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <elementDefinition Id="ff82b18a-c186-4761-aba9-7b900b72bb20" />
+      <Interface Id="790cec77-f595-4fa1-ac24-8764d67b0c79" name="LmOperationsPerfoming" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="5e538426-9a51-4bb8-baed-127ba0a5150b" />
+        <ownedOperations>
+          <operation Id="af50933d-71e5-4605-a600-a4cb00a12bbe" name="perfom_arithmetic_operation" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="761f18ce-0ee9-4750-9b7c-61eddce0cc80" />
+          </operation>
+          <operation Id="ed5261b5-3597-449c-a095-86a10cb3774e" name="perfom_division_operation" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="e41450b2-f220-4db9-a222-9f7836cc066a" />
+          </operation>
+          <operation Id="0e08d256-a4fd-452e-8c9a-f8a5296ad4d2" name="perfom_input_operation" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="3a72f870-fda5-4d1d-9261-60093412f5df" />
+          </operation>
+          <operation Id="c3086870-2dec-4c38-b7e5-ae7d50b4f68d" name="perform_output_operation" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="bf120926-853a-40db-ac51-b1e771ac5919" />
+          </operation>
+          <operation Id="87b2b165-2aa4-4731-bdcd-4aa5624cb14f" name="perfom_assigment_operation" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="b2c0cd67-a01f-4365-8d1a-f2f94570102f" />
+          </operation>
+          <operation Id="9dd3fc9c-36e3-424b-9ef9-c8b16b8651aa" name="perfom_goto_opeartion" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="b09cb19d-f6bb-4505-ab09-d4b98adac98a" />
+          </operation>
+          <operation Id="51ef1799-c1a7-498e-b9ed-28fb449015f7" name="perfom_comparison_opeationt" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="4b424b9c-1468-4248-a0fe-7101cc378a9f" />
+          </operation>
+        </ownedOperations>
+      </Interface>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="3b23c346-5049-4ce6-8210-2ff56dd994fb" name="Lm2" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="00970d88-61c6-4a5e-9c3a-4e1b4b7d46e6" />
         <suppliersInternal>
-          <interfaceRealization Id="3d48cf0b-8372-42f2-bb9f-c7d456f85e13">
-            <interfaceMoniker Id="5cb537ec-9660-4dc7-8153-c0d3a86c51fd" LastKnownName="Compiler Exceptions" />
-            <elementDefinition Id="f334adbc-cd40-4423-a43c-7d4ec98d0670" />
+          <interfaceRealization Id="9f2f7aa6-9c90-4f88-80a4-c349276bb11b">
+            <interfaceMoniker Id="d0f4ea28-9db5-48ec-8a1c-ed5ae92662c2" LastKnownName="Lm" />
+            <elementDefinition Id="5933222c-9d65-46b8-a3a9-306650ea4c45" />
+          </interfaceRealization>
+          <interfaceRealization Id="1028a70c-7b55-4790-94b0-5f824b2ded0b">
+            <interfaceMoniker Id="790cec77-f595-4fa1-ac24-8764d67b0c79" LastKnownName="LmOperationsPerfoming" />
+            <elementDefinition Id="1246d6fc-c2ea-449c-b040-07fb635f8429" />
           </interfaceRealization>
         </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation Id="728a7d35-5bfc-481f-bae4-6c429e46305f" name="set_program" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="842959ed-2643-43ae-91fd-9ace8a7e9e55" />
+          </operation>
+          <operation Id="e6bb7eb3-6988-4255-941e-f72f2a31625c" name="get_value_operand" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="111246cd-928a-4091-a1ca-a4e1f86fe122" />
+          </operation>
+          <operation Id="41df8de1-f6b9-4082-81c5-69e276a91ac7" name="get_adress_operand" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="5d9205a8-f311-4d0c-8edb-d6cc5c126f74" />
+          </operation>
+          <operation Id="b0c80d57-a083-46e9-84d9-bb13ba2ede5b" name="perfom_arithmetic_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="4c416f08-bb7e-431c-bc30-ec3c9738be3d" />
+          </operation>
+          <operation Id="f2c64b53-bb7d-4945-9e84-42fb1d09f8e1" name="perfom_division_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="28ed6b69-a251-4d20-bf3f-81fc9e05a533" />
+          </operation>
+          <operation Id="dcbd8300-8853-470e-a506-ea9f0c037428" name="perfom_input_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="0be890af-0550-4b65-9fef-aa41e878cc86" />
+          </operation>
+          <operation Id="c56208f7-1ed4-41b4-8c64-78fb1cfdccb2" name="perform_output_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="02fe192b-8740-4665-824b-f2b68f9d91b5" />
+          </operation>
+          <operation Id="85d0ad9f-3ecf-4ea9-8e78-64353810e2b2" name="perfom_assigment_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="2b0cf219-f655-4723-ac2e-cc83b5481703" />
+          </operation>
+          <operation Id="a34a3183-3d6b-43b2-b3c6-522e36e97cf6" name="perfom_goto_opeartion" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="1e11117d-ecbc-4a5d-bcbd-ce73413f2502" />
+          </operation>
+          <operation Id="f3ae9011-e972-4859-852f-2738f56e75f4" name="perfom_comparison_opeationt" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="cc1d2a77-e99d-4021-9a5d-a0a4e44a3cc5" />
+          </operation>
+        </ownedOperationsInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <class Id="f63cb77e-da0b-4aaf-95c1-2d746427a970" name="Command Exceptions" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <elementDefinition Id="a300767e-1992-4f4c-ab67-8ef13604bb63" />
+      <class Id="12ce284f-f329-4b44-900a-c41b27aae611" name="Lm1" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="0a9226da-ad38-42d2-a7fc-05b4f82e9bfa" />
         <suppliersInternal>
-          <interfaceRealization Id="44be240a-3ee0-4f3b-9e32-f64ced415aed">
-            <interfaceMoniker Id="5cb537ec-9660-4dc7-8153-c0d3a86c51fd" LastKnownName="Compiler Exceptions" />
-            <elementDefinition Id="5de1edbf-e6b0-430b-b7db-37b464fb12f7" />
+          <interfaceRealization Id="c4bcb48f-350e-487b-bf12-60224a854d6f">
+            <interfaceMoniker Id="d0f4ea28-9db5-48ec-8a1c-ed5ae92662c2" LastKnownName="Lm" />
+            <elementDefinition Id="c5869e68-e3ed-4d40-ae1a-bf90cdada81f" />
+          </interfaceRealization>
+          <interfaceRealization Id="05bee860-d651-4ebe-b853-7e9a934b2f51">
+            <interfaceMoniker Id="790cec77-f595-4fa1-ac24-8764d67b0c79" LastKnownName="LmOperationsPerfoming" />
+            <elementDefinition Id="92dd795f-c02c-4c3d-9a87-c789c4a71e2d" />
           </interfaceRealization>
         </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation Id="f355a85f-049e-4e03-acf5-ba6b9eafcca7" name="set_program" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="f3786098-cd17-42e4-9735-4555de422b11" />
+          </operation>
+          <operation Id="55004826-df04-4f7a-b466-92b12d2a15bd" name="get_value_operand" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="b215c834-3430-4f4f-aa25-6736c860fbfa" />
+          </operation>
+          <operation Id="678752ad-ec28-4906-a644-111688bc8438" name="get_adress_operand" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="10a76b81-8064-4aa7-8f64-75064d0b5522" />
+          </operation>
+          <operation Id="9786673a-e870-4d99-8ddb-bcace5d1ff25" name="perfom_arithmetic_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="0a508773-8692-4e96-aed4-a3a0a08f4e8e" />
+          </operation>
+          <operation Id="fe67b329-bec9-469c-9380-9ca8bf9ec3c1" name="perfom_division_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="820886d7-28b5-4422-89f3-755c22b86c86" />
+          </operation>
+          <operation Id="b1e8b258-6376-4b79-a26a-0ba7f45e80c2" name="perfom_input_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="8188cc69-db7d-4ad0-b655-ad099c7bcd40" />
+          </operation>
+          <operation Id="11779bcd-9de6-4f06-aeba-9b0753bb7778" name="perform_output_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="b6b013e1-0d2e-400e-bee6-3eae8c816a9b" />
+          </operation>
+          <operation Id="13a79c32-8528-47e9-aba5-f102d62dd8dd" name="perfom_assigment_operation" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="67e98d5b-14a0-4a50-9223-c11115dff827" />
+          </operation>
+          <operation Id="9777194e-d696-459a-86ca-4d052f65c63f" name="perfom_goto_opeartion" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="d5f372f7-ccdc-4104-85c0-6293e14d0d71" />
+          </operation>
+          <operation Id="b0b38d20-ad58-468a-87ab-f5bdb4f7c892" name="perfom_comparison_opeationt" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="ed713b4e-be9c-4744-9f8d-862f3918fdd0" />
+          </operation>
+        </ownedOperationsInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
     <logicalClassDesignerModelHasTypes>
-      <class Id="3d871e6b-8354-44d9-8388-d494a744f02f" name="Um Exceptions" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <elementDefinition Id="f7018a9e-15ff-4ca6-95be-75302289f98d" />
-        <suppliersInternal>
-          <interfaceRealization Id="9d2e55c1-8494-4db8-9ae7-268c6961c92d">
-            <interfaceMoniker Id="5cb537ec-9660-4dc7-8153-c0d3a86c51fd" LastKnownName="Compiler Exceptions" />
-            <elementDefinition Id="0e5a1fb0-3132-4dcf-9643-97f56d46b8db" />
-          </interfaceRealization>
-        </suppliersInternal>
+      <class Id="81ec97dd-aba1-42c8-9d32-ba2139c5f893" name="Names" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="d2c22f8b-2ab4-41a2-84ee-f385d0674706" />
+        <targetEnds>
+          <association Id="212e905a-a0b8-4bc2-a65e-526b79d33b60" isDerived="false" sourceEndRoleName="Names" targetEndRoleName="Memory" isLeaf="false" isAbstract="false">
+            <classMoniker Id="fad672ba-c66d-4972-a175-bee75f5075e9" LastKnownName="Memory" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="8f43a004-2a76-4651-b983-54de6a0a1000" name="Names" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="95b622d4-1b77-4a02-9436-d89ed6435eb5" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="acc4d3aa-3aaf-4103-81da-667ca3d57466" name="Memory" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="c4f02488-cd51-4339-9553-6c57b500f694" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="62c45078-c9d1-4bc2-b382-d23a22df5f8c" />
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property Id="9d94c332-d1ee-454d-9e6d-c5d7bb9f2f61" name="hashTable&lt;string&gt; Names" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="387c3726-27c0-4af0-a02a-6e053c5eeabc" />
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation Id="2049bdd9-1278-44dd-96c1-3cffb04e59d7" name="set_name" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="acf62dd6-a524-416c-8c84-ae47c9a45d92" />
+          </operation>
+          <operation Id="c3f3f523-c417-4151-b2ba-63cbc0d29480" name="get_name" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="715d39f4-2eba-4c8f-b927-d65cf536ebca" />
+          </operation>
+        </ownedOperationsInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
   </packagedElements>

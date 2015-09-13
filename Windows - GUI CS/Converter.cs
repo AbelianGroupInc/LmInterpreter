@@ -8,6 +8,7 @@ namespace LM_GUI_UP
 {
     static class Converter
     {
+        #region Class Details
         private static class Details
         {
             public static int ToDecSystem (string number, uint k, int cur = 0){
@@ -54,6 +55,7 @@ namespace LM_GUI_UP
 
             
         }
+        #endregion
         public static int HexToDec(string hexNumber)
         {
             return Details.ToDecSystem(hexNumber, 16);

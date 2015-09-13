@@ -10,25 +10,29 @@ namespace LM_GUI_UP
     {
         const int SIZE_OF_MEMORY = 65535;
         private MemoryItem[] memory;
-        private string[] names;
+        private Dictionary<int, string> names;
 
         public Memory(){
-            //if (memory != null)
-            //    this.ClearMemory();
-            //else
+            if (memory != null)
+                this.ClearMemory();
+            else
+            {
                 memory = new MemoryItem[SIZE_OF_MEMORY];
+                names = new Dictionary<int, string>();
+            }
         }
+        #region Methods for memory
         public MemoryItem GetCell(int position){
-            this.check(position);
+            this.Check(position);
 
-            if (this.memory[position].GetItem() == null)
+            if (this.memory[position] == null)
                 throw new Exception();
 
             return this.memory[position];
         }
         public void SetCell(int position, MemoryItem item)
         {
-            this.check(position);
+            this.Check(position);
 
             this.memory[position] = item;
         }
@@ -39,31 +43,35 @@ namespace LM_GUI_UP
         }
         public bool IsMemoryCellEmpty(int position)
         {
-            this.check(position);
+            this.Check(position);
 
             return this.memory[position] == null;
         }
+        #endregion
 
-        //public void SetName(int position, string name)
-        //{
-        //    this.check(position);
+        #region Methods for names
+        public void SetName(int position, string name)
+        {
+            this.Check(position);
 
-        //    this.names[position] = name;
-        //}
+            this.names.Add(position, name);
+        }
 
-        //public string GetName(int position)
-        //{
-        //    this.check(position);
+        public string GetName(int position)
+        {
+            this.Check(position);
 
-        //    if (this.names[position] == null)
-        //        return Converter.DecToHex(position, 4); // possible mistakes
-        //    else
-        //        return this.names[position];
-        //}
-        public void check(int position)
+            if (this.names[position] == null)
+                return Converter.DecToHex(position, 4); // possible mistakes
+            else
+               return this.names[position];
+        }
+        #endregion
+        public void Check(int position)
         {
             if (position < 0 || position > SIZE_OF_MEMORY)
-                throw new Exception("Wrong address");
+                throw new Exception("");
+            //wrong address
         }
     }
 }

@@ -11,12 +11,7 @@ namespace LM_GUI_UP
         protected int current_adress;
         protected Memory ram_memory;
 
-        protected bool end_flag;
-        protected bool input_flag;
-
         public LM(){
-            end_flag = false;
-            input_flag = false;
             ram_memory = null;
             current_adress = 0;
         }

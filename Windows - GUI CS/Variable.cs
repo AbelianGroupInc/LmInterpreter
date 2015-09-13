@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,14 +10,14 @@ namespace LM_GUI_UP
     {
         const int VAR_MAX = 65535;
 
-        private ArrayList variableItem;
+        private List<int> variableItem;
         public Variable(int value)
         {
-            variableItem = new ArrayList();
+            variableItem = new List<int>();
             variableItem.Add(value % VAR_MAX);
         }
 
-        public ArrayList GetItem()
+        public List<int> GetItem()
         {
             return variableItem;
         }

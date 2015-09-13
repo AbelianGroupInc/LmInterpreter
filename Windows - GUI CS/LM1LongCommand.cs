@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ namespace LM_GUI_UP
             CMD_LIST = new int[]{ 0, 16, 1, 2, 3, 19, 4, 20, 5, 6, 7,
 	        128, 129, 130, 131, 132, 133, 134, 147, 148, 149, 150 };
 
-            this.command = new ArrayList() { cmd, r1, m2, a2 };
+            this.command = new List<int>() { cmd, r1, m2, a2 };
 
             if ((r1 < 0 || r1 > MAX_SIZE_OF_REGISTER) ||
                 (m2 < 0 || m2 > MAX_SIZE_OF_REGISTER) ||

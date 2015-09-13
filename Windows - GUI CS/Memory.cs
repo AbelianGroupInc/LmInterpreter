@@ -27,6 +27,7 @@ namespace LM_GUI_UP
 
             if (this.memory[position] == null)
                 throw new Exception();
+            //Appealing to a non-existent adress
 
             return this.memory[position];
         }
@@ -71,7 +72,7 @@ namespace LM_GUI_UP
         {
             if (position < 0 || position > SIZE_OF_MEMORY)
                 throw new Exception("");
-            //wrong address
+            //Memory bounds violation
         }
     }
 }

@@ -10,6 +10,7 @@
 class Memory{
 public:
 	Memory();
+	Memory(Memory& copyingMemory);
 
 	MemoryItem* get(int position);
 	//Getting a cell content. A command or a variable 
@@ -20,7 +21,8 @@ public:
 	//Set variable name
 	std::string get_name(int position)const;
 	//Get variable name
-
+	std::unordered_map<int, std::shared_ptr<MemoryItem> > get_memory();
+	std::unordered_map<int, std::string> get_names();
 	
 private:
 	std::unordered_map<int,std::shared_ptr<MemoryItem> > memory;

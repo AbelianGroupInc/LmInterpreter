@@ -4,8 +4,11 @@
 #include <string>
 #include <fstream>
 #include <ios>
+#include <Windows.h>
 
 #include "Converter.h"
+#include "Memory.h"
+#include "InterpreterException.h"
 
 LmInterpreter::LmInterpreter(Lm* machine) :machine(machine), program(){
 	if (machine == nullptr)
@@ -38,6 +41,7 @@ void LmInterpreter::parsing(std::istream* input){
 	std::string temp_str;
 
 	std::ofstream tmp("temp.dat");
+	SetFileAttributes(L"temp.dat", FILE_ATTRIBUTE_HIDDEN);
 	this->temp_file = &tmp;
 
 	while (getline(*input, temp_str)){
@@ -165,8 +169,23 @@ void LmInterpreter::init_value(std::string &str, int address, int &index){
 }
 
 void LmInterpreter::run_program(){
-	this->machine->set_program(this->program);
-	this->machine->execute_the_program();
+	Memory* reservedMemory = new Memory(machine->get_memory());
+	try{
+		this->machine->set_program(this->program);
+		this->machine->execute_the_program();
+		machine->set_memory(*reservedMemory);
+		delete reservedMemory;
+	}
+	catch (InterpreterException& exp){
+		machine->set_memory(*reservedMemory);
+		delete reservedMemory;
+		throw exp;
+	}
+	catch (std::exception& exp){
+		machine->set_memory(*reservedMemory);
+		delete reservedMemory;
+		throw exp;
+	}
 }
 
 void LmInterpreter::save_programm(const char* file_name)const{

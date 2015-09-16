@@ -16,7 +16,7 @@ Lm3Command::Lm3Command(int cmd, int r_1, int r_2, int r_3){
 	if ((r_1 < 0 || r_1 > MAX_SIZE_OF_REGISTER) || 
 		(r_2 < 0 || r_2 > MAX_SIZE_OF_REGISTER) ||
 		(r_3 < 0 || r_3 > MAX_SIZE_OF_REGISTER))
-		throw std::out_of_range("Wrong address");
+		throw std::out_of_range("Memory bounds violation");
 
 	for (int i = 0; i < AMOUNT_OF_COMMANDS; i++)
 		if (cmd == CMD_LIST[i])

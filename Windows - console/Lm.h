@@ -3,6 +3,7 @@
 #define LM_INTERPRETER_LM_H
 
 #include <vector>
+#include "Memory.h"
 
 class Lm{
 public:
@@ -14,6 +15,9 @@ public:
 	virtual void init_variable(int position, std::string name) = 0;
 	virtual void init_variable(int position, int value) = 0;
 	virtual void init_variable(int position, std::string name, int value) = 0;
+
+	virtual Memory get_memory() = 0;
+	virtual void set_memory(Memory) = 0;
 
 	virtual void clear_memory() = 0;
 };

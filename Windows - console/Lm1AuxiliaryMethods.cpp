@@ -13,7 +13,8 @@ MAX_RAM_MEMORY_SIZE = 65535;
 
 int const
 COMMAND_IS_LONG = 100,
-COMMAND_IS_NOT_LONG = 200;
+COMMAND_IS_NOT_LONG = 200,
+COMMAND_SECOND_PART = 300;
 
 int const
 FIRST_OPERAND = 1,
@@ -151,11 +152,20 @@ MemoryItem* Lm1::get_operand(const int operandNumb, int command){
 	return operand;
 }
 
+int Lm1::get_transit_address(){
+	int transit_address;
+	if (ram_memory.get(get_a2_register())->get_value() == COMMAND_SECOND_PART)
+		transit_address = this->get_a2_register() - 1;
+	else
+		transit_address = this->get_a2_register();
+	return transit_address;
+}
+
 void Lm1::unconditional_transit(bool(*func)(const MemoryItem*, const MemoryItem*)){
 	MemoryItem* first_operand = this->get_operand(FIRST_OPERAND, COMMAND_IS_LONG);
 	MemoryItem* second_operand = this->get_operand(SECOND_OPERAND, COMMAND_IS_LONG);
 
-	this->current_address = func(first_operand, second_operand) ? this->get_a2_register() : this->current_address + 2;
+	this->current_address = func(first_operand, second_operand) ? get_transit_address() : this->current_address + 2;
 }
 
 void Lm1::conditional_transit(bool(*func)(const MemoryItem*, const MemoryItem*), int command){
@@ -170,7 +180,10 @@ void Lm1::conditional_transit(bool(*func)(const MemoryItem*, const MemoryItem*),
 	if(this->current_address + 2 > MAX_RAM_MEMORY_SIZE)
 		std::exception("Memory bounds violation");
 
-	this->current_address = func(first_operand, second_operand) ? this->get_a2_register() : this->current_address + 2;
+	bool temp = func(first_operand, second_operand);
+	int a2reg = this->get_a2_register();
+
+	this->current_address = func(first_operand, second_operand) ? get_transit_address() : this->current_address + 2;
 }
 
 void Lm1::cmd_rm_assigment_1_work(){
@@ -213,3 +226,15 @@ void Lm1::init_variable(int position, std::string name, int value){
 	this->init_variable(position, name);
 	this->init_variable(position, value);
 }
+
+Memory Lm1::get_memory(){
+	return ram_memory;
+}
+
+void Lm1::set_memory(Memory newMemory){
+	ram_memory = newMemory;
+}
+
+
+
+

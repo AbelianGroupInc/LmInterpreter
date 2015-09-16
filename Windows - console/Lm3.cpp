@@ -35,86 +35,101 @@ const int
 
 
 void Lm3::execute_the_program(){
-	while (true){
-		switch (this->memory.get(this->current_address)->get_value()){
-		case CMD_INPUT:
-			this->perform_input_operation(LmCommands::input);
-			break;
-		case CMD_OUTPUT:
-			this->perform_output_operation(LmCommands::output);
-			break;
-		case CMD_UNSIGNED_INPUT:
-			this->perform_input_operation(LmCommands::unsigned_input);
-			break;
-		case CMD_UNSIGNED_OUTPUT:
-			this->perform_output_operation(LmCommands::unsigned_output);
-			break;
-		case CMD_ADD:
-			this->perform_arithmetic_operation(LmCommands::add);
-			break;
-		case CMD_SUBSRACT:
-			this->perform_arithmetic_operation(LmCommands::subsract);
-			break;
-		case CMD_MULTIPLICATION:
-			this->perform_arithmetic_operation(LmCommands::multiplication);
-			break;
-		case CMD_DIVISION:
-			this->perform_division_operation(LmCommands::division, LmCommands::module);
-			break;
-		case CMD_UNSIGNED_MULTIPLICATION:
-			this->perform_arithmetic_operation(LmCommands::unsigned_multiplication);
-			break;
-		case CMD_UNSIGNED_DIVISION:
-			this->perform_division_operation(LmCommands::unsigned_division, LmCommands::unsigned_module);
-			break;
-		case CMD_ASSIGMENT:
-			perform_assignment_operation();
-			break;
-		case CMD_GOTO:
-			this->perform_go_to_operation();
-			break;
-		case CMD_LESS:
-			this->perform_comparison_operation(LmCommands::less);
-			break;
-		case CMD_GREATER:
-			this->perform_comparison_operation(LmCommands::greater);
-			break;
-		case CMD_LESS_OR_EQUAL:
-			this->perform_comparison_operation(LmCommands::less_or_equal);
-			break;
-		case CMD_GREATER_OR_EQUAL:
-			this->perform_comparison_operation(LmCommands::greater_or_equal);
-			break;
-		case CMD_EQUAL:
-			this->perform_comparison_operation(LmCommands::equal);
-			break;
-		case CMD_NOT_EQUAL:
-			this->perform_comparison_operation(LmCommands::not_equal);
-			break;
-		case CMD_UNSIGNED_LESS:
-			this->perform_comparison_operation(LmCommands::unsigned_less);
-			break;
-		case CMD_UNSIGNED_GREATER:
-			this->perform_comparison_operation(LmCommands::unsigned_greater);
-			break;
-		case CMD_UNSIGNED_LESS_OR_EQUAL:
-			this->perform_comparison_operation(LmCommands::unsigned_less_or_equal);
-			break;
-		case CMD_UNSIGNED_GREATER_OR_EQUAL:
-			this->perform_comparison_operation(LmCommands::unsigned_greater_or_equal);
-			break;
-		case CMD_STOP:
-			return;
-			break;
-		default:
-			std::exception();
-			break;
-		}
+		while (true){
+			try{
+				switch (this->memory.get(this->current_address)->get_value()){
+				case CMD_INPUT:
+					this->perform_input_operation(LmCommands::input);
+					break;
+				case CMD_OUTPUT:
+					this->perform_output_operation(LmCommands::output);
+					break;
+				case CMD_UNSIGNED_INPUT:
+					this->perform_input_operation(LmCommands::unsigned_input);
+					break;
+				case CMD_UNSIGNED_OUTPUT:
+					this->perform_output_operation(LmCommands::unsigned_output);
+					break;
+				case CMD_ADD:
+					this->perform_arithmetic_operation(LmCommands::add);
+					break;
+				case CMD_SUBSRACT:
+					this->perform_arithmetic_operation(LmCommands::subsract);
+					break;
+				case CMD_MULTIPLICATION:
+					this->perform_arithmetic_operation(LmCommands::multiplication);
+					break;
+				case CMD_DIVISION:
+					this->perform_division_operation(LmCommands::division, LmCommands::module);
+					break;
+				case CMD_UNSIGNED_MULTIPLICATION:
+					this->perform_arithmetic_operation(LmCommands::unsigned_multiplication);
+					break;
+				case CMD_UNSIGNED_DIVISION:
+					this->perform_division_operation(LmCommands::unsigned_division, LmCommands::unsigned_module);
+					break;
+				case CMD_ASSIGMENT:
+					perform_assignment_operation();
+					break;
+				case CMD_GOTO:
+					this->perform_go_to_operation();
+					break;
+				case CMD_LESS:
+					this->perform_comparison_operation(LmCommands::less);
+					break;
+				case CMD_GREATER:
+					this->perform_comparison_operation(LmCommands::greater);
+					break;
+				case CMD_LESS_OR_EQUAL:
+					this->perform_comparison_operation(LmCommands::less_or_equal);
+					break;
+				case CMD_GREATER_OR_EQUAL:
+					this->perform_comparison_operation(LmCommands::greater_or_equal);
+					break;
+				case CMD_EQUAL:
+					this->perform_comparison_operation(LmCommands::equal);
+					break;
+				case CMD_NOT_EQUAL:
+					this->perform_comparison_operation(LmCommands::not_equal);
+					break;
+				case CMD_UNSIGNED_LESS:
+					this->perform_comparison_operation(LmCommands::unsigned_less);
+					break;
+				case CMD_UNSIGNED_GREATER:
+					this->perform_comparison_operation(LmCommands::unsigned_greater);
+					break;
+				case CMD_UNSIGNED_LESS_OR_EQUAL:
+					this->perform_comparison_operation(LmCommands::unsigned_less_or_equal);
+					break;
+				case CMD_UNSIGNED_GREATER_OR_EQUAL:
+					this->perform_comparison_operation(LmCommands::unsigned_greater_or_equal);
+					break;
+				case CMD_STOP:
+					return;
+					break;
+				default:
+					throw std::exception("Incorrect command");
+					break;
+				}
+			}
+			catch (std::exception& exp){
+				char* temp = new char[strlen(exp.what()) + 1];
+				strcpy(temp, exp.what());
+				throw InterpreterException(temp, current_address);
+			}
 	}
 }
 
 void Lm3::clear_memory(){
 	this->memory.clear();
+}
+
+Memory Lm3::get_memory(){
+	return memory;
+}
+
+void Lm3::set_memory(Memory newMemory){
+	memory = newMemory;
 }
 
 void Lm3::init_variable(int position, std::string name){
@@ -136,7 +151,9 @@ void Lm3::set_program(const std::vector<std::vector<int> > &program){
 		throw std::exception("The program is empty");
 
 	if (program.front().front() >= 0 && program.front().front() <= MAX_MEMORY_SIZE)
-		this->current_address=program.front().front();
+		this->current_address = program.front().front();
+	else
+		throw std::out_of_range("Memory bounds violation");
 
 	for (size_t i = 0; i < program.size(); i++){
 		if (program[i].front() >= 0 && program[i].front() <= MAX_MEMORY_SIZE){
@@ -149,7 +166,7 @@ void Lm3::set_program(const std::vector<std::vector<int> > &program){
 			catch(std::exception& exp){
 				char* temp = new char[strlen(exp.what()) + 1];
 				strcpy(temp, exp.what());
-				throw InterpreterException(temp, i + 1);
+				throw InterpreterException(temp, program[i].front());
 			}
 			
 		}

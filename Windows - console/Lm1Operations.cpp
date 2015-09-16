@@ -131,3 +131,7 @@ void Lm1::perform_division_operation(MemoryItem* (*division_func)(const MemoryIt
 	
 	this->go_to_next_command(command);
 }
+
+void Lm1::perform_go_to_operation(){
+	this->current_address = get_transit_address();
+}

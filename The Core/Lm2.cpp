@@ -35,87 +35,103 @@ const int
 
 void Lm2::execute_the_program(){
 	while (true){
-		switch (this->memory.get(this->current_address)->get_value()){
-		case CMD_COMPARE:
-			this->perfom_flag_determination();
-			break;
-		case CMD_INPUT:
-			this->perform_input_operation(LmCommands::input);
-			break;
-		case CMD_OUTPUT:
-			this->perform_output_operation(LmCommands::output);
-			break;
-		case CMD_UNSIGNED_INPUT:
-			this->perform_input_operation(LmCommands::unsigned_input);
-			break;
-		case CMD_UNSIGNED_OUTPUT:
-			this->perform_output_operation(LmCommands::unsigned_output);
-			break;
-		case CMD_ADD:
-			this->perform_arithmetic_operation(LmCommands::add,CMD_ADD);
-			break;
-		case CMD_SUBSRACT:
-			this->perform_arithmetic_operation(LmCommands::subsract, CMD_SUBSRACT);
-			break;
-		case CMD_MULTIPLICATION:
-			this->perform_arithmetic_operation(LmCommands::multiplication,CMD_MULTIPLICATION);
-			break;
-		case CMD_DIVISION:
-			this->perform_arithmetic_operation(LmCommands::division,CMD_DIVISION);
-			break;
-		case CMD_UNSIGNED_MULTIPLICATION:
-			this->perform_arithmetic_operation(LmCommands::unsigned_multiplication,CMD_UNSIGNED_MULTIPLICATION);
-			break;
-		case CMD_UNSIGNED_DIVISION:
-			this->perform_arithmetic_operation(LmCommands::unsigned_division,CMD_UNSIGNED_DIVISION);
-			break;
-		case CMD_ASSIGMENT:
-			perform_assignment_operation();
-			break;
-		case CMD_GOTO:
-			this->perform_goto();
-			break;
-		case CMD_LESS:
-			this->perform_comparison_operation(flags::LESS);
-			break;
-		case CMD_GREATER:
-			this->perform_comparison_operation(flags::GREATER);
-			break;
-		case CMD_LESS_OR_EQUAL:
-			this->perform_comparison_operation(flags::LESS_OR_EQUAL);
-			break;
-		case CMD_GREATER_OR_EQUAL:
-			this->perform_comparison_operation(flags::GREATER_OR_EQUAL);
-			break;
-		case CMD_EQUAL:
-			this->perform_comparison_operation(flags::EQUAL);
-			break;
-		case CMD_NOT_EQUAL:
-			this->perform_comparison_operation(flags::N_EQUAL);
-			break;
-		case CMD_UNSIGNED_LESS:
-			this->perform_comparison_operation(flags::INS_LESS);
-			break;
-		case CMD_UNSIGNED_GREATER:
-			this->perform_comparison_operation(flags::INS_GREATER);
-			break;
-		case CMD_UNSIGNED_LESS_OR_EQUAL:
-			this->perform_comparison_operation(flags::INS_LESS_OR_EQUAL);
-			break;
-		case CMD_UNSIGNED_GREATER_OR_EQUAL:
-			this->perform_comparison_operation(flags::INS_GREATER_OR_EQUAL);
-			break;
-		case CMD_STOP:
-			return;
-			break;
-		default:
-			break;
+		try{
+			switch (this->memory.get(this->current_address)->get_value()){
+			case CMD_COMPARE:
+				this->perfom_flag_determination();
+				break;
+			case CMD_INPUT:
+				this->perform_input_operation(LmCommands::input);
+				break;
+			case CMD_OUTPUT:
+				this->perform_output_operation(LmCommands::output);
+				break;
+			case CMD_UNSIGNED_INPUT:
+				this->perform_input_operation(LmCommands::unsigned_input);
+				break;
+			case CMD_UNSIGNED_OUTPUT:
+				this->perform_output_operation(LmCommands::unsigned_output);
+				break;
+			case CMD_ADD:
+				this->perform_arithmetic_operation(LmCommands::add, CMD_ADD);
+				break;
+			case CMD_SUBSRACT:
+				this->perform_arithmetic_operation(LmCommands::subsract, CMD_SUBSRACT);
+				break;
+			case CMD_MULTIPLICATION:
+				this->perform_arithmetic_operation(LmCommands::multiplication, CMD_MULTIPLICATION);
+				break;
+			case CMD_DIVISION:
+				this->perform_division_operation(LmCommands::division, LmCommands::module);
+				break;
+			case CMD_UNSIGNED_MULTIPLICATION:
+				this->perform_arithmetic_operation(LmCommands::unsigned_multiplication, CMD_UNSIGNED_MULTIPLICATION);
+				break;
+			case CMD_UNSIGNED_DIVISION:
+				this->perform_division_operation(LmCommands::unsigned_division, LmCommands::unsigned_module);
+				break;
+			case CMD_ASSIGMENT:
+				perform_assignment_operation();
+				break;
+			case CMD_GOTO:
+				this->perform_goto();
+				break;
+			case CMD_LESS:
+				this->perform_comparison_operation(flags::LESS);
+				break;
+			case CMD_GREATER:
+				this->perform_comparison_operation(flags::GREATER);
+				break;
+			case CMD_LESS_OR_EQUAL:
+				this->perform_comparison_operation(flags::LESS_OR_EQUAL);
+				break;
+			case CMD_GREATER_OR_EQUAL:
+				this->perform_comparison_operation(flags::GREATER_OR_EQUAL);
+				break;
+			case CMD_EQUAL:
+				this->perform_comparison_operation(flags::EQUAL);
+				break;
+			case CMD_NOT_EQUAL:
+				this->perform_comparison_operation(flags::N_EQUAL);
+				break;
+			case CMD_UNSIGNED_LESS:
+				this->perform_comparison_operation(flags::INS_LESS);
+				break;
+			case CMD_UNSIGNED_GREATER:
+				this->perform_comparison_operation(flags::INS_GREATER);
+				break;
+			case CMD_UNSIGNED_LESS_OR_EQUAL:
+				this->perform_comparison_operation(flags::INS_LESS_OR_EQUAL);
+				break;
+			case CMD_UNSIGNED_GREATER_OR_EQUAL:
+				this->perform_comparison_operation(flags::INS_GREATER_OR_EQUAL);
+				break;
+			case CMD_STOP:
+				return;
+				break;
+			default:
+				throw std::exception("Incorrect command");
+				break;
+			}
+		}
+		catch (std::exception& exp){
+			char* temp = new char[strlen(exp.what()) + 1];
+			strcpy(temp, exp.what());
+			throw InterpreterException(temp, current_address);
 		}
 	}
 }
 
 void Lm2::clear_memory(){
 	this->memory.clear();
+}
+
+Memory Lm2::get_memory(){
+	return memory;
+}
+
+void Lm2::set_memory(Memory newMemory){
+	memory = newMemory;
 }
 
 void Lm2::init_variable(int position, std::string name){
@@ -134,10 +150,12 @@ void Lm2::init_variable(int position, std::string name, int value){
 void Lm2::set_program(const std::vector<std::vector<int> > &program){
 	bool end = false;
 	if (program.size() == 0)
-		throw std::exception("Lost end of program");
+		throw std::exception("The program is empty");
 
 	if (program.front().front() >= 0 && program.front().front() <= MAX_MEMORY_SIZE)
-		this->current_address=program.front().front();
+		this->current_address = program.front().front();
+	else
+		throw std::out_of_range("Memory bounds violation");
 
 	for (size_t i = 0; i < program.size(); i++){
 		if (program[i].front() >= 0 && program[i].front() <= MAX_MEMORY_SIZE){
@@ -151,12 +169,12 @@ void Lm2::set_program(const std::vector<std::vector<int> > &program){
 			catch (std::exception& exp){
 				char* temp = new char[strlen(exp.what()) + 1];
 				strcpy(temp, exp.what());
-				throw InterpreterException(temp, i + 1);
+				throw InterpreterException(temp, program[i].front());
 			}
 
 		}
 		else{
-			throw std::out_of_range("Out of Memory");
+			throw std::out_of_range("Memory bounds violation");
 		}
 	}
 	
@@ -174,9 +192,17 @@ void Lm2::perform_arithmetic_operation(MemoryItem* (*func)(const MemoryItem*, co
 	MemoryItem* var_2 = new Variable(this->get_value_operand(this->current_address,2));
 	this->memory.set(this->get_address_operand(this->current_address, 1), func(var_1, var_2));
 	
-	if (type == CMD_DIVISION || type == CMD_UNSIGNED_DIVISION)
-		this->memory.set(this->get_address_operand(this->current_address, 1) + 1, LmCommands::module(var_1, var_2));
+	this->current_address++;
+}
+
+void Lm2::perform_division_operation(MemoryItem* (*division_func)(const MemoryItem*, const MemoryItem*),
+	MemoryItem* (*module_func)(const MemoryItem*, const MemoryItem*)){
+	MemoryItem* var_1 = new Variable(this->get_value_operand(this->current_address, 1));
+	MemoryItem* var_2 = new Variable(this->get_value_operand(this->current_address, 2));
 	
+	this->memory.set(this->get_address_operand(this->current_address, 1), division_func(var_1, var_2));
+	this->memory.set(this->get_address_operand(this->current_address, 1) + 1, module_func(var_1, var_2));
+
 	this->current_address++;
 }
 
@@ -234,7 +260,7 @@ void Lm2::perform_assignment_operation(){
 
 int Lm2::get_value_operand(int position_in_memory, int number_of_operands){
 	if (position_in_memory < 0 || position_in_memory > MAX_MEMORY_SIZE)
-		throw std::out_of_range("Wrong position in memory");
+		throw std::out_of_range("Memory bounds violation");
 
 	if (number_of_operands < 0 || number_of_operands > 2)
 		throw std::length_error("Invalid numbers of operands!");
@@ -244,7 +270,7 @@ int Lm2::get_value_operand(int position_in_memory, int number_of_operands){
 
 int Lm2::get_address_operand(int position_in_memory, int number_of_operands){
 	if (position_in_memory < 0 || position_in_memory > MAX_MEMORY_SIZE)
-		throw std::out_of_range("Wrong position in memory");
+		throw std::out_of_range("Memory bounds violation");
 
 	if (number_of_operands < 0 || number_of_operands > 2)
 		throw std::length_error("Invalid numbers of operands!");

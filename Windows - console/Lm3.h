@@ -21,6 +21,9 @@ private:
 	int current_address;
 	Memory memory;
 
+	virtual Memory get_memory()override final;
+	virtual void set_memory(Memory)override final;
+
 	void perform_arithmetic_operation(MemoryItem* (*func)(const MemoryItem*, const MemoryItem*));
 	void perform_comparison_operation(bool (*func)(const MemoryItem*, const MemoryItem*));
 	void perform_input_operation(void(*func)(MemoryItem*&, const std::string));

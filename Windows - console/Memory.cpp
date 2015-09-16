@@ -7,6 +7,11 @@ Memory::Memory(){
 	this->clear();
 }
 
+Memory::Memory(Memory &copyingMemory){
+	memory = copyingMemory.get_memory();
+	names = copyingMemory.get_names();
+}
+
 void Memory::clear(){
 	for (int i = 0; i < SIZE_OF_MEMORY; i++)
 		this->memory[i] = nullptr;
@@ -19,6 +24,14 @@ MemoryItem* Memory::get(int position){
 		throw std::out_of_range("Appealing to a non-existent adress");
 
 	return this->memory[position].get();
+}
+
+std::unordered_map<int, std::shared_ptr<MemoryItem> > Memory::get_memory(){
+	return memory;
+}
+
+std::unordered_map<int, std::string> Memory::get_names(){
+	return names;
 }
 
 void Memory::set(int position, MemoryItem* item){

@@ -1,3 +1,5 @@
+//The file with implementaion of all operations in Lm1
+
 #include "Lm1.h"
 #include "Variable.h"
 #include "Converter.h"
@@ -87,7 +89,7 @@ void Lm1::perform_input_operation(void(*func)(MemoryItem*&, const std::string)){
 	MemoryItem* var1 = new Variable();
 
 	if (this->get_second_operand_adress(COMMAND_IS_LONG) + 1 >= MAX_RAM_MEMORY_SIZE)
-		throw std::out_of_range("Out of Memory");
+		throw std::out_of_range("Memory bounds violation");
 
 	func(var1, this->ram_memory.get_name(this->get_second_operand_adress(COMMAND_IS_LONG)));
 	MemoryItem* var2 = new Variable(var1->get_value());
@@ -122,10 +124,14 @@ void Lm1::perform_division_operation(MemoryItem* (*division_func)(const MemoryIt
 	MemoryItem* var_2 = new Variable(this->get_second_operand_value(COMMAND_IS_LONG));
 
 	if (this->get_cpu_value(this->get_first_operand_adress() + 1) != INT_MAX)
-		throw std::out_of_range("Out of Memory");
+		throw std::out_of_range("Memory bounds violation");
 
 	this->cpu_memory[this->get_first_operand_adress()] = division_func(var_1, var_2)->get_value();
 	this->cpu_memory[this->get_first_operand_adress() + 1] = module_func(var_1, var_2)->get_value();
 	
 	this->go_to_next_command(command);
+}
+
+void Lm1::perform_go_to_operation(){
+	this->current_address = get_transit_address();
 }

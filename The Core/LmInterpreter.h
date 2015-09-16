@@ -23,8 +23,11 @@ private:
 	std::ostream *temp_file;
 
 	void parsing(std::istream* input);
+	//Parsing lm's input program
 	void parsing_code_string(std::istream* input);
+	//Parsing code segment of program
 	void parsing_init_string(std::istream* input);
+	//Parsing initialization segment of program
 
 	int init_address(std::string &str, int &index);
 	void init_name(std::string &str, int address, int &index);

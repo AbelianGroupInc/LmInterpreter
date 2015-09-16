@@ -1,9 +1,9 @@
 #include "Lm1LongCommand.h"
 
-const int AMOUNT_OF_COMMANDS(22);
+const int AMOUNT_OF_COMMANDS(23);
 const int MAX_SIZE_OF_REGISTER(65535);
 const int CMD_LIST[AMOUNT_OF_COMMANDS] = { 0, 16, 1, 2, 3, 19, 4, 20, 5, 6, 7,
-	128, 129, 130, 131, 132, 133, 134, 147, 148, 149, 150 };
+	128, 129, 130, 131, 132, 133, 134, 147, 148, 149, 150, 300 };
 
 Lm1LongCommand::Lm1LongCommand(){
 	command = std::vector<int>(4, 0);

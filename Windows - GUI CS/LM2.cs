@@ -10,7 +10,6 @@ namespace LM_GUI_UP
     class LM2: LM, ILMOperations
     {
         private List<bool> comparisonOperations;
-        const int MAX_MEMORY_SIZE = 65535;
         public enum ComparisonFlag { EQUAL, N_EQUAL, LESS, GREATER, LESS_OR_EQUAL, GREATER_OR_EQUAL, INS_LESS, INS_GREATER, INS_LESS_OR_EQUAL, INS_GREATER_OR_EQUAL };
         #region Commands defines
             const int 
@@ -45,14 +44,65 @@ namespace LM_GUI_UP
         }
 
         #region Main methods
+        
+       /* public override void SetProgram(List<List<int > > parsedProgramText)
+        {
+            if (parsedProgramText.Count == 0)
+                throw new Exception("");
+            //The program is empty
+
+            if(parsedProgramText[0][0] >= 0 && parsedProgramText[0][0] <= MAX_MEMORY_SIZE)
+                currentAddress = parsedProgramText[0][0];
+
+            for(int i = 0; i < parsedProgramText.Count; i++){
+                if(parsedProgramText[i][0] >= 0 && parsedProgramText[i][0] <= MAX_MEMORY_SIZE){
+                    InitialiseCommand(parsedProgramText[i]);
+                }
+                else
+                {
+                    throw new Exception();
+                    //Runtime: Memory bounds violation
+                }
+            }
+            if (!end)
+                throw new Exception();
+            //Runtime: Lost end of program
+
+        }
+        */
+
+        protected override void InitialiseCommand(List<int> command)
+        {
+            try
+            {
+                CheckCommandFormat(command);
+
+                this.ramMemory.SetCell(command[0], new LM2Command(command[1],
+                    command[2], command[3]));
+            }
+            catch (Exception exp)
+            {
+                //char* temp = new char[strlen(exp.what()) + 1];
+                //strcpy(temp, exp.what());
+                //throw InterpreterException(temp, i + 1);
+            }
+        }
+
+        private void CheckCommandFormat(List<int> command)
+        {
+            if (command.Count < 4)
+                throw new Exception("Too few fields");
+            else if (command.Count > 4)
+                throw new Exception("Too many fields");
+        }
         public override void DoOneStep(RichTextBox output)
         {
             if (this.endFlag)
                 throw new Exception();
-                //Program ended
+            //Program ended
             if (this.inputFlag)
                 throw new Exception();
-                //The value isn't entered
+            //The value isn't entered
             switch (this.GetCurrentCommandNumber())
             {
                 case CMD_COMPARE:
@@ -106,82 +156,46 @@ namespace LM_GUI_UP
                     PerformComparisonOperation(ComparisonFlag.GREATER);
                     break;
                 case CMD_LESS_OR_EQUAL:
-		            PerformComparisonOperation(ComparisonFlag.LESS_OR_EQUAL);
-		            break;
-	            case CMD_GREATER_OR_EQUAL:
-		            PerformComparisonOperation(ComparisonFlag.GREATER_OR_EQUAL);
-		            break;
-	            case CMD_EQUAL:
+                    PerformComparisonOperation(ComparisonFlag.LESS_OR_EQUAL);
+                    break;
+                case CMD_GREATER_OR_EQUAL:
+                    PerformComparisonOperation(ComparisonFlag.GREATER_OR_EQUAL);
+                    break;
+                case CMD_EQUAL:
                     PerformComparisonOperation(ComparisonFlag.EQUAL);
-		            break;
+                    break;
                 case CMD_NOT_EQUAL:
                     PerformComparisonOperation(ComparisonFlag.N_EQUAL);
                     break;
-                
-	            case CMD_UNSIGNED_LESS:
-		            PerformComparisonOperation(ComparisonFlag.INS_LESS);
-		            break;
-	            case CMD_UNSIGNED_GREATER:
-		            PerformComparisonOperation(ComparisonFlag.INS_GREATER);
-		            break;
-	            case CMD_UNSIGNED_LESS_OR_EQUAL:
-		            PerformComparisonOperation(ComparisonFlag.INS_LESS_OR_EQUAL);
-		            break;
-	            case CMD_UNSIGNED_GREATER_OR_EQUAL:
+
+                case CMD_UNSIGNED_LESS:
+                    PerformComparisonOperation(ComparisonFlag.INS_LESS);
+                    break;
+                case CMD_UNSIGNED_GREATER:
+                    PerformComparisonOperation(ComparisonFlag.INS_GREATER);
+                    break;
+                case CMD_UNSIGNED_LESS_OR_EQUAL:
+                    PerformComparisonOperation(ComparisonFlag.INS_LESS_OR_EQUAL);
+                    break;
+                case CMD_UNSIGNED_GREATER_OR_EQUAL:
                     PerformComparisonOperation(ComparisonFlag.INS_GREATER_OR_EQUAL);
-		            break;
+                    break;
                 case CMD_STOP:
-		            this.endFlag = true;
-		            break;
-	            default:
-		            new Exception();
-		            break;
+                    this.endFlag = true;
+                    break;
+                default:
+                    new Exception();
+                    break;
             }
         }
-        public override void SetProgram(List<List<int > > parsedProgramText)
-        {
-            bool end = false;
-            if (parsedProgramText.Count == 0)
-                throw new Exception("");
-            //The program is empty
 
-            if(parsedProgramText[0][0] >= 0 && parsedProgramText[0][0] <= MAX_MEMORY_SIZE)
-                currentAddress = parsedProgramText[0][0];
-
-            for(int i = 0; i < parsedProgramText.Count; i++){
-                if(parsedProgramText[i][0] >= 0 && parsedProgramText[i][0] <= MAX_MEMORY_SIZE){
-                    try{
-                        this.ramMemory.SetCell(parsedProgramText[i][0], new LM2Command(parsedProgramText[i][1],
-                            parsedProgramText[i][2],parsedProgramText[i][3]));
-
-                        if (this.ramMemory.GetCell(parsedProgramText[i][0]).GetValue() == CMD_STOP)
-                            end = true;
-                    }
-                    catch (Exception exp)
-                    {
-                        //char* temp = new char[strlen(exp.what()) + 1];
-                        //strcpy(temp, exp.what());
-                        //throw InterpreterException(temp, i + 1);
-                    }
-                }
-                else
-                {
-                    throw new Exception();
-                    //Memory bounds violation
-                }
-            }
-            if (!end)
-                throw new Exception();
-            //Lost end of program
-
-        }
-        public override void ClearMemory()
-        {
-            this.ramMemory.ClearMemory();
-        }
         #endregion
 
         #region Axuiliary methods
+        protected override void GoToNextAddress()
+        {
+            this.currentAddress++;
+        }
         public override int GetValueOperand(int positionInMemory, int numberOfOperand)
         {
             if (positionInMemory < 0 || positionInMemory > MAX_MEMORY_SIZE)
@@ -218,10 +232,6 @@ namespace LM_GUI_UP
         {
             InitVariable(position, name);
             InitVariable(position, value);
-        }
-        protected void GoToNextAddress()
-        {
-            this.currentAddress++;
         }
         #endregion
 

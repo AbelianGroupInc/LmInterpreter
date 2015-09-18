@@ -158,6 +158,7 @@ void Lm3::set_program(const std::vector<std::vector<int> > &program){
 	for (size_t i = 0; i < program.size(); i++){
 		if (program[i].front() >= 0 && program[i].front() <= MAX_MEMORY_SIZE){
 			try{
+				check_command_correctness(program[i]);
 				this->memory.set(program[i].front(), new Lm3Command(program[i][1], program[i][2], program[i][3], program[i][4]));
 
 				if (this->memory.get(program[i].front())->get_value() == CMD_STOP)
@@ -177,6 +178,13 @@ void Lm3::set_program(const std::vector<std::vector<int> > &program){
 
 	if (!end)
 		throw std::exception("Lost end of program");
+}
+
+void Lm3::check_command_correctness(std::vector<int> command){
+	if (command.size() < 5)
+		throw std::exception("Too few fields");
+	else if (command.size() > 5)
+		throw std::exception("Too many fields");
 }
 
 std::vector<std::vector<int> > Lm3::get_program()const{

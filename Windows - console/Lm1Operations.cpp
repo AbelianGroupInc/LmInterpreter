@@ -121,10 +121,7 @@ void Lm1::perform_assignment_operation(int command){
 void Lm1::perform_division_operation(MemoryItem* (*division_func)(const MemoryItem*, const MemoryItem*),
 	MemoryItem* (*module_func)(const MemoryItem*, const MemoryItem*), int command){
 	MemoryItem* var_1 = new Variable(this->get_first_operand_value());
-	MemoryItem* var_2 = new Variable(this->get_second_operand_value(COMMAND_IS_LONG));
-
-	if (this->get_cpu_value(this->get_first_operand_adress() + 1) != INT_MAX)
-		throw std::out_of_range("Memory bounds violation");
+	MemoryItem* var_2 = new Variable(this->get_second_operand_value(command));
 
 	this->cpu_memory[this->get_first_operand_adress()] = division_func(var_1, var_2)->get_value();
 	this->cpu_memory[this->get_first_operand_adress() + 1] = module_func(var_1, var_2)->get_value();

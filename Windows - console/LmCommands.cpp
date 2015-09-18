@@ -12,7 +12,7 @@ void LmCommands::input(MemoryItem* &variable, const std::string name){
 	std::cout << "Enter " << name << ": ";
 	std::cin >> value;
 	
-	if (std::cin.fail() ){
+	if (std::cin.fail() || value > 65535){
 		std::cin.clear();
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		

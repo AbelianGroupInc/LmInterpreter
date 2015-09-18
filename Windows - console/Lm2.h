@@ -41,6 +41,8 @@ private:
 
 	int get_value_operand(int position_in_memory, int number_of_operands);
 	int get_address_operand(int position_in_memory, int number_of_operands);
+
+	void check_command_correctness(std::vector<int>);
 };
 
 #endif

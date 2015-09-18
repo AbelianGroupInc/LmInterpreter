@@ -9,7 +9,8 @@ namespace LM_GUI_UP
 {
     abstract class LM
     {
-        protected int currentAdress;
+        protected const int MAX_MEMORY_SIZE = 65536;
+        public int currentAddress { get; set; }
         protected Memory ramMemory;
         protected bool endFlag;
         protected bool inputFlag;
@@ -21,9 +22,19 @@ namespace LM_GUI_UP
             inputFlag = false;
         }
 
+        public void SetProgram(List<List<int>> parsedProgramText)
+        {   
+            // Method code
+            InitialiseCommand(parsedProgramText[0]);
+            // Method code
+        }
+        protected abstract void InitialiseCommand(List<int> command);
+        public void ClearMemory()
+        {
+            ramMemory.ClearMemory();
+        }
         public abstract void DoOneStep(RichTextBox output);
-        public abstract void SetProgram(List<List<int > > parsedProgramText);
-        public abstract void ClearMemory();
+        protected abstract void GoToNextAddress();
 
         public abstract int GetValueOperand(int positionInMemory, int numberOfOperand);
         public abstract int GetAddressOperand(int positionInMemory, int numberOfOperand);
@@ -36,6 +47,5 @@ namespace LM_GUI_UP
         {
             return this.ramMemory.GetCell(this.currentAddress).GetValue();
         }
-        public int currentAddress { get; set; }
     }
 }

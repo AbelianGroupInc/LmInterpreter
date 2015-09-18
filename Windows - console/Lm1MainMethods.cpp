@@ -224,6 +224,7 @@ void Lm1::command_initialisation(std::vector<int> command, bool &end){
 
 void Lm1::long_command_initialisation(std::vector<int> command, int cur_command_address){
 	check_command_address(cur_command_address);
+	check_long_command_correctness(command);
 
 	Lm1LongCommand* firstCommandB = new Lm1LongCommand(command[1], command[2], command[3], command[4]);
 	Lm1LongCommand* secondCommandB = new Lm1LongCommand(COMMAND_SECOND_PART, command[2], command[3], command[4]);
@@ -232,6 +233,7 @@ void Lm1::long_command_initialisation(std::vector<int> command, int cur_command_
 }
 
 void Lm1::short_command_initialisation(std::vector<int> command, int cur_command_address, bool &end){
+	check_short_command_correctness(command);
 	this->ram_memory.set(cur_command_address, new Lm1ShortCommand(command[1], command[2], command[3]));
 
 	if (this->ram_memory.get(cur_command_address)->get_value() == CMD_RR_STOP)
@@ -244,6 +246,20 @@ void Lm1::check_command_address(int cur_command_address){
 	if (!ram_memory.is_memory_cell_empty(cur_command_address) || 
 		!ram_memory.is_memory_cell_empty(cur_command_address + 1))
 		throw std::out_of_range("Writing in occupied cell");
+}
+
+void Lm1::check_long_command_correctness(std::vector<int> command){
+	if (command.size() < 5)
+		throw std::exception("Too few fields");
+	else if (command.size() > 5)
+		throw std::exception("Too many fields");
+}
+
+void Lm1::check_short_command_correctness(std::vector<int> command){
+	if (command.size() < 4)
+		throw std::exception("Too few fields");
+	else if (command.size() > 4)
+		throw std::exception("Too many fields");
 }
 
 std::vector<std::vector<int> > Lm1::get_program()const{

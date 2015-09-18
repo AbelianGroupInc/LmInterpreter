@@ -79,6 +79,8 @@ private:
 	void short_command_initialisation(std::vector<int>, int, bool&);
 	void check_command_address(int);
 	
+	void check_long_command_correctness(std::vector<int>);
+	void check_short_command_correctness(std::vector<int>);
 };
 
 #endif

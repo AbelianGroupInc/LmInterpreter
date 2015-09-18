@@ -107,7 +107,7 @@ int Lm1::get_second_operand_adress(int command){
 		if (this->get_m2_register() == 0)
 			operand_adress = this->get_a2_register();
 		else
-			operand_adress = this->get_a2_register() + (this->get_cpu_value(this->get_m2_register()) * 2);
+			operand_adress = this->get_a2_register() + (this->get_cpu_value(this->get_m2_register()) * 2); //error
 	}
 	else
 		operand_adress = get_r2_register();

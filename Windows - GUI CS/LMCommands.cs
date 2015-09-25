@@ -22,6 +22,12 @@ namespace LM_GUI_UP
             temp.Append(": " + Math.Abs(variable.GetValue()).ToString() + "\n");
             output.Text += temp.ToString();
         }
+
+        public static void InputMessage(RichTextBox output, string name)
+        {
+            output.AppendText("Please, enter " + name + ": ");
+        }
+
         #endregion
 
         #region Arithmetic perations

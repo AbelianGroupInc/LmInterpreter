@@ -8,71 +8,99 @@ namespace LM_GUI_UP
 {
     class Memory
     {
-        const int SIZE_OF_MEMORY = 65535;
-        private MemoryItem[] memory;
-        private Dictionary<int, string> names;
+        const int SIZE_OF_MEMORY = 65536;
 
-        public Memory(){
-            if (memory != null)
-                this.ClearMemory();
-            else
-            {
-                memory = new MemoryItem[SIZE_OF_MEMORY];
-                names = new Dictionary<int, string>();
-            }
+        private MemoryItem[] _memory;
+        private Dictionary<int, string> _names;
+
+        public Memory()
+        {
+            _memory = new MemoryItem[SIZE_OF_MEMORY];
+            _names = new Dictionary<int, string>();
+
+            ClearMemory();
         }
+
         #region Methods for memory
-        public MemoryItem GetCell(int position){
-            this.Check(position);
+        public MemoryItem GetCell(int position)
+        {
+            Check(position);
 
-            if (this.memory[position] == null)
-                throw new Exception();
-            //Appealing to a non-existent adress
+            if (_memory[position] == null)
+                throw new Exception("memory error: appealing to a non-existent adress.");
 
-            return this.memory[position];
+            return _memory[position];
         }
         public void SetCell(int position, MemoryItem item)
         {
-            this.Check(position);
+            Check(position);
 
-            this.memory[position] = item;
+            _memory[position] = item;
         }
         public void ClearMemory()
         {
             for (int i = 0; i < SIZE_OF_MEMORY; i++)
-                this.memory[i] = null;
+                _memory[i] = null;
+
+            _names.Clear();
         }
         public bool IsMemoryCellEmpty(int position)
         {
-            this.Check(position);
+            Check(position);
 
-            return this.memory[position] == null;
+            return _memory[position] == null;
         }
         #endregion
 
         #region Methods for names
         public void SetName(int position, string name)
         {
-            this.Check(position);
+            Check(position);
 
-            this.names.Add(position, name);
+            if (_names.ContainsKey(position))
+                _names[position] = name;
+            else
+                _names.Add(position, name);
         }
 
         public string GetName(int position)
         {
-            this.Check(position);
+            Check(position);
 
-            if (this.names[position] == null)
-                return Converter.DecToHex(position, 4); // possible mistakes
+            if (_names.ContainsKey(position))
+                return _names[position]; 
             else
-               return this.names[position];
+                return TextFormat.addZeros(Convert.ToString(position, 16).ToUpper(),4);
         }
+
+        public List<string> GetVarInfo()
+        {
+            List<string> varInfo = new List<string>();
+
+            for (int i = 0; i < _memory.Length; i++)
+                if (_memory[i] != null && _memory[i] is Variable)
+                    varInfo.Add(string.Format("{0} ( {1} ) := {2}", 
+                        TextFormat.addZeros(Convert.ToString(i, 16).ToUpper(), 4), GetName(i), _memory[i].GetValue()));
+
+            return varInfo;
+        }
+
+        public List<string> GetCmdInfo()
+        {
+            List<string> cmdInfo = new List<string>();
+
+            for (int i = 0; i < _memory.Length; i++)
+                if (_memory[i] != null && _memory[i] is Command)
+                    cmdInfo.Add(string.Format("{0} := {1}", TextFormat.addZeros(Convert.ToString(i, 16).ToUpper(), 4), _memory[i].ToString()));
+
+            return cmdInfo;
+        }
+
         #endregion
         public void Check(int position)
         {
             if (position < 0 || position > SIZE_OF_MEMORY)
-                throw new Exception("");
-            //Memory bounds violation
+                throw new Exception("Memory error: Memory bounds violation.");
         }
     }
 }

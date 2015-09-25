@@ -8,9 +8,10 @@ namespace LM_GUI_UP
 {
     abstract class Command: MemoryItem
     {
-        protected List<int> command;
         protected const int MAX_SIZE_OF_REGISTER = 65535;
         protected int[] CMD_LIST;
+
+        protected List<int> command;
 
         public Command()
         {
@@ -24,7 +25,7 @@ namespace LM_GUI_UP
         public int GetValue()
         {
             // returns the number of command
-            return (int)this.command[0];
+            return (int)command[0];
         }
     }
 }

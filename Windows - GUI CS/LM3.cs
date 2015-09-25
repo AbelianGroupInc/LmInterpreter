@@ -7,22 +7,56 @@ using System.Windows.Forms;
 
 namespace LM_GUI_UP
 {
-    class LM3: LM
+    class LM3 : LM
     {
-        public LM3():base() { }
+        protected const int
+            CMD_INPUT = 6,
+            CMD_OUTPUT = 7,
+            CMD_UNSIGNED_INPUT = 22,
+            CMD_UNSIGNED_OUTPUT = 23,
+            CMD_ADD = 1,
+            CMD_SUBSRACT = 2,
+            CMD_MULTIPLICATION = 3,
+            CMD_DIVISION = 4,
+            CMD_UNSIGNED_MULTIPLICATION = 19,
+            CMD_UNSIGNED_DIVISION = 20,
+            CMD_ASSIGMENT = 0,
+            CMD_GOTO = 128,
+            CMD_LESS = 131,
+            CMD_GREATER = 133,
+            CMD_LESS_OR_EQUAL = 134,
+            CMD_GREATER_OR_EQUAL = 132,
+            CMD_EQUAL = 129,
+            CMD_NOT_EQUAL = 130,
+            CMD_UNSIGNED_LESS = 147,
+            CMD_UNSIGNED_GREATER = 149,
+            CMD_UNSIGNED_LESS_OR_EQUAL = 148,
+            CMD_UNSIGNED_GREATER_OR_EQUAL = 150,
+            CMD_STOP = 153;
+
+        public LM3() : base() { }
 
         #region Main methods
-        protected override void InitialiseCommand(List<int > command){
+        public override void SetVariableInMemory(int positionInMemory, int value)
+        {
+            ramMemory.SetCell(positionInMemory, new Variable(value));
+        }
+
+        protected override void InitialiseCommand(List<int> command)
+        {
             try
             {
                 CheckCommandFormat(command);
+
+                if (currentAddress == -1)
+                    currentAddress = command[0];
+
                 ramMemory.SetCell(command[0], new LM3Command(command[1], command[2], command[3], command[4]));
             }
-           catch(Exception exp){
-			/*	char* temp = new char[strlen(exp.what()) + 1];
-				strcpy(temp, exp.what());
-				throw InterpreterException(temp, program[i].front());
-            */
+            catch (Exception exp)
+            {
+                throw new System.Exception("At address \"" + TextFormat.addZeros(
+                    Convert.ToString(command[0], 16), 4) + "\" " + exp.Message);
             }
         }
         private void CheckCommandFormat(List<int> command)
@@ -32,37 +66,116 @@ namespace LM_GUI_UP
             else if (command.Count > 5)
                 throw new Exception("Too many fields");
         }
-        public override void DoOneStep(RichTextBox output)
+        protected override void MasterSwitch(RichTextBox textbox)
         {
-            throw new NotImplementedException();
+            switch (GetCurrentCommandNumber())
+            {
+                case CMD_INPUT:
+                    LMCommands.InputMessage(textbox, GetName(GetAddressOperand(currentAddress, 1)));
+                    inputFlag = true;
+                    break;
+                case CMD_OUTPUT:
+                    LM3Operations.PerformOutputOperation(this, LMCommands.Output, textbox);
+                    break;
+                case CMD_UNSIGNED_OUTPUT:
+                    LM3Operations.PerformOutputOperation(this, LMCommands.UnsignedOuput, textbox);
+                    break;
+                case CMD_ADD:
+                    LM3Operations.PerformArithmeticOperation(this,LMCommands.Add);
+		            break;
+	            case CMD_SUBSRACT:
+                    LM3Operations.PerformArithmeticOperation(this,LMCommands.Substract);
+		            break;
+	            case CMD_MULTIPLICATION:
+                    LM3Operations.PerformArithmeticOperation(this,LMCommands.Multiplication);
+		            break;
+	            case CMD_DIVISION:
+                    LM3Operations.PerformDivisionOperation(this,LMCommands.Division,LMCommands.Module);
+		            break;
+	            case CMD_UNSIGNED_MULTIPLICATION:
+                    LM3Operations.PerformArithmeticOperation(this,LMCommands.UnsignedMultiplication);
+		            break;
+	            case CMD_UNSIGNED_DIVISION:
+                    LM3Operations.PerformDivisionOperation(this,LMCommands.UnsignedDivision,LMCommands.UnsignedModule);
+		            break;
+	            case CMD_ASSIGMENT:
+                    LM3Operations.PerformAssignmentOperation(this);
+		            break;
+	            case CMD_GOTO:
+                    LM3Operations.PerformGoToOperation(this);
+		            break;
+	            case CMD_LESS:
+                    LM3Operations.PerformComparisonOperation(this, LMCommands.Less);
+		            break;
+	            case CMD_GREATER:
+                    LM3Operations.PerformComparisonOperation(this, LMCommands.Greater);
+		            break;
+	            case CMD_LESS_OR_EQUAL:
+                    LM3Operations.PerformComparisonOperation(this, LMCommands.LessOrEqual);
+		            break;
+	            case CMD_GREATER_OR_EQUAL:
+                    LM3Operations.PerformComparisonOperation(this, LMCommands.GreaterOrEqual);
+		            break;
+	            case CMD_EQUAL:
+                    LM3Operations.PerformComparisonOperation(this, LMCommands.Equal);
+		            break;
+	            case CMD_NOT_EQUAL:
+                    LM3Operations.PerformComparisonOperation(this, LMCommands.NotEqual);
+		            break;
+	            case CMD_UNSIGNED_LESS:
+                    LM3Operations.PerformComparisonOperation(this, LMCommands.UnsignedLess);
+		            break;
+	            case CMD_UNSIGNED_GREATER:
+                    LM3Operations.PerformComparisonOperation(this, LMCommands.UnsignedGreater);
+		            break;
+	            case CMD_UNSIGNED_LESS_OR_EQUAL:
+                    LM3Operations.PerformComparisonOperation(this, LMCommands.UnsignedLessOrEqual);
+		            break;
+	            case CMD_UNSIGNED_GREATER_OR_EQUAL:
+                    LM3Operations.PerformComparisonOperation(this, LMCommands.UnsignedGreaterOrEqual);
+		            break;
+                case CMD_STOP:
+                    endFlag = true;
+                    return;
+                default:
+                    throw new System.Exception("hui");
+            }
         }
         #endregion
 
         #region Auxiliary methods
-        protected override void GoToNextAddress()
+        public override void GoToNextAddress()
         {
-            this.currentAddress++;
+            currentAddress++;
         }
         public override int GetValueOperand(int positionInMemory, int numberOfOperand)
         {
-            throw new NotImplementedException();
+            CheckNumberOfOperand(numberOfOperand);
+
+            return this.ramMemory.GetCell(ramMemory.GetCell(positionInMemory).GetItem()[numberOfOperand]).GetValue();
         }
         public override int GetAddressOperand(int positionInMemory, int numberOfOperand)
         {
-            throw new NotImplementedException();
+            CheckNumberOfOperand(numberOfOperand);
+
+            return this.ramMemory.GetCell(positionInMemory).GetItem()[numberOfOperand];
         }
-        public override void InitVariable(int position, string name)
+        protected override void CheckNumberOfOperand(int numberOfOperand)
         {
-            throw new NotImplementedException();
+            if (numberOfOperand < 0 || numberOfOperand > 3)
+                throw new Exception("Invalid number of operand!");
         }
-        public override void InitVariable(int position, int value)
+
+        public override void SetOperationResultInMemory(MemoryItem arithmeticResult)
         {
-            throw new NotImplementedException();
+            ramMemory.SetCell(GetAddressOperand(currentAddress, 3), arithmeticResult);
         }
-        public override void InitVariable(int position, string name, int value)
+        public override void SetOperationResultInMemory(MemoryItem divisionResult, MemoryItem module)
         {
-            throw new NotImplementedException();
+            ramMemory.SetCell(GetAddressOperand(currentAddress, 3), divisionResult);
+            ramMemory.SetCell(GetAddressOperand(currentAddress, 3) + 1, module);
         }
+
         #endregion
 
     }

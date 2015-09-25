@@ -8,7 +8,7 @@ namespace LM_GUI_UP
 {
     class Variable: MemoryItem
     {
-        const int VAR_MAX = 65535;
+        const int VAR_MAX = 65536;
 
         private List<int> variableItem;
         public Variable(int value)
@@ -27,5 +27,9 @@ namespace LM_GUI_UP
             return (int)variableItem[0];
         }
 
+        public override string ToString()
+        {
+            return TextFormat.addZeros(Convert.ToString(variableItem[0], 16), 4);
+        }
     }
 }

@@ -7,10 +7,8 @@ using System.Windows.Forms;
 
 namespace LM_GUI_UP
 {
-    class LM2: LM, ILMOperations
+    class LM2: LM
     {
-        private List<bool> comparisonOperations;
-        public enum ComparisonFlag { EQUAL, N_EQUAL, LESS, GREATER, LESS_OR_EQUAL, GREATER_OR_EQUAL, INS_LESS, INS_GREATER, INS_LESS_OR_EQUAL, INS_GREATER_OR_EQUAL };
         #region Commands defines
             const int 
                 CMD_COMPARE                   = 5,
@@ -39,52 +37,25 @@ namespace LM_GUI_UP
 	            CMD_STOP                      = 153;
         #endregion
 
-        public LM2():base(){
-            comparisonOperations = new List<bool>(10);
-        }
+        public LM2():base(){ }
 
         #region Main methods
-        
-       /* public override void SetProgram(List<List<int > > parsedProgramText)
-        {
-            if (parsedProgramText.Count == 0)
-                throw new Exception("");
-            //The program is empty
-
-            if(parsedProgramText[0][0] >= 0 && parsedProgramText[0][0] <= MAX_MEMORY_SIZE)
-                currentAddress = parsedProgramText[0][0];
-
-            for(int i = 0; i < parsedProgramText.Count; i++){
-                if(parsedProgramText[i][0] >= 0 && parsedProgramText[i][0] <= MAX_MEMORY_SIZE){
-                    InitialiseCommand(parsedProgramText[i]);
-                }
-                else
-                {
-                    throw new Exception();
-                    //Runtime: Memory bounds violation
-                }
-            }
-            if (!end)
-                throw new Exception();
-            //Runtime: Lost end of program
-
-        }
-        */
-
         protected override void InitialiseCommand(List<int> command)
         {
             try
             {
                 CheckCommandFormat(command);
 
-                this.ramMemory.SetCell(command[0], new LM2Command(command[1],
-                    command[2], command[3]));
+                if (currentAddress == UNINITIALIZED_ADDRESS)
+                    currentAddress = command[0];
+
+                ramMemory.SetCell(command[0],
+                    new LM2Command(command[1], command[2], command[3]));
             }
             catch (Exception exp)
             {
-                //char* temp = new char[strlen(exp.what()) + 1];
-                //strcpy(temp, exp.what());
-                //throw InterpreterException(temp, i + 1);
+                throw new System.Exception(exp.Message + ' ' +
+                    TextFormat.addZeros(Convert.ToString(command[0], 16), 4));
             }
         }
 
@@ -95,96 +66,85 @@ namespace LM_GUI_UP
             else if (command.Count > 4)
                 throw new Exception("Too many fields");
         }
-        public override void DoOneStep(RichTextBox output)
+
+        protected override void MasterSwitch(RichTextBox textbox)
         {
-            if (this.endFlag)
-                throw new Exception();
-            //Program ended
-            if (this.inputFlag)
-                throw new Exception();
-            //The value isn't entered
-            switch (this.GetCurrentCommandNumber())
+            switch (GetCurrentCommandNumber())
             {
                 case CMD_COMPARE:
-                    PerformFlagDetermination();
+                    LM2Operations.PerformFlagDetermination(this);
                     break;
-
                 case CMD_OUTPUT:
-                    PerformOutputOperation(LMCommands.Output, output);
+                    LM2Operations.PerformOutputOperation(this, LMCommands.Output, textbox);
                     break;
                 case CMD_INPUT:
-                    this.inputFlag = true;
+                    LMCommands.InputMessage(textbox, GetName(GetAddressOperand(currentAddress, 1)));
+                    inputFlag = true;
                     break;
                 case CMD_UNSIGNED_OUTPUT:
-                    PerformOutputOperation(LMCommands.UnsignedOuput, output);
+                    LM2Operations.PerformOutputOperation(this, LMCommands.UnsignedOuput, textbox);
                     break;
                 case CMD_UNSIGNED_INPUT:
                     this.inputFlag = true;
                     break;
-
                 case CMD_ADD:
-                    PerformArithmeticOperation(LMCommands.Add);
+                    LM2Operations.PerformArithmeticOperation(this, LMCommands.Add);
                     break;
                 case CMD_SUBSTRACT:
-                    PerformArithmeticOperation(LMCommands.Substract);
+                    LM2Operations.PerformArithmeticOperation(this, LMCommands.Substract);
                     break;
                 case CMD_MULTIPLICATION:
-                    PerformArithmeticOperation(LMCommands.Multiplication);
+                    LM2Operations.PerformArithmeticOperation(this, LMCommands.Multiplication);
                     break;
                 case CMD_DIVISION:
-                    PerformArithmeticOperation(LMCommands.Division);
+                    LM2Operations.PerformDivisionOperation(this, LMCommands.Division, LMCommands.Module);
                     break;
                 case CMD_UNSIGNED_MULTIPLICATION:
-                    PerformArithmeticOperation(LMCommands.UnsignedMultiplication);
+                    LM2Operations.PerformArithmeticOperation(this, LMCommands.UnsignedMultiplication);
                     break;
                 case CMD_UNSIGNED_DIVISION:
-                    PerformArithmeticOperation(LMCommands.UnsignedDivision);
+                    LM2Operations.PerformDivisionOperation(this, LMCommands.UnsignedDivision, LMCommands.UnsignedModule);
                     break;
-
                 case CMD_ASSIGMENT:
-                    PerformAssignmentOperation();
+                    LM2Operations.PerformAssignmentOperation(this);
                     break;
-
                 case CMD_GOTO:
-                    PerformGoToOperation();
+                    LM2Operations.PerformGoToOperation(this);
                     break;
-
                 case CMD_LESS:
-                    PerformComparisonOperation(ComparisonFlag.LESS);
+                    LM2Operations.PerformComparisonOperation(this, LM2Operations.ComparisonFlag.LESS);
                     break;
                 case CMD_GREATER:
-                    PerformComparisonOperation(ComparisonFlag.GREATER);
+                    LM2Operations.PerformComparisonOperation(this, LM2Operations.ComparisonFlag.GREATER);
                     break;
                 case CMD_LESS_OR_EQUAL:
-                    PerformComparisonOperation(ComparisonFlag.LESS_OR_EQUAL);
+                    LM2Operations.PerformComparisonOperation(this, LM2Operations.ComparisonFlag.LESS_OR_EQUAL);
                     break;
                 case CMD_GREATER_OR_EQUAL:
-                    PerformComparisonOperation(ComparisonFlag.GREATER_OR_EQUAL);
+                    LM2Operations.PerformComparisonOperation(this, LM2Operations.ComparisonFlag.GREATER_OR_EQUAL);
                     break;
                 case CMD_EQUAL:
-                    PerformComparisonOperation(ComparisonFlag.EQUAL);
+                    LM2Operations.PerformComparisonOperation(this, LM2Operations.ComparisonFlag.EQUAL);
                     break;
                 case CMD_NOT_EQUAL:
-                    PerformComparisonOperation(ComparisonFlag.N_EQUAL);
+                    LM2Operations.PerformComparisonOperation(this, LM2Operations.ComparisonFlag.N_EQUAL);
                     break;
-
                 case CMD_UNSIGNED_LESS:
-                    PerformComparisonOperation(ComparisonFlag.INS_LESS);
+                    LM2Operations.PerformComparisonOperation(this, LM2Operations.ComparisonFlag.INS_LESS);
                     break;
                 case CMD_UNSIGNED_GREATER:
-                    PerformComparisonOperation(ComparisonFlag.INS_GREATER);
+                    LM2Operations.PerformComparisonOperation(this, LM2Operations.ComparisonFlag.INS_GREATER);
                     break;
                 case CMD_UNSIGNED_LESS_OR_EQUAL:
-                    PerformComparisonOperation(ComparisonFlag.INS_LESS_OR_EQUAL);
+                    LM2Operations.PerformComparisonOperation(this, LM2Operations.ComparisonFlag.INS_LESS_OR_EQUAL);
                     break;
                 case CMD_UNSIGNED_GREATER_OR_EQUAL:
-                    PerformComparisonOperation(ComparisonFlag.INS_GREATER_OR_EQUAL);
+                    LM2Operations.PerformComparisonOperation(this, LM2Operations.ComparisonFlag.INS_GREATER_OR_EQUAL);
                     break;
                 case CMD_STOP:
                     this.endFlag = true;
                     break;
                 default:
-                    new Exception();
                     break;
             }
         }
@@ -192,120 +152,42 @@ namespace LM_GUI_UP
         #endregion
 
         #region Axuiliary methods
-        protected override void GoToNextAddress()
+        public override void GoToNextAddress()
         {
-            this.currentAddress++;
+            currentAddress++;
         }
         public override int GetValueOperand(int positionInMemory, int numberOfOperand)
         {
-            if (positionInMemory < 0 || positionInMemory > MAX_MEMORY_SIZE)
-                throw new Exception();
-            //Memory bounds violation
+            CheckNumberOfOperand(numberOfOperand);
 
-            if (numberOfOperand < 0 || numberOfOperand > 2)
-                throw new Exception();
-            //Invalid number of operand
-            return this.ramMemory.GetCell(this.ramMemory.GetCell(positionInMemory).GetItem()[numberOfOperand]).GetValue();
+            return ramMemory.GetCell(ramMemory.GetCell(positionInMemory).GetItem()[numberOfOperand]).GetValue();
         }
         public override int GetAddressOperand(int positionInMemory, int numberOfOperand)
         {
+            CheckNumberOfOperand(numberOfOperand);
 
-            if (positionInMemory < 0 || positionInMemory > MAX_MEMORY_SIZE)
-                throw new Exception();
-            //Memory bounds violation
-
+            return ramMemory.GetCell(positionInMemory).GetItem()[numberOfOperand];
+        }
+        protected override void CheckNumberOfOperand(int numberOfOperand)
+        {
             if (numberOfOperand < 0 || numberOfOperand > 2)
-                throw new Exception();
-            //Invalid number of operand
-
-            return this.ramMemory.GetCell(positionInMemory).GetItem()[numberOfOperand];
+                throw new Exception("Invalid number of operand!");
         }
-        public override void InitVariable(int position, string name)
+        public override void SetOperationResultInMemory(MemoryItem arithmeticResult)
         {
-            this.ramMemory.SetName(position, name);
+            ramMemory.SetCell(GetAddressOperand(currentAddress, 1), arithmeticResult);
         }
-        public override void InitVariable(int position, int value)
+        public override void SetOperationResultInMemory(MemoryItem divisionResult, MemoryItem module)
         {
-            this.ramMemory.SetCell(position, new Variable(value));
+            ramMemory.SetCell(GetAddressOperand(currentAddress, 1), divisionResult);
+            ramMemory.SetCell(GetAddressOperand(currentAddress, 1) + 1, module);
         }
-        public override void InitVariable(int position, string name, int value)
-        {
-            InitVariable(position, name);
-            InitVariable(position, value);
-        }
-        #endregion
 
-        #region ILMOperations realisation
-        public void PerformArithmeticOperation(Func<MemoryItem, MemoryItem, MemoryItem> arithmeticDelegate)
-        {
-            MemoryItem var1 = new Variable(GetValueOperand(this.currentAddress, 1));
-            MemoryItem var2 = new Variable(GetValueOperand(this.currentAddress, 2));
-
-            this.ramMemory.SetCell(GetAddressOperand(this.currentAddress, 1), arithmeticDelegate(var1, var2));
-            //possible mistake with module
-            if (arithmeticDelegate.Method.Name == "Division" || arithmeticDelegate.Method.Name == "UnsignedDivision")
-                this.ramMemory.SetCell(GetAddressOperand(this.currentAddress, 1) + 1, LMCommands.Module(var1, var2));
-
-            GoToNextAddress();
-        }
-        public void PerformFlagDetermination()
-        {
-            MemoryItem var1 = new Variable(GetValueOperand(this.currentAddress, 1));
-            MemoryItem var2 = new Variable(GetValueOperand(this.currentAddress, 2));
-
-
-            comparisonOperations[(int)ComparisonFlag.EQUAL] = LMCommands.Equal(var1, var2);
-            comparisonOperations[(int)ComparisonFlag.N_EQUAL] = LMCommands.NotEqual(var1, var2);
-            comparisonOperations[(int)ComparisonFlag.LESS] = LMCommands.Less(var1, var2);
-            comparisonOperations[(int)ComparisonFlag.GREATER] = LMCommands.Greater(var1, var2);
-            comparisonOperations[(int)ComparisonFlag.LESS_OR_EQUAL] = LMCommands.LessOrEqual(var1, var2);
-            comparisonOperations[(int)ComparisonFlag.GREATER_OR_EQUAL] = LMCommands.GreaterOrEqual(var1, var2);
-            comparisonOperations[(int)ComparisonFlag.INS_LESS] = LMCommands.UnsignedLess(var1, var2);
-            comparisonOperations[(int)ComparisonFlag.INS_GREATER] = LMCommands.UnsignedGreater(var1, var2);
-            comparisonOperations[(int)ComparisonFlag.INS_LESS_OR_EQUAL] = LMCommands.UnsignedLessOrEqual(var1, var2);
-            comparisonOperations[(int)ComparisonFlag.INS_GREATER_OR_EQUAL] = LMCommands.UnsignedGreaterOrEqual(var1, var2);
-
-            GoToNextAddress();
-        }
-        public void PerformComparisonOperation(ComparisonFlag flag)
-        {
-            this.currentAddress = comparisonOperations[(int)flag] ? GetAddressOperand(this.currentAddress, 1) : this.currentAddress + 1;
-        }
-        public void PerformInputOperation(int value)
+        public override void SetVariableInMemory(int positionInMemory, int value)
         {
             MemoryItem var = new Variable(value);
-
-            this.ramMemory.SetCell(GetAddressOperand(this.currentAddress, 1), var);
-
-            this.inputFlag = false;
-            GoToNextAddress();
-
+            ramMemory.SetCell(positionInMemory, var);
         }
-        public void PerformOutputOperation(Action<RichTextBox, MemoryItem, string> outputDelegate,
-            RichTextBox output)
-        {
-            MemoryItem var = new Variable(this.GetValueOperand(this.currentAddress, 1));
-
-            outputDelegate(output, var, this.ramMemory.GetName(GetAddressOperand(this.currentAddress, 1)));
-
-            GoToNextAddress();
-        }
-        public void PerformAssignmentOperation()
-        {
-            int inPosition = GetAddressOperand(this.currentAddress, 1);
-            int value = GetValueOperand(this.currentAddress, 2);
-
-            MemoryItem var = new Variable(value);
-
-            this.ramMemory.SetCell(inPosition, var);
-
-            GoToNextAddress();
-        }
-        public void PerformGoToOperation()
-        {
-            this.currentAddress = this.GetAddressOperand(this.currentAddress, 1);
-        }
-
         #endregion
     }
 }

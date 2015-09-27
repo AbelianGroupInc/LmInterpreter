@@ -186,12 +186,11 @@ namespace LM_GUI_UP
 
                 case CMD_RM_UNSIGNED_INPUT:
                     LMCommands.InputMessage(textbox, GetName(GetAddressOperand(currentAddress, GetInOutOperand())));
-                    inputFlag = true;
+                    uInputFlag = true;
                     break;
                 case CMD_RM_UNSIGNED_OUTPUT:
                     LM1Operations.PerformOutputOperation(this, LMCommands.UnsignedOuput, textbox);
                     break;
-
                 case CMD_RM_ADD:
                     LM1Operations.PerformArithmeticOperation(this, LMCommands.Add);
                     break;
@@ -228,7 +227,6 @@ namespace LM_GUI_UP
                 case CMD_RM_UNSIGNED_DIVISION:
                     LM1Operations.PerformDivisionOperation(this, LMCommands.UnsignedDivision, LMCommands.UnsignedModule);
                     break;
-
                 case CMD_RM_ASSIGMENT_1:
                     LM1Operations.PerformRMRRAssignmentOperation(this);
                     break;
@@ -238,14 +236,12 @@ namespace LM_GUI_UP
                 case CMD_RR_ASSIGMENT:
                     LM1Operations.PerformRMRRAssignmentOperation(this);
                     break;
-
                 case CMD_RM_COMPARISON:
                     LM1Operations.PerformFlagDetermination(this);
                     break;
                 case CMD_RR_COMPARISON:
                     LM1Operations.PerformFlagDetermination(this);
                     break;
-
                 case CMD_LESS:
                     LM1Operations.PerformComparisonOperation(this, LM1Operations.ComparisonFlag.LESS);
                     break;
@@ -264,7 +260,6 @@ namespace LM_GUI_UP
                 case CMD_NOT_EQUAL:
                     LM1Operations.PerformComparisonOperation(this, LM1Operations.ComparisonFlag.N_EQUAL);
                     break;
-
                 case CMD_UNSIGNED_LESS:
                     LM1Operations.PerformComparisonOperation(this, LM1Operations.ComparisonFlag.INS_LESS);
                     break;
@@ -277,11 +272,9 @@ namespace LM_GUI_UP
                 case CMD_UNSIGNED_GREATER_OR_EQUAL:
                     LM1Operations.PerformComparisonOperation(this, LM1Operations.ComparisonFlag.INS_GREATER_OR_EQUAL);
                     break;
-
                 case CMD_GO_TO:
                     LM1Operations.PerformGoToOperation(this);
                     break;
-
                 case CMD_RR_STOP:
                     this.endFlag = true;
                     break;
@@ -293,6 +286,26 @@ namespace LM_GUI_UP
         #endregion
 
         #region Auxiliary methods
+        public override List<string> GetVarInfo()
+        {
+            List<string> varInfo = base.GetVarInfo();
+            for (int i = 0; i < cpuMemory.Length; i++)
+                if (cpuMemory[i] != Int32.MaxValue)
+                    varInfo.Add(String.Format("R{0} := {1}", i, cpuMemory[i]));
+
+            return varInfo;
+        }
+
+        public override List<string> GetVarInfoInAdditionalCode()
+        {
+            List<string> varInfoInAdditionalCode = base.GetVarInfoInAdditionalCode();
+            for (int i = 0; i < cpuMemory.Length; i++)
+                if (cpuMemory[i] != Int32.MaxValue)
+                    varInfoInAdditionalCode.Add(String.Format("R{0} := {1} ({2})", i, cpuMemory[i], TextFormat.additionalCode32(cpuMemory[i])));
+
+                return varInfoInAdditionalCode;
+        }
+
         private int GetCommandNumber(int positionInMemory)
         {
             return this.ramMemory.GetCell(positionInMemory).GetValue();
@@ -325,9 +338,9 @@ namespace LM_GUI_UP
         public void SetCpuMemoryCell(int position, int value)
         {
             if (position > 15)
-                throw new Exception("register set bounds violation");
+                throw new Exception("Register set bounds violation");
 
-            cpuMemory[position] = value % MAX_MEMORY_SIZE;
+            cpuMemory[position] = value;
         }
         public override int GetValueOperand(int positionInMemory, int numberOfOperand)
         {
@@ -403,16 +416,6 @@ namespace LM_GUI_UP
         }
 
         #endregion
-
-        public override List<string> GetVarInfo()
-        {
-            List<string> varInfo = base.GetVarInfo();
-            for (int i = 0; i < cpuMemory.Length; i++)
-                if (cpuMemory[i] != Int32.MaxValue)
-                    varInfo.Add(String.Format("R{0} := {1}", i, cpuMemory[i]));
-
-            return varInfo;
-        }
 
     }
 }

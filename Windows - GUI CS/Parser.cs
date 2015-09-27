@@ -9,41 +9,35 @@ namespace LM_GUI_UP
 {
     static class Parser
     {
-        private static bool ChekNumber(string number)
+        #region main methods 
+        public static List<List<int>> GetParsedCode(string text)
         {
-            if(number.Length > 4)
-                throw new System.Exception(String.Format("Parsing error: wrong address \"{0}\".", number));
+            RemovePass(ref text);
+            return ParseCode(SplitCode(ref text)); ;
+        }
 
-            return true;
-        }
-        private static int GetNumber(string number)
+        public static List<AddressValue> GetParsedInit(string text)
         {
-            try
-            {
-                return Convert.ToInt32(number, 16);
-            }
-            catch (System.Exception)
-            {
-                throw new System.Exception(String.Format("Parsing error: invalid hexadecimal number \"{0}\".", number));
-            }
+            RemovePass(ref text);
+            return ParseInit(SplitInit(ref text));
         }
+
         public static string AlignText(string text)
         {
             text = text.Replace('\t', ' ');
             text = Regex.Replace(text, @" +", " ");
             text = Regex.Replace(text, @"(\n)\s*(\n)*", "\n");
-            text = Regex.Replace(text, @"^", "\t",RegexOptions.Multiline);
+            text = Regex.Replace(text, @"^", "\t", RegexOptions.Multiline);
             text = Regex.Replace(text, @"\t#", "#", RegexOptions.Multiline);
 
             return text;
         }
-        private static void RemovePass(ref string text)
-        {
-            text = text.Replace('\t', ' ');
-            text = Regex.Replace(text, @" +", " ");
-            text = Regex.Replace(text, @";.*?\n", "\n");
-            text = Regex.Replace(text, @"(\n)\s*(\n)*", "\n");
-        }
+
+        #endregion
+
+        #region auxiliary methods
+
+        #region init area
         private static string SplitInit(ref string text)
         {
             string init = Regex.Match(text, @"#init[\s\S]*?#end").Value;
@@ -59,21 +53,7 @@ namespace LM_GUI_UP
 
             return init;
         }
-        private static string SplitCode(ref string text)
-        {
-            string code = Regex.Match(text, @"#code[\s\S]*?#end").Value;
 
-            if (Regex.IsMatch(code, @"#init"))
-                throw new System.Exception("Parsing error: imposition areas.");
-
-            if (code.Length == 0)
-                throw new System.Exception("Parsing error: lack of code area.");
-
-            code = Regex.Replace(code, @"#.*?\n", String.Empty);
-            code = Regex.Replace(code, @"\n#.*?$", String.Empty);
-
-            return code;
-        }
         private static List<AddressValue> ParseInit(string init_code)
         {
             string[] init_lines = init_code.Split(new Char[] { '\r', '\n' });
@@ -86,10 +66,10 @@ namespace LM_GUI_UP
                 string name = null;
 
                 if (line.Length < 2)
-                    throw new System.Exception(String.Format("Parsing error: too few arguments ({0}).", temp));
+                    throw new System.Exception(String.Format("parsing error: too few arguments ({0}).", temp));
 
                 ChekNumber(line[0]);
-                    
+
                 address = GetNumber(line[0]);
 
                 for (int i = 1; i < line.Length; i++)
@@ -98,7 +78,7 @@ namespace LM_GUI_UP
                         continue;
 
                     if (line[i].IndexOf('\"') != -1)
-                        name = Regex.Replace(line[i], "\"", String.Empty); 
+                        name = Regex.Replace(line[i], "\"", String.Empty);
                     else
                         value = GetNumber(line[i]);
                 }
@@ -110,6 +90,27 @@ namespace LM_GUI_UP
 
             return parsed_init;
         }
+
+        #endregion
+
+        #region code area
+
+        private static string SplitCode(ref string text)
+        {
+            string code = Regex.Match(text, @"#code[\s\S]*?#end").Value;
+
+            if (Regex.IsMatch(code, @"#init"))
+                throw new System.Exception("parsing error: imposition areas.");
+
+            if (code.Length == 0)
+                throw new System.Exception("parsing error: lack of code area.");
+
+            code = Regex.Replace(code, @"#.*?\n", String.Empty);
+            code = Regex.Replace(code, @"\n#.*?$", String.Empty);
+
+            return code;
+        }
+
         private static List<List<int>> ParseCode(string code)
         {
             List<List<int>> parsing_code = new List<List<int>>();
@@ -132,16 +133,42 @@ namespace LM_GUI_UP
 
             return parsing_code;
         }
-        public static List<List<int>> GetParsedCode(string text)
+
+        #endregion
+
+        private static bool ChekNumber(string number)
         {
-            RemovePass(ref text);
-            return ParseCode(SplitCode(ref text));;
+            if (number.Length > 4)
+                throw new System.Exception(String.Format("Parsing error: wrong address \"{0}\".", number));
+
+            return true;
+        }
+        private static int GetNumber(string number)
+        {
+            try
+            {
+                if (number[0] == '-')
+                {
+                    number = number.Remove(0, 1);
+                    return -Convert.ToInt32(number, 16);
+                }
+
+                return Convert.ToInt32(number, 16);
+            }
+            catch (System.Exception)
+            {
+                throw new System.Exception(String.Format("Parsing error: invalid hexadecimal number \"{0}\".", number));
+            }
         }
 
-        public static List<AddressValue> GetParsedInit(string text)
+        private static void RemovePass(ref string text)
         {
-            RemovePass(ref text);
-            return ParseInit(SplitInit(ref text));
+            text = text.Replace('\t', ' ');
+            text = Regex.Replace(text, @" +", " ");
+            text = Regex.Replace(text, @";.*?\n", "\n");
+            text = Regex.Replace(text, @"(\n)\s*(\n)*", "\n");
         }
+
+        #endregion      
     }
 }

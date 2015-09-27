@@ -14,6 +14,7 @@ namespace LM_GUI_UP
     {
         LmFile _file;
         LM _machine;
+        int testCount;
         public main_form()
         {
             if (!String.IsNullOrEmpty(Properties.Settings.Default.Language))
@@ -22,6 +23,7 @@ namespace LM_GUI_UP
                 System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(Properties.Settings.Default.Language);
             }
 
+            testCount = 0;
             _file = new LmFile();
             _machine = new LM3();
             InitializeComponent();
@@ -123,6 +125,11 @@ namespace LM_GUI_UP
 
         #region File
 
+        private void textbox_main_TextChanged(object sender, EventArgs e)
+        {
+            _file.Changed();
+        }      
+
         private void menu_open_Click(object sender, EventArgs e)
         {
             _file.CloseFile(textbox_main.Text);
@@ -194,6 +201,7 @@ namespace LM_GUI_UP
 
         private void menu_chose_lm_3_Click(object sender, EventArgs e)
         {
+            label_machine.Text = Strings.lm3;
             _machine = new LM3();
             menu_chose_lm_3.Checked = true;
             menu_chose_lm_2.Checked = false;
@@ -202,6 +210,7 @@ namespace LM_GUI_UP
 
         private void menu_chose_lm_2_Click(object sender, EventArgs e)
         {
+            label_machine.Text = Strings.lm2;
             _machine = new LM2();
             menu_chose_lm_3.Checked = false;
             menu_chose_lm_2.Checked = true;
@@ -210,6 +219,7 @@ namespace LM_GUI_UP
 
         private void menu_chose_lm_rm_Click(object sender, EventArgs e)
         {
+            label_machine.Text = Strings.lmrm;
             _machine = new LM1();
             menu_chose_lm_3.Checked = false;
             menu_chose_lm_2.Checked = false;
@@ -218,13 +228,89 @@ namespace LM_GUI_UP
 
         #endregion
 
-        private void textbox_main_TextChanged(object sender, EventArgs e)
+        #region Debug
+
+        private void button_update_Click(object sender, EventArgs e)
         {
-            _file.Changed();
+            List<string> temp = new List<string>();
+
+            list_box_memory.Items.Clear();
+
+
+            if (menu_chose_var.Checked)
+            {
+                temp = menu_additional_code_show.Checked ? 
+                    _machine.GetVarInfoInAdditionalCode() : _machine.GetVarInfo();
+
+                foreach (var variable in temp)
+                    list_box_memory.Items.Add(variable);
+            }
+
+
+            if (menu_chose_cmd.Checked)
+            {
+                temp = _machine.GetCmdInfo();
+
+                foreach (var variable in temp)
+                    list_box_memory.Items.Add(variable);
+            }
+        }
+
+        private void button_next_step_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                label_command.Text = _machine.GetCurrentCommand();
+                _machine.DoOneStep(textbox_output);
+                button_update_Click(sender, e);
+
+                if (_machine.IsEnd())
+                    button_start_Click(sender, e);
+
+                if (_machine.IsInput() || _machine.IsUnsignedInput())
+                    button_enter.Enabled = true;
+            }
+            catch (System.Exception exp)
+            {
+                textbox_errors.AppendText(exp.Message + '\n');
+            }
+        }
+
+        private void textbox_input_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ((e.KeyChar <= 47 || e.KeyChar >= 59) && e.KeyChar != 8 && e.KeyChar != 45)
+                e.Handled = true;
+
+            if (textbox_input.Text.Length > 5)
+                e.Handled = true;
+        }
+
+        private void button_enter_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if(_machine.IsInput())
+                    _machine.Input(Convert.ToInt32(textbox_input.Text));
+
+                if (_machine.IsUnsignedInput())
+                    _machine.UnsignedInput(Convert.ToInt32(textbox_input.Text));
+
+                textbox_output.AppendText(textbox_input.Text + "\n");
+                textbox_input.Clear();
+            }
+            catch (System.Exception exp)
+            {
+                textbox_errors.AppendText(exp.Message + '\n');
+            }
+
+            button_enter.Enabled = false;
         }
 
         private void StartProgram()
         {
+            testCount++;
+            textbox_output.AppendText(String.Format("  Test #{0} ({1})\n",testCount,_file.Name));
+
             button_update.Enabled = true;
             button_next_step.Enabled = true;
 
@@ -272,94 +358,66 @@ namespace LM_GUI_UP
             }
         }
 
-        private void menu_align_text_Click(object sender, EventArgs e)
-        {
-            textbox_main.Text = Parser.AlignText(textbox_main.Text);
-        }
-
-        private void menu_interpreter_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void button_clear_Click(object sender, EventArgs e)
         {
+            list_box_memory.Items.Clear();
             textbox_errors.Clear();
             textbox_input.Clear();
             textbox_output.Clear();
         }
 
-        private void button_update_Click(object sender, EventArgs e)
-        {
-            List<string> temp = new List<string>();
+        #endregion
 
-            list_box_memory.Items.Clear();
+        #region Perfom program
 
-
-            if (menu_chose_var.Checked)
-            {
-                temp = _machine.GetVarInfo();
-
-                foreach (var variable in temp)
-                    list_box_memory.Items.Add(variable);
-            }
-
-
-            if (menu_chose_cmd.Checked)
-            {
-                temp = _machine.GetCmdInfo();
-
-                foreach (var variable in temp)
-                    list_box_memory.Items.Add(variable);
-            }
-        }
-
-        private void button_next_step_Click(object sender, EventArgs e)
+        private void menu_interpreter_Click(object sender, EventArgs e)
         {
             try
             {
-                label_command.Text = _machine.GetCurrentCommand();
-                _machine.DoOneStep(textbox_output);
-                button_update_Click(sender, e);
+                System.IO.File.WriteAllText(@"bin/temp.lm", textbox_main.Text);
 
-                if (_machine.IsEnd())
-                    button_start_Click(sender, e);
+                if(menu_chose_lm_3.Checked)
+                    System.Diagnostics.Process.Start(@"bin\lm3.exe");
 
-                if (_machine.IsInput())
-                    button_enter.Enabled = true;
+                if (menu_chose_lm_2.Checked)
+                    System.Diagnostics.Process.Start(@"bin\lm2.exe");
+
+                if (menu_chose_lm_rm.Checked)
+                    System.Diagnostics.Process.Start(@"bin\lm1.exe");
             }
-            catch(System.Exception exp){
-                textbox_errors.AppendText(exp.Message + '\n');
+            catch (System.Exception)
+            {
+                textbox_errors.AppendText("Error: Program integrity violation\n");
             }
         }
 
-        private void textbox_input_KeyPress(object sender, KeyPressEventArgs e)
+        private void menu_perfom_Click(object sender, EventArgs e)
         {
-            if ((e.KeyChar <= 47 || e.KeyChar >= 59) && e.KeyChar != 8 && e.KeyChar != 45)
-                e.Handled = true;
-
-            if(textbox_input.Text.Length > 5)
-                e.Handled = true;
+            menu_interpreter_Click(sender, e);
         }
 
-        private void button_enter_Click(object sender, EventArgs e)
+        #endregion
+
+        private void menu_align_text_Click(object sender, EventArgs e)
         {
-            try{
-                _machine.Input(Convert.ToInt32(textbox_input.Text));
-
-                textbox_output.AppendText(textbox_input.Text + "\n");
-                textbox_input.Clear();
-            }
-            catch(System.Exception exp){
-                textbox_errors.AppendText(exp.Message + '\n');
-            }
-
-            button_enter.Enabled = false;
+            textbox_main.Text = Parser.AlignText(textbox_main.Text);
         }
 
-        private void list_box_memory_SelectedIndexChanged(object sender, EventArgs e)
+        private void menu_additional_code_hide_Click(object sender, EventArgs e)
         {
+            menu_additional_code_hide.Checked = true;
+            menu_additional_code_show.Checked = false;
+        }
 
+        private void menu_additional_code_show_Click(object sender, EventArgs e)
+        {
+            menu_additional_code_hide.Checked = false;
+            menu_additional_code_show.Checked = true;
+        }
+
+        private void menu_exit_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

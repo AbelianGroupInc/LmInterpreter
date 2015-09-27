@@ -13,13 +13,13 @@ namespace LM_GUI_UP
         public static void Output(RichTextBox output, MemoryItem variable, string name)
         {
             StringBuilder temp = new StringBuilder(name);
-            temp.Append(": " + variable.GetValue().ToString() + "\n");
+            temp.Append(": " + ((short)variable.GetValue()).ToString() + "\n");
             output.Text += temp.ToString();
         }
         public static void UnsignedOuput(RichTextBox output, MemoryItem variable, string name)
         {
             StringBuilder temp = new StringBuilder(name);
-            temp.Append(": " + Math.Abs(variable.GetValue()).ToString() + "\n");
+            temp.Append(": " + ((ushort)variable.GetValue()).ToString() + "\n");
             output.Text += temp.ToString();
         }
 
@@ -30,7 +30,7 @@ namespace LM_GUI_UP
 
         #endregion
 
-        #region Arithmetic perations
+        #region Arithmetic operations
         public static MemoryItem Add(MemoryItem variable1, MemoryItem variable2)
         {
             int value = variable1.GetValue() + variable2.GetValue();
@@ -62,27 +62,27 @@ namespace LM_GUI_UP
         public static MemoryItem UnsignedAdd(MemoryItem variable1, MemoryItem variable2)
         {
             int value = variable1.GetValue() + variable2.GetValue();
-            return new Variable(Math.Abs(value));
+            return new Variable((ushort)value);
         }
         public static MemoryItem UnsignedSubstract(MemoryItem variable1, MemoryItem variable2)
         {
             int value = variable1.GetValue() - variable2.GetValue();
-            return new Variable(Math.Abs(value));
+            return new Variable((ushort)value);
         }
         public static MemoryItem UnsignedMultiplication(MemoryItem variable1, MemoryItem variable2)
         {
             int value = variable1.GetValue() * variable2.GetValue();
-            return new Variable(Math.Abs(value));
+            return new Variable((ushort)value);
         }
         public static MemoryItem UnsignedDivision(MemoryItem variable1, MemoryItem variable2)
         {
             int value = variable1.GetValue() / variable2.GetValue();
-            return new Variable(Math.Abs(value));
+            return new Variable((ushort)value);
         }
         public static MemoryItem UnsignedModule(MemoryItem variable1, MemoryItem variable2)
         {
             int value = variable1.GetValue() % variable2.GetValue();
-            return new Variable(Math.Abs(value));
+            return new Variable((ushort)value);
         }
         #endregion
 
@@ -120,19 +120,19 @@ namespace LM_GUI_UP
         #region Unsigned comparing operations
         public static bool UnsignedLess(MemoryItem variable1, MemoryItem variable2)
         {
-            return Math.Abs(variable1.GetValue()) < Math.Abs(variable2.GetValue());
+            return (ushort)variable1.GetValue() < (ushort)variable2.GetValue();
         }
         public static bool UnsignedGreater(MemoryItem variable1, MemoryItem variable2)
         {
-            return Math.Abs(variable1.GetValue()) > Math.Abs(variable2.GetValue());
+            return (ushort)variable1.GetValue() > (ushort)variable2.GetValue();
         }
         public static bool UnsignedLessOrEqual(MemoryItem variable1, MemoryItem variable2)
         {
-            return Math.Abs(variable1.GetValue()) <= Math.Abs(variable2.GetValue());
+            return (ushort)variable1.GetValue() <= (ushort)variable2.GetValue();
         }
         public static bool UnsignedGreaterOrEqual(MemoryItem variable1, MemoryItem variable2)
         {
-            return Math.Abs(variable1.GetValue()) >= Math.Abs(variable2.GetValue());
+            return (ushort)variable1.GetValue() >= (ushort)variable2.GetValue();
         }
         #endregion
     }

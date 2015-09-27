@@ -61,7 +61,7 @@ namespace LM_GUI_UP {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Запустить.
+        ///   Ищет локализованную строку, похожую на Запустить пошагово.
         /// </summary>
         internal static string button_start {
             get {
@@ -102,6 +102,33 @@ namespace LM_GUI_UP {
         internal static string file_changed_text {
             get {
                 return ResourceManager.GetString("file_changed_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на УМ - 2.
+        /// </summary>
+        internal static string lm2 {
+            get {
+                return ResourceManager.GetString("lm2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на УМ - 3.
+        /// </summary>
+        internal static string lm3 {
+            get {
+                return ResourceManager.GetString("lm3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на УМ - РМ.
+        /// </summary>
+        internal static string lmrm {
+            get {
+                return ResourceManager.GetString("lmrm", resourceCulture);
             }
         }
         

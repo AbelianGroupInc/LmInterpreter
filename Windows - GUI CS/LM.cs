@@ -13,6 +13,8 @@ namespace LM_GUI_UP
         protected const int MAX_MEMORY_SIZE = 65536;
         protected bool endFlag;
         protected bool inputFlag;
+        protected bool uInputFlag;
+
         public int currentAddress { get; set; }
         protected Memory ramMemory;
 
@@ -21,18 +23,106 @@ namespace LM_GUI_UP
             currentAddress = UNINITIALIZED_ADDRESS;
             endFlag = false;
             inputFlag = false;
+            uInputFlag = false;
         }
+
+        #region main methods
 
         public void Init(string programText)
         {
             endFlag = false;
             inputFlag = false;
+            uInputFlag = false;
             ClearMemory();
             currentAddress = UNINITIALIZED_ADDRESS;
 
             InitVariables(Parser.GetParsedInit(programText));
             InitCommands(Parser.GetParsedCode(programText));
         }
+
+        public virtual List<string> GetVarInfo()
+        {
+            return ramMemory.GetVarInfo();
+        }
+
+        public virtual List<string> GetVarInfoInAdditionalCode()
+        {
+            return ramMemory.GetVarInfoInAdditionalCode();
+        }
+
+        public List<string> GetCmdInfo()
+        {
+            return ramMemory.GetCmdInfo();
+        }
+
+        public string GetCurrentCommand()
+        {
+            return string.Format("{0} {1}", TextFormat.addZeros(Convert.ToString(currentAddress, 16).ToUpper(), 4), ramMemory.GetCell(this.currentAddress).ToString());
+        }
+
+        public bool IsEnd()
+        {
+            return endFlag;
+        }
+
+        public bool IsInput()
+        {
+            return inputFlag;
+        }
+
+        public bool IsUnsignedInput()
+        {
+            return uInputFlag;
+        }
+
+        public virtual void DoOneStep(RichTextBox output)
+        {
+            if (inputFlag)
+                return;
+
+            if (uInputFlag)
+                return;
+
+            try
+            {
+                MasterSwitch(output);
+            }
+            catch (System.Exception exp)
+            {
+                throw new System.Exception("at address \"" + TextFormat.addZeros(
+                    Convert.ToString(currentAddress, 16), 4) + "\" " + exp.Message);
+            }
+        }
+
+        public virtual void Input(int value)
+        {
+            LMOperations.PerformInputOperation(this, value);
+            inputFlag = false;
+            GoToNextAddress();
+        }
+
+        public virtual void UnsignedInput(int value)
+        {
+            LMOperations.PerformInputOperation(this, (ushort)value);
+            uInputFlag = false;
+            GoToNextAddress();
+        }
+
+        public virtual int GetInOutOperand()
+        {
+            const int FIRST_OPERAND = 1;
+            return FIRST_OPERAND;
+        }
+
+        public string GetName(int position)
+        {
+            return ramMemory.GetName(position);
+        }
+
+        #endregion
+
+        #region auxiliary methods
+
         protected virtual void InitVariables(List<AddressValue> variables)
         {
             foreach (var variable in variables)
@@ -54,62 +144,15 @@ namespace LM_GUI_UP
         {
             ramMemory.ClearMemory();
         }
-        public virtual List<string> GetVarInfo()
-        {
-            return ramMemory.GetVarInfo();
-        }
-
-        public List<string> GetCmdInfo()
-        {
-            return ramMemory.GetCmdInfo();
-        }
+        
         protected int GetCurrentCommandNumber()
         {
             return this.ramMemory.GetCell(this.currentAddress).GetValue();
         }
 
-        public string GetCurrentCommand()
-        {
-            return string.Format("{0} {1}", TextFormat.addZeros(Convert.ToString(currentAddress, 16).ToUpper(), 4), ramMemory.GetCell(this.currentAddress).ToString());
-        }
+        #endregion
 
-        public bool IsEnd()
-        {
-            return endFlag;
-        }
-
-        public bool IsInput()
-        {
-            return inputFlag;
-        }
-
-        public virtual void DoOneStep(RichTextBox output)
-        {
-            if (inputFlag)
-                return;
-
-            try
-            {
-                MasterSwitch(output);
-            }
-            catch (System.Exception exp)
-            {
-                throw new System.Exception("At address \"" + TextFormat.addZeros(
-                    Convert.ToString(currentAddress, 16), 4) + "\", " + exp.Message);
-            }
-        }
-
-        public virtual void Input(int value)
-        {
-            LMOperations.PerformInputOperation(this, value);
-            inputFlag = false;
-            GoToNextAddress();
-        }
-        public virtual int GetInOutOperand()
-        {
-            const int FIRST_OPERAND = 1;
-            return FIRST_OPERAND;
-        }
+        #region abstract methods
         protected abstract void MasterSwitch(RichTextBox output);
         public abstract void SetVariableInMemory(int positionInMemory, int value);
         protected abstract void InitialiseCommand(List<int> command);
@@ -119,9 +162,8 @@ namespace LM_GUI_UP
         public abstract int GetAddressOperand(int positionInMemory, int numberOfOperand);
         public abstract void SetOperationResultInMemory(MemoryItem arithmeticResult);
         public abstract void SetOperationResultInMemory(MemoryItem divisionResult, MemoryItem module);
-        public string GetName(int position)
-        {
-            return ramMemory.GetName(position);
-        }
+
+        #endregion
+
     }
 }

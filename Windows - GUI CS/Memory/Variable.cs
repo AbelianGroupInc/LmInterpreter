@@ -8,28 +8,28 @@ namespace LM_GUI_UP
 {
     class Variable: MemoryItem
     {
-        const int VAR_MAX = 65536;
-
-        private List<int> variableItem;
+        private int variableItem;
         public Variable(int value)
         {
-            variableItem = new List<int>();
-            variableItem.Add(value % VAR_MAX);
+            if(value < 0)
+                variableItem = (short)value;
+            else
+                variableItem = (ushort)value;
         }
 
         public List<int> GetItem()
         {
-            return variableItem;
+            return new List<int>{variableItem};
         }
 
         public int GetValue()
         {
-            return (int)variableItem[0];
+            return variableItem;
         }
 
         public override string ToString()
         {
-            return TextFormat.addZeros(Convert.ToString(variableItem[0], 16), 4);
+            return TextFormat.addZeros(Convert.ToString(variableItem, 16), 4);
         }
     }
 }

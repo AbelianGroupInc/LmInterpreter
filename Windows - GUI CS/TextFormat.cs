@@ -13,7 +13,7 @@ namespace LM_GUI_UP
             int number_of_zeros = number_lenght - number.Length;
 
             if (number_of_zeros < 0)
-                throw new System.Exception("Formating error: (" + number + ")");
+                throw new System.Exception("formating error: (" + number + ")");
 
             if (number_of_zeros > 0)
             {
@@ -22,6 +22,22 @@ namespace LM_GUI_UP
             }
 
             return number;
+        }
+
+        public static string additionalCode16(int number)
+        {
+            if (number < 0)
+                return Convert.ToString((short)((~-number) + 1), 2);
+            else
+                return addZeros(Convert.ToString((ushort)number, 2),16);
+        }
+
+        public static string additionalCode32(int number)
+        {
+            if (number < 0)
+                return Convert.ToString((int)((~-number) + 1), 2);
+            else
+                return addZeros(Convert.ToString((uint)number, 2), 32);
         }
     }
 }

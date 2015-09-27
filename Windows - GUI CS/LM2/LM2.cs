@@ -85,7 +85,8 @@ namespace LM_GUI_UP
                     LM2Operations.PerformOutputOperation(this, LMCommands.UnsignedOuput, textbox);
                     break;
                 case CMD_UNSIGNED_INPUT:
-                    this.inputFlag = true;
+                    LMCommands.InputMessage(textbox, GetName(GetAddressOperand(currentAddress, 1)));
+                    this.uInputFlag = true;
                     break;
                 case CMD_ADD:
                     LM2Operations.PerformArithmeticOperation(this, LMCommands.Add);
@@ -171,7 +172,7 @@ namespace LM_GUI_UP
         protected override void CheckNumberOfOperand(int numberOfOperand)
         {
             if (numberOfOperand < 0 || numberOfOperand > 2)
-                throw new Exception("Invalid number of operand!");
+                throw new Exception("invalid number of operand!");
         }
         public override void SetOperationResultInMemory(MemoryItem arithmeticResult)
         {

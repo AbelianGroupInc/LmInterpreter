@@ -33,6 +33,7 @@
             this.TLP_main = new System.Windows.Forms.TableLayoutPanel();
             this.textbox_main = new System.Windows.Forms.RichTextBox();
             this.panel_main_head = new System.Windows.Forms.Panel();
+            this.label_machine = new System.Windows.Forms.Label();
             this.label_main_head = new System.Windows.Forms.Label();
             this.split_container_test = new System.Windows.Forms.SplitContainer();
             this.TLP_memory = new System.Windows.Forms.TableLayoutPanel();
@@ -81,6 +82,7 @@
             this.menu_lblue = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_black = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_align_text = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_perfom = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_settings = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_chose_lm = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_chose_lm_3 = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,6 +91,9 @@
             this.menu_chose_memory = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_chose_cmd = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_chose_var = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_additional_code = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_additional_code_show = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_additional_code_hide = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_help = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_helps = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_developers = new System.Windows.Forms.ToolStripMenuItem();
@@ -146,10 +151,16 @@
             // panel_main_head
             // 
             this.panel_main_head.BackColor = global::LM_GUI_UP.Properties.Settings.Default.CLR3;
+            this.panel_main_head.Controls.Add(this.label_machine);
             this.panel_main_head.Controls.Add(this.label_main_head);
             this.panel_main_head.DataBindings.Add(new System.Windows.Forms.Binding("BackColor", global::LM_GUI_UP.Properties.Settings.Default, "CLR3", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             resources.ApplyResources(this.panel_main_head, "panel_main_head");
             this.panel_main_head.Name = "panel_main_head";
+            // 
+            // label_machine
+            // 
+            resources.ApplyResources(this.label_machine, "label_machine");
+            this.label_machine.Name = "label_machine";
             // 
             // label_main_head
             // 
@@ -183,7 +194,6 @@
             resources.ApplyResources(this.list_box_memory, "list_box_memory");
             this.list_box_memory.FormattingEnabled = true;
             this.list_box_memory.Name = "list_box_memory";
-            this.list_box_memory.SelectedIndexChanged += new System.EventHandler(this.list_box_memory_SelectedIndexChanged);
             // 
             // button_update
             // 
@@ -358,6 +368,7 @@
             this.menu_main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menu_file,
             this.menu_view,
+            this.menu_perfom,
             this.menu_settings,
             this.menu_help});
             this.menu_main.Name = "menu_main";
@@ -431,6 +442,7 @@
             this.menu_exit.Image = global::LM_GUI_UP.Properties.Resources.Closed;
             this.menu_exit.Name = "menu_exit";
             resources.ApplyResources(this.menu_exit, "menu_exit");
+            this.menu_exit.Click += new System.EventHandler(this.menu_exit_Click);
             // 
             // menu_view
             // 
@@ -511,11 +523,19 @@
             resources.ApplyResources(this.menu_align_text, "menu_align_text");
             this.menu_align_text.Click += new System.EventHandler(this.menu_align_text_Click);
             // 
+            // menu_perfom
+            // 
+            this.menu_perfom.Image = global::LM_GUI_UP.Properties.Resources.Play;
+            this.menu_perfom.Name = "menu_perfom";
+            resources.ApplyResources(this.menu_perfom, "menu_perfom");
+            this.menu_perfom.Click += new System.EventHandler(this.menu_perfom_Click);
+            // 
             // menu_settings
             // 
             this.menu_settings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menu_chose_lm,
-            this.menu_chose_memory});
+            this.menu_chose_memory,
+            this.menu_additional_code});
             this.menu_settings.Name = "menu_settings";
             resources.ApplyResources(this.menu_settings, "menu_settings");
             // 
@@ -569,6 +589,28 @@
             this.menu_chose_var.CheckState = System.Windows.Forms.CheckState.Checked;
             this.menu_chose_var.Name = "menu_chose_var";
             resources.ApplyResources(this.menu_chose_var, "menu_chose_var");
+            // 
+            // menu_additional_code
+            // 
+            this.menu_additional_code.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menu_additional_code_show,
+            this.menu_additional_code_hide});
+            this.menu_additional_code.Name = "menu_additional_code";
+            resources.ApplyResources(this.menu_additional_code, "menu_additional_code");
+            // 
+            // menu_additional_code_show
+            // 
+            this.menu_additional_code_show.Name = "menu_additional_code_show";
+            resources.ApplyResources(this.menu_additional_code_show, "menu_additional_code_show");
+            this.menu_additional_code_show.Click += new System.EventHandler(this.menu_additional_code_show_Click);
+            // 
+            // menu_additional_code_hide
+            // 
+            this.menu_additional_code_hide.Checked = true;
+            this.menu_additional_code_hide.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.menu_additional_code_hide.Name = "menu_additional_code_hide";
+            resources.ApplyResources(this.menu_additional_code_hide, "menu_additional_code_hide");
+            this.menu_additional_code_hide.Click += new System.EventHandler(this.menu_additional_code_hide_Click);
             // 
             // menu_help
             // 
@@ -702,6 +744,11 @@
         private System.Windows.Forms.ToolStripMenuItem menu_chose_cmd;
         private System.Windows.Forms.ToolStripMenuItem menu_chose_var;
         private System.Windows.Forms.ToolStripMenuItem menu_align_text;
+        private System.Windows.Forms.Label label_machine;
+        private System.Windows.Forms.ToolStripMenuItem menu_perfom;
+        private System.Windows.Forms.ToolStripMenuItem menu_additional_code;
+        private System.Windows.Forms.ToolStripMenuItem menu_additional_code_show;
+        private System.Windows.Forms.ToolStripMenuItem menu_additional_code_hide;
     }
 }
 

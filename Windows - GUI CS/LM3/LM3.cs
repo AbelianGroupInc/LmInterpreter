@@ -9,6 +9,7 @@ namespace LM_GUI_UP
 {
     class LM3 : LM
     {
+        #region Commands defines
         protected const int
             CMD_INPUT = 6,
             CMD_OUTPUT = 7,
@@ -30,9 +31,10 @@ namespace LM_GUI_UP
             CMD_NOT_EQUAL = 130,
             CMD_UNSIGNED_LESS = 147,
             CMD_UNSIGNED_GREATER = 149,
-            CMD_UNSIGNED_LESS_OR_EQUAL = 148,
-            CMD_UNSIGNED_GREATER_OR_EQUAL = 150,
+            CMD_UNSIGNED_LESS_OR_EQUAL = 150,
+            CMD_UNSIGNED_GREATER_OR_EQUAL = 148,
             CMD_STOP = 153;
+        #endregion
 
         public LM3() : base() { }
 
@@ -73,6 +75,10 @@ namespace LM_GUI_UP
                 case CMD_INPUT:
                     LMCommands.InputMessage(textbox, GetName(GetAddressOperand(currentAddress, 1)));
                     inputFlag = true;
+                    break;
+                case CMD_UNSIGNED_INPUT:
+                    LMCommands.InputMessage(textbox, GetName(GetAddressOperand(currentAddress, 1)));
+                    uInputFlag = true;
                     break;
                 case CMD_OUTPUT:
                     LM3Operations.PerformOutputOperation(this, LMCommands.Output, textbox);
@@ -138,7 +144,7 @@ namespace LM_GUI_UP
                     endFlag = true;
                     return;
                 default:
-                    throw new System.Exception("hui");
+                    break;
             }
         }
         #endregion

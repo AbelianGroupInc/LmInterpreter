@@ -73,17 +73,40 @@ namespace LM_GUI_UP
                 return TextFormat.addZeros(Convert.ToString(position, 16).ToUpper(),4);
         }
 
-        public List<string> GetVarInfo()
+        #region information about variables
+
+        private string StringInDecNumber(string address, string name, int value)
+        {
+            return string.Format("{0} ( {1} ) := {2}", address, name, value);
+        }
+
+        private string StringInAdditionalCode(string address, string name, int value)
+        {
+            return string.Format("{0} ( {1} ) := {2} ({3})", address, name, value,TextFormat.additionalCode16(value));
+        }
+
+        private List<string> CreateVarInfo(Func<string, string, int, string> stringFormat)
         {
             List<string> varInfo = new List<string>();
 
             for (int i = 0; i < _memory.Length; i++)
                 if (_memory[i] != null && _memory[i] is Variable)
-                    varInfo.Add(string.Format("{0} ( {1} ) := {2}", 
-                        TextFormat.addZeros(Convert.ToString(i, 16).ToUpper(), 4), GetName(i), _memory[i].GetValue()));
+                    varInfo.Add(stringFormat(TextFormat.addZeros(Convert.ToString(i, 16).ToUpper(), 4),GetName(i), _memory[i].GetValue()));
 
             return varInfo;
         }
+
+        public List<string> GetVarInfo()
+        {
+            return CreateVarInfo(StringInDecNumber);
+        }
+
+        public List<string> GetVarInfoInAdditionalCode()
+        {
+            return CreateVarInfo(StringInAdditionalCode);
+        }
+
+        #endregion
 
         public List<string> GetCmdInfo()
         {
